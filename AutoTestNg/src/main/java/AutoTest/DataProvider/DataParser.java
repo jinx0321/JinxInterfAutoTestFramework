@@ -60,7 +60,6 @@ public class DataParser {
 		try {
 			caseinfos=CaseParser(data);
 		}catch(Exception e) {
-			
 			System.out.println("案例数据解析错误");
 			e.printStackTrace();
 		}
@@ -149,6 +148,13 @@ public class DataParser {
 		
 		for(int i=1;i<prelist.size();i++) {
 			Map<String,String> point=new LinkedHashMap<String, String>();
+			
+			//自动补全
+			if(prelist.get(0).size()!=prelist.get(i).size()) {
+				for(int j=prelist.get(i).size();j<prelist.get(0).size();j++) {
+					prelist.get(i).add("");
+				}
+			}
 			point.put(prelist.get(0).get(0), prelist.get(i).get(0));
 			point.put(prelist.get(0).get(1), prelist.get(i).get(1));
 			point.put(prelist.get(0).get(2), prelist.get(i).get(2));
@@ -274,7 +280,7 @@ public class DataParser {
 	
 	@Test
 	public void test() throws Exception {
-		parser("D:\\workspace\\AutoTestNg\\src\\main\\java\\AutoTest\\flow\\test_al.xlsx");
+		parser("D:\\gitproject\\JinxInterAutoTestFramework\\AutoTestNg\\src\\main\\java\\AutoTest\\flow\\test_al.xlsx");
 	
 	
 	}

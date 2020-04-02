@@ -7,6 +7,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import AutoTest.Base.BaseFlow;
+import AutoTest.DataAction.TestExecAction;
+import AutoTest.DataProvider.TestInfo;
 
 public class test extends BaseFlow{
 	final String url="";
@@ -18,10 +20,9 @@ public class test extends BaseFlow{
 	
 	
 	@Test(dataProvider ="data")
-	public void test(Map<String,String> testdata) {
-		testdata.forEach((k,v)->{
-			System.out.println(k+":"+v);
-		});
+	public void test(TestInfo ti) throws Exception {
+	
+		TestExecAction.class.newInstance().CaseAcceptAc(this,ti);
 		
 		
 	}

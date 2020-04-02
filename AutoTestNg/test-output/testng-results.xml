@@ -2,33 +2,49 @@
 <testng-results skipped="0" failed="0" ignored="0" total="2" passed="2">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="72" started-at="2020-03-31T11:08:21 GMT+08:00" finished-at="2020-03-31T11:08:21 GMT+08:00">
+  <suite name="Default suite" duration-ms="103" started-at="2020-04-02T10:10:10 GMT+08:00" finished-at="2020-04-02T10:10:10 GMT+08:00">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="72" started-at="2020-03-31T11:08:21 GMT+08:00" finished-at="2020-03-31T11:08:21 GMT+08:00">
+    <test name="Default test" duration-ms="103" started-at="2020-04-02T10:10:10 GMT+08:00" finished-at="2020-04-02T10:10:10 GMT+08:00">
       <class name="AutoTest.flow.test">
-        <test-method status="PASS" signature="test(java.util.Map)[pri:0, instance:AutoTest.flow.test@26a7b76d]" name="test" duration-ms="10" started-at="2020-03-31T11:08:21 GMT+08:00" data-provider="data" finished-at="2020-03-31T11:08:21 GMT+08:00">
+        <test-method status="PASS" signature="before()[pri:0, instance:AutoTest.flow.test@7d8704ef]" name="before" is-config="true" duration-ms="7" started-at="2020-04-02T10:10:10 GMT+08:00" finished-at="2020-04-02T10:10:10 GMT+08:00">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- before -->
+        <test-method status="PASS" signature="test(AutoTest.DataProvider.TestInfo)[pri:0, instance:AutoTest.flow.test@7d8704ef]" name="test" duration-ms="14" started-at="2020-04-02T10:10:10 GMT+08:00" data-provider="data" finished-at="2020-04-02T10:10:10 GMT+08:00">
           <params>
             <param index="0">
               <value>
-                <![CDATA[{q=1}]]>
+                <![CDATA[AutoTest.DataProvider.TestInfo@66498326]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- test -->
-        <test-method status="PASS" signature="test(java.util.Map)[pri:0, instance:AutoTest.flow.test@26a7b76d]" name="test" duration-ms="4" started-at="2020-03-31T11:08:21 GMT+08:00" data-provider="data" finished-at="2020-03-31T11:08:21 GMT+08:00">
+        <test-method status="PASS" signature="after()[pri:0, instance:AutoTest.flow.test@7d8704ef]" name="after" is-config="true" duration-ms="0" started-at="2020-04-02T10:10:10 GMT+08:00" finished-at="2020-04-02T10:10:10 GMT+08:00">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- after -->
+        <test-method status="PASS" signature="before()[pri:0, instance:AutoTest.flow.test@7d8704ef]" name="before" is-config="true" duration-ms="6" started-at="2020-04-02T10:10:10 GMT+08:00" finished-at="2020-04-02T10:10:10 GMT+08:00">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- before -->
+        <test-method status="PASS" signature="test(AutoTest.DataProvider.TestInfo)[pri:0, instance:AutoTest.flow.test@7d8704ef]" name="test" duration-ms="3" started-at="2020-04-02T10:10:10 GMT+08:00" data-provider="data" finished-at="2020-04-02T10:10:10 GMT+08:00">
           <params>
             <param index="0">
               <value>
-                <![CDATA[{w=2}]]>
+                <![CDATA[AutoTest.DataProvider.TestInfo@306f16f3]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- test -->
+        <test-method status="PASS" signature="after()[pri:0, instance:AutoTest.flow.test@7d8704ef]" name="after" is-config="true" duration-ms="1" started-at="2020-04-02T10:10:10 GMT+08:00" finished-at="2020-04-02T10:10:10 GMT+08:00">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- after -->
       </class> <!-- AutoTest.flow.test -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
