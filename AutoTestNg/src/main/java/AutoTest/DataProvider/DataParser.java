@@ -91,7 +91,11 @@ public class DataParser {
 	         ti.setHeaderInfo(header);
 	         ti.setCookieInfo(cookie);
 	         ti.setPreInfo(PreDataLoad(datapre,caseinfos.get(i)));
-	         ti.setSendData(DataLoad(senddata,caseinfos.get(i)));
+	         if(ti.getFormat().equals(Content_Type.form)) {
+	         ti.setSendData(FormDataLoad(senddata,caseinfos.get(i)));
+	         }else if(ti.getFormat().equals(Content_Type.json)) {
+	        	 
+	         }
 	         til.add(ti);
 	    }
 	    return til;
@@ -219,8 +223,8 @@ public class DataParser {
 		return senddata;
 	}
 	
-	/*数据转载*/
-	private Map<String,String> DataLoad(Map<String,String> formatdata,Map<String,String> caseinfo){
+	/*form数据转载*/
+	private Map<String,String> FormDataLoad(Map<String,String> formatdata,Map<String,String> caseinfo){
 		String regex="\\$\\{[^\\}]*\\}";
 		Map<String,String> caseparam=new HashMap<String, String>();
 		Map<String,String> afterdata=new LinkedHashMap<String, String>();
@@ -247,7 +251,6 @@ public class DataParser {
 		    }
 		    
 		}
-		
 		return afterdata;
 	}
 	
@@ -259,15 +262,12 @@ public class DataParser {
 	 */
 	private  List<Map<String,String>> PreDataLoad(List<Map<String,String>> datepre,Map<String,String> caseinfo){
 	    List<Map<String,String>> dataepreafter=new LinkedList<Map<String,String>>();
-	    
 	    for(int i=0;i<datepre.size();i++) {
 	    	if(datepre.get(i).get("TestId").equals(caseinfo.get("TestId"))) {
 	    		dataepreafter.add(datepre.get(i));
 	    	}
-	    	
 	    }
 		return dataepreafter;
-		
 	}
 	/**
 	 * 表达式解析器

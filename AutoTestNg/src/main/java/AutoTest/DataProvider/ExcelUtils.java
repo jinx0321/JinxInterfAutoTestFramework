@@ -53,9 +53,30 @@ public class ExcelUtils {
 				 collist.add(celllist);
 				 }
 			 }
-			 excelmap.put(sheetname, collist);
+			 excelmap.put(sheetname, compList(collist));
 		 }
 		return excelmap;
+	}
+	
+	/**
+	 * 列表按照第一行补全
+	 * @param list
+	 */
+	private static List<List<String>> compList(List<List<String>> list) {
+		List<String> firstline =new LinkedList<String>();
+		if(firstline.size()>0) {
+			firstline=list.get(0);
+		}
+		for(int i=1;i<list.size();i++) {
+		   if(list.get(i).size()<firstline.size()) {
+			   for(int j=list.get(i).size();j<firstline.size();j++) {
+				   list.get(i).add("");
+			   }
+		   }	
+			
+		}
+		
+		return list;
 	}
 	
 	@Test
