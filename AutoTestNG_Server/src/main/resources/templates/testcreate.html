@@ -57,19 +57,26 @@
 							<label class="layui-form-label">form数据</label>
 						
 							<div class ="layui-input-item">
-							<div class="layui-input-inline" id="keydiv">
-							<input type="text" name="key1" required  lay-verify="required" placeholder="请输入key" autocomplete="off" class="layui-input">
+							<div class="layui-input-inline" id="keydiv1">
+							<input id="key1" type="text" name="key1" required  lay-verify="required" placeholder="请输入key" autocomplete="off" class="layui-input">
 							</div>
-							<div class="layui-input-inline" id="valuediv">
-							<input type="text" name="value1" required  lay-verify="required" placeholder="请输入value" autocomplete="off" class="layui-input">
+							<div class="layui-input-inline" id="valuediv1">
+							<input id="value1" type="text" name="value1" required  lay-verify="required" placeholder="请输入value" autocomplete="off" class="layui-input">
                             </div>
+                            <div class="layui-input-inline" id="deletediv1">
+						    <button class="layui-btn " id="delete1" type="button">删除</button> 
+                            </div>
+                            
 							</div>
 								
 								
 						</div>
+						
 							<div class="layui-form-item" id="" 	>
 							 <button class="layui-btn " id="addform" type="button">添加</button>
-						 </div>
+
+							 </div>
+					
 						
 						<!-- json数据 -->
 						<div class="layui-form-item" id="jsondata" 	>
@@ -167,14 +174,29 @@
                 <!--增加form的input-->
                 var index=1;
                 function editForm(){
+                	$("#delete1").click(function(){
+                		$("#key1").remove();
+                		$("#value1").remove();
+                		$("#delete1").remove();
+                		form.render();
+                	});
                 	$("#addform").click(function(){
                 		index++;
                 		var keyid="key"+index;
                 		var valueid="value"+index;
+                		var deleteid="delete"+index;
                 		$("#keydiv").append('<br><input  id="'+keyid+'" type="text" name="'+keyid+'" required  lay-verify="required" placeholder="请输入key" autocomplete="off" class="layui-input">');
-                		$("#valuediv").append('<br><input id="'+valueid+'" type="text" name="'+valueid+'" required  lay-verify="required" placeholder="请输入value" autocomplete="off" class="layui-input">');
-                	    
+                		$("#valuediv").append('<br><input id="'+valueid+'" type="text" name="'+valueid+'" required  lay-verify="required" placeholder="请输入value" autocomplete="off" class="layui-input">'); 
+                		$("#deletediv").append('<br><br> <button class="layui-btn " id="'+deleteid+'" type="button">删除</button>'); 
+                		$("#"+deleteid).click(function(){
+                			$("#"+keyid).remove();
+                    		$("#"+valueid).remove();
+                    		$("#"+deleteid).remove();
+                    		form.render();
+                    	});
                 	});
+                	
+                	
                 	
                 }
                 editForm();
