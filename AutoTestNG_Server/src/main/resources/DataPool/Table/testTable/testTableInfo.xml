@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 储存着数据表信息 -->
+<datapool id="1" tablename="testTable" partcapacity="">
+<!--总数据量-->
+<datacount></datacount>
+
+<!-- 当前分区数,以及每个区块的数据量 -->
+<partition>
+<part id="1"></part>
+<part id="2"></part>
+
+</partition>
+
+<!-- 表头 -->
+<titles>
+<title index=""></title>
+
+</titles>
+
+<!-- 主键 -->
+<primarykey>key1,key2</primarykey>
+
+
+</datapool>
