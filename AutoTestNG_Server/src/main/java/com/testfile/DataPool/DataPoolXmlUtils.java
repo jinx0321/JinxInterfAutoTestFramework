@@ -156,12 +156,17 @@ public class DataPoolXmlUtils {
 		    while(partit.hasNext()){
 		    	Element part=partit.next();
 		    	Map<String,String> partinfo=new LinkedHashMap<String, String>();
-		    	partinfo.put("index",part.attributeValue("index"));
+		    	partinfo.put("id",part.attributeValue("id"));
 		    	partinfo.put("count",part.getText());
-		    	partmap.put(part.attributeValue("id"), partinfo);
+		    	partmap.put(part.attributeValue("index"), partinfo);
 		    	
 		    }
-		    dti.setPartinfo(partmap);
+		    Map<String, Map<String, String>> partmap2=new LinkedHashMap<String, Map<String,String>>();
+			partmap.entrySet().stream()
+		                      .sorted(Map.Entry.comparingByKey())
+		                      .forEachOrdered(e -> partmap2.put(e.getKey(), e.getValue()));;
+
+		    dti.setPartinfo(partmap2);
 		    
 		    //设置titles
 		    Element titles = datapool.element("titles");

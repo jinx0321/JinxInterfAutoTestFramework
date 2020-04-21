@@ -2,6 +2,8 @@ package com.testfile.Control;
 
 
 
+import java.util.LinkedList;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import com.testfile.DataPool.DataPoolConnector;
 import com.testfile.DataPool.DataPoolXmlUtils;
 import com.testfile.DataPool.DataTableInfo;
 import com.testfile.DataPool.Create.DataCreatePoolTable;
+import com.testfile.DataPool.DataOperation.DataInsert;
 
 import Http.Common.HttpParamType;
 import Http.Header.HttpHeader;
@@ -50,13 +53,14 @@ public class TestFileCreateControl {
 	@Autowired
 	DataPoolXmlUtils xml;
 	
+	@Autowired
+	DataInsert datainsert;
+	
 	@RequestMapping(value="/datapool",produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String datapool() {
-		DataTableInfo a=new DataTableInfo();
-		String b="ImgInfo";
-		xml.Get_Table_Info(a,b);
-		System.out.println(a.toString());
+		
+		datainsert.DataInsert(new LinkedList(), "ImgInfo");
 		return "success";
 	}
 }

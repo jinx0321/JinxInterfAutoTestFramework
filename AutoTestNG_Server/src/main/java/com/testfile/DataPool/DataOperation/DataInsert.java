@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.testfile.DataPool.DataPoolConnector;
 import com.testfile.DataPool.DataTableInfo;
+import com.testfile.DataPool.Partition.ParttitionUtils;
 
 @Service
 public class DataInsert {
 	
 	@Autowired
 	DataPoolConnector datapoolconnector;
+	
+	@Autowired
+	ParttitionUtils partutils;
 	
 	/**
 	 * 插入数据操作表字段大小写会区分,且如果map中key对应不上表字段,则默认为空
@@ -30,9 +34,8 @@ public class DataInsert {
 	 * @param TableName
 	 */
     public synchronized void DataInsert(List<String> data,String TableName){
-    	
     	DataTableInfo dti=datapoolconnector.Get_TempTableInfo(TableName);
-    	
+    	System.out.println(partutils.SingleSelect(dti));
 		
 	}
     

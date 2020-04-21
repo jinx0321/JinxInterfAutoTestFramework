@@ -64,11 +64,14 @@ public class DataPoolConnector {
 	 * 获取瞬时表信息
 	 * @return
 	 */
-	public DataTableInfo Get_TempTableInfo(String TableName) {
+	public DataTableInfo Get_TempTableInfo(String TableName){
 		DataTableInfo dti=new DataTableInfo();
 		datapoolxmlutils.Get_Table_Info(dti, TableName);
 		return dti;
 	} 
+	
+	
+ 
 	
 	@Test
 	public void test() {
