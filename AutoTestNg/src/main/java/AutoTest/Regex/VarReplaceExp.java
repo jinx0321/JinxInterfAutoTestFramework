@@ -46,16 +46,30 @@ public class VarReplaceExp {
 	     */
 	    public List<String> FindContentRegex(String content){
 	    	Pattern p=Pattern.compile(regex);
-	    	Matcher m=p.matcher(regex);
+	    	Matcher m=p.matcher(content);
 	    	List<String> regexs=new LinkedList<String>();
 	    	while(m.find()) {
-	    	  regexs.add(m.group());
+	    	  regexs.add(m.group().replaceAll(" ", ""));
 	    	}
 	    	return regexs;
 	    }
-	   public static void main(String[] args) {
-		   
-	   }
+
+
+	    @Test
+	    public void testr() {
+	    	System.out.println(FindContentRegex("\r\n" + 
+	    			" \"is_success\": true,\r\n" + 
+	    			" \"error_no\": \"0\",\r\n" + 
+	    			" \"error_msg\": \"\",\r\n" + 
+	    			" \"data\": [\r\n" + 
+	    			"  {\r\n" + 
+	    			"   \"loaned_code\": \" ${ xyz } \",\r\n" + 
+	    			"   \"product_biz_type\": \"CommissionLoan\"\r\n" + 
+	    			" }\r\n" + 
+	    			" ]\r\n" + 
+	    			"}\r\n" + 
+	    			""));
+	    }
 	    
 	
 }

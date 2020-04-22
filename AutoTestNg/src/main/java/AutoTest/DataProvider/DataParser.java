@@ -272,13 +272,11 @@ public class DataParser {
 			}
 		}
 		
-		System.out.println(JsonDataParser(jsondata.get("content")));
+		
 		jsondata.forEach((k,v)->{
 			if(k.contains("content")) {
 				 Map<String,String> regexs=JsonDataParser(v);
-				 regexs.entrySet().stream()
-				                  .collect(Collectors
-				                    .toMap(x->x.toString(),y->y.toString()));
+			     
 			}else {
 				
 			}
