@@ -135,15 +135,8 @@ public class JavaExp {
 			  System.out.println(exp3);
 			  System.out.println(param);
 			  
-			  Stack<Character> stack=new Stack<Character>();
-			  
-			  char[] paramarray=param.toCharArray();
-			  for(int i=0;i<paramarray.length;i++) {
-				  stack.add(paramarray[i]);
-			  }
-			  while(!stack.empty()) {
-				  System.out.println(stack.pop());
-			  }
+			
+		
 			
 	    	 
 	}

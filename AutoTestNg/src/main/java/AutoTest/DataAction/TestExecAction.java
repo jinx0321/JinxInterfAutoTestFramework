@@ -2,13 +2,13 @@ package AutoTest.DataAction;
 
 import AutoTest.Base.BaseFlow;
 import AutoTest.DataProvider.TestInfo;
-import AutoTest.flow.test;
+import AutoTest.flow.form;
 
 public class TestExecAction {
 
 	/**
 	 * 案例接收器
-	 * @param test 
+	 * @param form 
 	 */
 	public void CaseAcceptAc(BaseFlow baseflow,TestInfo ti) {
 		System.out.println("当前执行案例id:"+baseflow.getCurrent_TestId());

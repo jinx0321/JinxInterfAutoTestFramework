@@ -16,7 +16,7 @@ import AutoTest.DataProvider.ExcelUtils;
  */
 public class SheetExp {
     private final String regex="\\{[\\s]*[F,f][R,r][O,o][M,m][\\s]+[S,s][H,h][E,e][E,e][T,t][\\s]*\\([\\s]*[N,n][A,a][M,m][E,e][\\s]*=[\\s]*\\\"[\\s]*[^\\)^\\\"]*\\\"[\\s]*,[\\s]*[V,v][A,a][L,l][U,u][E,e][\\s]*=[\\s]*\\\"[\\s]*[^\\)^\\\"]*\\\"[\\s]*\\)[\\s]*\\}[\\s]*";
-    private String[] word= {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+    private final String[] word= {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
     private String[] row=new String[word.length*2];
  
     public SheetExp() {

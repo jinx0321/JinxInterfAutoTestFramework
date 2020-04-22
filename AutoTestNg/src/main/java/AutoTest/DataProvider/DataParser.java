@@ -8,12 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 
 import com.sun.jersey.api.ParamException.HeaderParamException;
-
 import AutoTest.Dict.Content_Type;
+import AutoTest.Regex.RegexInter;
 
 
 public class DataParser {
@@ -31,6 +32,8 @@ public class DataParser {
 			e.printStackTrace();
 		}
 	
+		DataCache.exceldata=data;
+		
 		//头信息解析
 		Map<String,String> header=new HashMap<String, String>();
 		try {
@@ -91,9 +94,19 @@ public class DataParser {
 	         ti.setHeaderInfo(header);
 	         ti.setCookieInfo(cookie);
 	         ti.setPreInfo(PreDataLoad(datapre,caseinfos.get(i)));
+	         //form数据装载
 	         if(ti.getFormat().equals(Content_Type.form)) {
-	         ti.setSendData(FormDataLoad(senddata,caseinfos.get(i)));
-	         }else if(ti.getFormat().equals(Content_Type.json)) {
+	            ti.setSendData(FormDataLoad(senddata,caseinfos.get(i)));
+	         }
+	         //json数据装载
+	         else if(ti.getFormat().equals(Content_Type.json)) {
+	        	 if(!senddata.containsKey("content")) {
+	        		 throw new Exception("json数据表单中必须有content"); 
+	        	 }else {
+	        		 ti.setSendData(JsonDataLoad(senddata,caseinfos.get(i)));
+	        	 }
+	        	 
+	         }else {
 	        	 
 	         }
 	         til.add(ti);
@@ -223,9 +236,15 @@ public class DataParser {
 		return senddata;
 	}
 	
-	/*form数据转载*/
+	/**
+	 * form数据预加载
+	 * 如果变量定位到其他表达式时,表达式会继续执行,直到非表达式为止
+	 * @param formatdata
+	 * @param caseinfo
+	 * @return
+	 */
 	private Map<String,String> FormDataLoad(Map<String,String> formatdata,Map<String,String> caseinfo){
-		String regex="\\$\\{[^\\}]*\\}";
+
 		Map<String,String> caseparam=new HashMap<String, String>();
 		Map<String,String> afterdata=new LinkedHashMap<String, String>();
 		for(Entry<String, String> e:caseinfo.entrySet()) {
@@ -234,24 +253,50 @@ public class DataParser {
 			}
 		}
 		for(Entry<String, String> e:formatdata.entrySet()) {
-			String key=e.getKey();
-			String value=e.getValue();
-		    if(Pattern.matches(regex, value)) {
-		    	value=value.substring(2, value.length()-1).trim();
-
-		    	if(caseparam.containsKey(value)) {
-		    		value=caseparam.get(value);
-		    		afterdata.put(key, value);
-		    	}else {
-		    		afterdata.put(key, "");
-		    	}
-		    	
-		    }else {
-		    	afterdata.put(key, value);
-		    }
-		    
+			afterdata.put(e.getKey(), RegexInter.ExpFilter(e.getValue(), caseparam));
 		}
+		
 		return afterdata;
+	}
+	
+	/**
+	 * json数据预装载
+	 * @return
+	 */
+	private Map<String,String> JsonDataLoad(Map<String,String> jsondata,Map<String,String> caseinfo){
+		Map<String,String> afterdata=new LinkedHashMap<String, String>();
+		Map<String,String> caseparam=new HashMap<String, String>();
+		for(Entry<String, String> e:caseinfo.entrySet()) {
+			if(!e.getKey().trim().toLowerCase().equals("testid")||!e.getKey().trim().toLowerCase().equals("testname")) {
+				caseparam.put(e.getKey(), e.getValue());
+			}
+		}
+		
+		System.out.println(JsonDataParser(jsondata.get("content")));
+		jsondata.forEach((k,v)->{
+			if(k.contains("content")) {
+				 Map<String,String> regexs=JsonDataParser(v);
+				 regexs.entrySet().stream()
+				                  .collect(Collectors
+				                    .toMap(x->x.toString(),y->y.toString()));
+			}else {
+				
+			}
+		});
+		return afterdata;
+	}
+	
+	/**
+	 * json中的存在的表达式解析
+	 * 返回一个map{
+	 *    key:var
+	 *    value:var
+	 * }
+	 * @return
+	 */
+	private Map<String,String> JsonDataParser(String content){
+		return RegexInter.ReturnVarRegexs(content).stream()
+				.collect(Collectors.toMap(x->x.toString(), x->x.toString()));
 	}
 	
 	/**
@@ -278,9 +323,11 @@ public class DataParser {
 		return regex;
 	}
 	
-	@Test
+	
+
+	@Test 
 	public void test() throws Exception {
-		parser("D:\\gitproject\\JinxInterAutoTestFramework\\AutoTestNg\\src\\main\\java\\AutoTest\\flow\\test_al.xlsx");
+		parser("D:\\gitproject\\JinxInterAutoTestFramework\\AutoTestNg\\src\\main\\java\\AutoTest\\flow\\json_al.xlsx");
 	
 	
 	}

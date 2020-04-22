@@ -10,7 +10,7 @@ import AutoTest.Base.BaseFlow;
 import AutoTest.DataAction.TestExecAction;
 import AutoTest.DataProvider.TestInfo;
 
-public class test extends BaseFlow{
+public class form extends BaseFlow{
 	final String url="";
 	
 	@DataProvider(name="data")
