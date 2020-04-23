@@ -16,7 +16,7 @@ import AutoTest.DataProvider.ExcelUtils;
  *
  */
 public class SheetExp {
-    private final String regex="\\{[\\s]*[F,f][R,r][O,o][M,m][\\s]+[S,s][H,h][E,e][E,e][T,t][\\s]*\\([\\s]*[N,n][A,a][M,m][E,e][\\s]*=[\\s]*\\\"[\\s]*[^\\)^\\\"]*\\\"[\\s]*,[\\s]*[V,v][A,a][L,l][U,u][E,e][\\s]*=[\\s]*\\\"[\\s]*[^\\)^\\\"]*\\\"[\\s]*\\)[\\s]*\\}[\\s]*";
+    private final String regex="\\{[\\s]*[F,f][R,r][O,o][M,m][\\s]*[S,s][H,h][E,e][E,e][T,t][\\s]*\\([\\s]*[N,n][A,a][M,m][E,e][\\s]*=[\\s]*\\\"[\\s]*[^\\)^\\\"]*\\\"[\\s]*,[\\s]*[V,v][A,a][L,l][U,u][E,e][\\s]*=[\\s]*\\\"[\\s]*[^\\)^\\\"]*\\\"[\\s]*\\)[\\s]*\\}[\\s]*";
     private final String[] word= {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
     private String[] row=new String[word.length*2];
  
@@ -31,8 +31,8 @@ public class SheetExp {
      * @param regex
      * @return
      */
-    public boolean is_Sheet_Exp(String regex) {
-    	return Pattern.matches(this.regex, regex);
+    public boolean is_Sheet_Exp(String var) {
+    	return Pattern.compile(regex).matcher(var).find();
     }
     
     /**
@@ -43,7 +43,7 @@ public class SheetExp {
      */
     public String return_Result(String regex,Map<String,List<List<String>>> data) {
     	if(is_Sheet_Exp(regex)) {
-    	String param=ParamReplace(data,regexParser(regex));
+    	  String param=ParamReplace(data,regexParser(regex));
     	if(is_Sheet_Exp(param)) {
     		return return_Result(param,data);
     	}else {
@@ -131,7 +131,7 @@ public class SheetExp {
 		Matcher m=pattern.matcher(content);
     	List<String> regexs=new LinkedList<String>();
     	while(m.find()) {
-    	  regexs.add(m.group().replaceAll(" ", ""));
+    	  regexs.add(m.group());
     	}
     	return regexs;
     }
@@ -153,9 +153,9 @@ public class SheetExp {
      public void is_SheetExp() throws IOException, Exception{
     	//Map<String,String> regex=regexParser("{from Sheet(name=\"案例数据\",value=\"A,1\")}");
     	//System.out.println(ParamReplace(ExcelUtils.readExcel("D:\\gitproject\\JinxInterAutoTestFramework\\AutoTestNg\\src\\main\\java\\AutoTest\\flow\\test_al.xlsx"),regex));
-    	
-    	String regex="324234{from Sheet(name=\"案例数据\",value=\"D,2\")}4234";
-    	System.out.println(FindContentRegex(regex)); 
+    	//{fromSheet(name="案例数据",value="E,2")}
+    	String regex="{from Sheet(name=\"案例数据\",value=\"D,2\")}";
+    	System.out.println(is_Sheet_Exp(regex)); 
      }
 	
 }

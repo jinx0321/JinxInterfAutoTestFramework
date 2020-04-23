@@ -16,7 +16,7 @@ import com.sun.jersey.api.ParamException.HeaderParamException;
 import AutoTest.Dict.Content_Type;
 import AutoTest.Regex.RegexInter;
 import AutoTest.Regex.RegexUpdateModel;
-import AutoTest.Regex.RegexUtils;
+import AutoTest.Regex.RegexDataUtils;
 
 
 public class DataParser {
@@ -275,9 +275,10 @@ public class DataParser {
 		}
 		DataCache.casedata=caseparam;
 		
-		RegexUtils ru=new RegexUtils();
-		RegexUpdateModel rum=new RegexUpdateModel(jsondata.get("content"));
+		RegexDataUtils ru=new RegexDataUtils();
+		RegexUpdateModel rum=new RegexUpdateModel(jsondata.get("sign"));
 		ru.PreRegexLoad(rum);
+		ru.RegexLoad(rum);
 		System.out.println(rum);
 		//System.out.println(((RegexUpdateModel)((RegexUpdateModel)rum.getContentexp().get("${x}")).getContentexp().get("{fromSheet(name=\"°¸ÀýÊý¾Ý\",value=\"D,2\")}")).getContent());
 		return afterdata;

@@ -7,13 +7,14 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 import AutoTest.DataProvider.DataCache;
+import AutoTest.Utils.RegexUtils;
 
 /**
  * 表达式模型解析工具
  * @author jinxh29224
  *
  */
-public class RegexUtils {
+public class RegexDataUtils {
 
 	/**
 	 * 表达式预加载
@@ -39,18 +40,23 @@ public class RegexUtils {
 	 * 表达式数据装载
 	 * @param regexupdatemodel
 	 */
-	public void RegexLoad(RegexUpdateModel regexupdatemodel) {
-		
-		   if(regexupdatemodel.getContentexp().size()!=0) {
+	public synchronized void  RegexLoad(RegexUpdateModel regexupdatemodel) {
+			 //遍历当前节点的表达式
              for(Entry<String, RegexUpdateModel> e:regexupdatemodel.getContentexp().entrySet()) {
         	       String key=(String) e.getKey();
         	       RegexUpdateModel value=(RegexUpdateModel) e.getValue();
         	       //如果最底下节点无子表达式,则解析表达式
-        	       if(value.getContentexp().size()==0) {
-        	    	   value.setContent(RegexInter.ExpFilter(value.getContent(), DataCache.casedata));
+        	       if(value.getContentexp().size()!=0) {
+        	    	   RegexLoad(value);
+        	       }else {
+        	    	   //对最终表达式进行解析
+        	    	   String aftercontent=RegexInter.ExpFilter(value.getContent(), DataCache.casedata);
+        	    	   //更新当前节点的content和contentexp
+        	    	   regexupdatemodel.setContent(regexupdatemodel.getContent().replaceAll(RegexUtils.makeQueryStringAllRegExp(key), aftercontent));
+        	    	   regexupdatemodel.getContentexp().remove(key); 
         	       }
-            }
-		   }
+             }
+		  
 		
 	}
 	
@@ -82,10 +88,11 @@ public class RegexUtils {
 	
 	@Test
 	public void test() {
-		String content="123${123}232";
-		String key="$";
-		System.out.println(content.replaceAll(key.replaceAll("$", "\\$"), "123"));
+		String content="wqeqwe{{{{fromSheet(name=\"案例数据\",value=\"D,2\")}xcsds";
+		String key="{{{{fromSheet(name=\"案例数据\",value=\"D,2\")}";
+		System.out.println(content.replaceAll(RegexUtils.makeQueryStringAllRegExp(key), "123"));
 		
 	}
+
 
 }

@@ -49,7 +49,7 @@ public class VarReplaceExp {
 	    	Matcher m=pattern.matcher(content);
 	    	List<String> regexs=new LinkedList<String>();
 	    	while(m.find()) {
-	    	  regexs.add(m.group().replaceAll(" ", ""));
+	    	  regexs.add(m.group());
 	    	}
 	    	return regexs;
 	    }
