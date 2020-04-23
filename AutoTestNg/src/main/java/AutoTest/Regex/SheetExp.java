@@ -2,6 +2,7 @@ package AutoTest.Regex;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -121,6 +122,22 @@ public class SheetExp {
     }
     
     /**
+     * 查询文本中的替换表达式
+     * @param content
+     * @return
+     */
+    public List<String> FindContentRegex(String content){
+    	Pattern pattern=Pattern.compile(regex);
+		Matcher m=pattern.matcher(content);
+    	List<String> regexs=new LinkedList<String>();
+    	while(m.find()) {
+    	  regexs.add(m.group().replaceAll(" ", ""));
+    	}
+    	return regexs;
+    }
+
+    
+    /**
      * 返回字母坐标
      * @return
      */
@@ -137,9 +154,8 @@ public class SheetExp {
     	//Map<String,String> regex=regexParser("{from Sheet(name=\"案例数据\",value=\"A,1\")}");
     	//System.out.println(ParamReplace(ExcelUtils.readExcel("D:\\gitproject\\JinxInterAutoTestFramework\\AutoTestNg\\src\\main\\java\\AutoTest\\flow\\test_al.xlsx"),regex));
     	
-    	String regex="{from Sheet(name=\"案例数据\",value=\"D,2\")}";
-    	Map<String,List<List<String>>> data=ExcelUtils.readExcel("D:\\gitproject\\JinxInterAutoTestFramework\\AutoTestNg\\src\\main\\java\\AutoTest\\flow\\test_al.xlsx");
-    	System.out.println(return_Result(regex,data)); 
+    	String regex="324234{from Sheet(name=\"案例数据\",value=\"D,2\")}4234";
+    	System.out.println(FindContentRegex(regex)); 
      }
 	
 }

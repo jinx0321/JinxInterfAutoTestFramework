@@ -15,6 +15,8 @@ import org.junit.Test;
 import com.sun.jersey.api.ParamException.HeaderParamException;
 import AutoTest.Dict.Content_Type;
 import AutoTest.Regex.RegexInter;
+import AutoTest.Regex.RegexUpdateModel;
+import AutoTest.Regex.RegexUtils;
 
 
 public class DataParser {
@@ -101,13 +103,12 @@ public class DataParser {
 	         //json数据装载
 	         else if(ti.getFormat().equals(Content_Type.json)) {
 	        	 if(!senddata.containsKey("content")) {
-	        		 throw new Exception("json数据表单中必须有content"); 
+	        		 throw new Exception("json数据表单中必须有content字段"); 
 	        	 }else {
 	        		 ti.setSendData(JsonDataLoad(senddata,caseinfos.get(i)));
-	        	 }
-	        	 
+	        	 } 
 	         }else {
-	        	 
+	        	 throw new Exception("未知数据格式"); 
 	         }
 	         til.add(ti);
 	    }
@@ -244,7 +245,6 @@ public class DataParser {
 	 * @return
 	 */
 	private Map<String,String> FormDataLoad(Map<String,String> formatdata,Map<String,String> caseinfo){
-
 		Map<String,String> caseparam=new HashMap<String, String>();
 		Map<String,String> afterdata=new LinkedHashMap<String, String>();
 		for(Entry<String, String> e:caseinfo.entrySet()) {
@@ -252,6 +252,7 @@ public class DataParser {
 				caseparam.put(e.getKey(), e.getValue());
 			}
 		}
+		DataCache.casedata=caseparam;
 		for(Entry<String, String> e:formatdata.entrySet()) {
 			afterdata.put(e.getKey(), RegexInter.ExpFilter(e.getValue(), caseparam));
 		}
@@ -264,6 +265,7 @@ public class DataParser {
 	 * @return
 	 */
 	private Map<String,String> JsonDataLoad(Map<String,String> jsondata,Map<String,String> caseinfo){
+		
 		Map<String,String> afterdata=new LinkedHashMap<String, String>();
 		Map<String,String> caseparam=new HashMap<String, String>();
 		for(Entry<String, String> e:caseinfo.entrySet()) {
@@ -271,16 +273,13 @@ public class DataParser {
 				caseparam.put(e.getKey(), e.getValue());
 			}
 		}
+		DataCache.casedata=caseparam;
 		
-		
-		jsondata.forEach((k,v)->{
-			if(k.contains("content")) {
-				 Map<String,String> regexs=JsonDataParser(v);
-			     
-			}else {
-				
-			}
-		});
+		RegexUtils ru=new RegexUtils();
+		RegexUpdateModel rum=new RegexUpdateModel(jsondata.get("content"));
+		ru.PreRegexLoad(rum);
+		System.out.println(rum);
+		//System.out.println(((RegexUpdateModel)((RegexUpdateModel)rum.getContentexp().get("${x}")).getContentexp().get("{fromSheet(name=\"案例数据\",value=\"D,2\")}")).getContent());
 		return afterdata;
 	}
 	

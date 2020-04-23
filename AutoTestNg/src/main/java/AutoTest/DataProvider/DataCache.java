@@ -14,4 +14,6 @@ public class DataCache {
 	//作用域为全局搜索的表达式
 	public static Map<String,List<List<String>>> exceldata=new HashMap<String, List<List<String>>>();
 
+	//作用域为当前数据解析表达式
+	public static Map<String,String> casedata=new HashMap<String, String>();
 }

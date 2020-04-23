@@ -1,7 +1,10 @@
 package AutoTest.Regex;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import AutoTest.DataProvider.DataCache;
 import AutoTest.DataProvider.TestInfo;
@@ -21,8 +24,7 @@ public class RegexInter{
 		    //如果是变量替换表达式
 	       if(VarReplaceExp.is_VarReplace_Exp(var)) {
 	    	   var=VarReplaceExp.return_Result(var, currentline);
-	    	   return ExpFilter(var,currentline);
-	    	   
+	    	   return ExpFilter(var,currentline);  
 	       }
 	       //如果是sheet表达式
 	       else if(SheetExp.is_Sheet_Exp(var)) {
@@ -33,7 +35,34 @@ public class RegexInter{
 	    	   return var;
 	       }
 	}
+	
 
+	/**
+	 * 返回文本中的表达式
+	 * @param content
+	 * @return
+	 */
+	public static Map<Object,Object> ReturnRegexs(String content){
+		if(VarReplaceExp.is_VarReplace_Exp(content)) {
+			
+		return VarReplaceExp.FindContentRegex(content)
+					            .stream().collect(
+					              Collectors.toMap(k->k.toString(),
+					            		  k->new RegexUpdateModel(VarReplaceExp.return_Result(k,DataCache.casedata))));
+					            
+		}else if(SheetExp.is_Sheet_Exp(content)) {
+			return SheetExp.FindContentRegex(content) 
+					.stream().collect(
+		              Collectors.toMap(k->k.toString(),
+		            		  k->new RegexUpdateModel(SheetExp.return_Result(k,DataCache.exceldata))));
+		}else {
+			return new HashMap<Object, Object>();
+		}
+		
+	}
+	
+	
+	
 	/**
 	 * 返回文本中的表达式
 	 * @return
