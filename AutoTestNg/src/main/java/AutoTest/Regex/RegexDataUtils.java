@@ -1,10 +1,14 @@
 package AutoTest.Regex;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
+
+
 
 import AutoTest.DataProvider.DataCache;
 import AutoTest.Utils.RegexUtils;
@@ -19,7 +23,7 @@ public class RegexDataUtils {
 	/**
 	 * 表达式预加载
 	 */
-	public void PreRegexLoad(RegexUpdateModel regexupdatemodel) {
+	private void PreRegexLoad(RegexUpdateModel regexupdatemodel) {
 
 		//如果表达式未被预加载
 		if(regexupdatemodel.isIs_pre()==false) {
@@ -40,10 +44,12 @@ public class RegexDataUtils {
 	 * 表达式数据装载
 	 * @param regexupdatemodel
 	 */
-	public synchronized void  RegexLoad(RegexUpdateModel regexupdatemodel) {
+	private void RegexLoad(RegexUpdateModel regexupdatemodel) {
+		List<Object> removelsit=new LinkedList<Object>();
 			 //遍历当前节点的表达式
              for(Entry<String, RegexUpdateModel> e:regexupdatemodel.getContentexp().entrySet()) {
         	       String key=(String) e.getKey();
+        	     
         	       RegexUpdateModel value=(RegexUpdateModel) e.getValue();
         	       //如果最底下节点无子表达式,则解析表达式
         	       if(value.getContentexp().size()!=0) {
@@ -53,10 +59,30 @@ public class RegexDataUtils {
         	    	   String aftercontent=RegexInter.ExpFilter(value.getContent(), DataCache.casedata);
         	    	   //更新当前节点的content和contentexp
         	    	   regexupdatemodel.setContent(regexupdatemodel.getContent().replaceAll(RegexUtils.makeQueryStringAllRegExp(key), aftercontent));
-        	    	   regexupdatemodel.getContentexp().remove(key); 
+        	    	   removelsit.add(key);
         	       }
              }
-		  
+             removelsit.forEach(e->{
+            	 regexupdatemodel.getContentexp().remove(e); 
+             });
+             if(regexupdatemodel.getContentexp().size()==0) {
+            	 regexupdatemodel.setIs_over(true);
+             }
+	}
+	
+	/**
+	 * 解析表达式
+	 * @param regexupdatemodel
+	 */
+	public void ParserRegex(RegexUpdateModel regexupdatemodel) {
+		PreRegexLoad(regexupdatemodel);
+		while(true){
+			if(regexupdatemodel.getContentexp().size()>0) {
+				RegexLoad(regexupdatemodel);
+			}else {
+				break;
+			}
+		}
 		
 	}
 	

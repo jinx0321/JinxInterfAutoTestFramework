@@ -277,8 +277,8 @@ public class DataParser {
 		
 		RegexDataUtils ru=new RegexDataUtils();
 		RegexUpdateModel rum=new RegexUpdateModel(jsondata.get("sign"));
-		ru.PreRegexLoad(rum);
-		ru.RegexLoad(rum);
+
+		ru.ParserRegex(rum);
 		System.out.println(rum);
 		//System.out.println(((RegexUpdateModel)((RegexUpdateModel)rum.getContentexp().get("${x}")).getContentexp().get("{fromSheet(name=\"°¸ÀýÊý¾Ý\",value=\"D,2\")}")).getContent());
 		return afterdata;

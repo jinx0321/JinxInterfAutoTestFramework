@@ -42,16 +42,23 @@ public class SheetExp {
      * @return
      */
     public String return_Result(String regex,Map<String,List<List<String>>> data) {
+//    	if(is_Sheet_Exp(regex)) {
+//    	  String param=ParamReplace(data,regexParser(regex));
+//    	if(is_Sheet_Exp(param)) {
+//    		return return_Result(param,data);
+//    	}else {
+//    		return param;
+//    	}
+//    	}else {
+//    	return regex;
+//    	}
     	if(is_Sheet_Exp(regex)) {
-    	  String param=ParamReplace(data,regexParser(regex));
-    	if(is_Sheet_Exp(param)) {
-    		return return_Result(param,data);
-    	}else {
-    		return param;
+      	  String param=ParamReplace(data,regexParser(regex));
+      		return param;
     	}
-    	}else {
-    	return regex;
-    	}
+      	else {
+      	    return regex;
+      	}
     	
     }
     
