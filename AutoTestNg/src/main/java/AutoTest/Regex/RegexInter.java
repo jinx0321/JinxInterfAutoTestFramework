@@ -19,6 +19,7 @@ public class RegexInter{
 	public static SheetExp SheetExp=new SheetExp();
 	public static JavaExp JavaExp=new JavaExp();
 	public static VarReplaceExp VarReplaceExp=new VarReplaceExp();
+	public static RegexDataUtils RegexDataUtils=new RegexDataUtils();
 	
 	public static String ExpFilter(String var,Map<String,String> currentline){
 		    //如果是变量替换表达式

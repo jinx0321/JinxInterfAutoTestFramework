@@ -86,31 +86,8 @@ public class RegexDataUtils {
 		
 	}
 	
-	/**
-	 * 更新表达式模型
-	 * 对map进行深度遍历,将文本中的表达式进行变量替换
-	 * 
-	 */
-	public void UpdateRegexModel(RegexUpdateModel regexdatamodel) {
-		
-	}
-	
-	/**
-	 * 表达式是否解析完毕
-	 * @return
-	 */
-	public boolean isRegexParserComp(RegexUpdateModel regexdatamodel) {
-		return 	regexdatamodel.getContentexp().size()==0;
-	}
-	/**
-	 * 更新当前表达式
-	 */
-	public void UpdateRegex(RegexUpdateModel regexdatamodel){
-		if(regexdatamodel.isIs_over()) {
-			
-		}
-		
-	}
+
+
 	
 	@Test
 	public void test() {

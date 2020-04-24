@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.hadoop.yarn.webapp.hamlet.Hamlet.P;
 import org.junit.Test;
 
 public class VarReplaceExp {

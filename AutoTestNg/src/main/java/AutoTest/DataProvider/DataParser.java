@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import com.sun.jersey.api.ParamException.HeaderParamException;
 import AutoTest.Dict.Content_Type;
 import AutoTest.Regex.RegexInter;
 import AutoTest.Regex.RegexUpdateModel;
@@ -192,13 +191,14 @@ public class DataParser {
 		
 		List<List<String>> caselist=data.get("案例数据");
 		
-		
+	
 		for(int i=1;i<caselist.size();i++) {
 			
 			Map<String,String> cm=new LinkedHashMap<String, String>();
 			List<String> title=caselist.get(0);
 			List<String> row=caselist.get(i);
 			//基础数据
+
 			cm.put(title.get(0), row.get(0));
 			cm.put(title.get(1), row.get(1));
 			//参数
@@ -234,7 +234,7 @@ public class DataParser {
 	    		senddata.put(keylist.get(i), valuelist.get(i));
 	    	}
 	    }
-		return senddata;
+		return senddata ;
 	}
 	
 	/**
@@ -275,12 +275,17 @@ public class DataParser {
 		}
 		DataCache.casedata=caseparam;
 		
-		RegexDataUtils ru=new RegexDataUtils();
-		RegexUpdateModel rum=new RegexUpdateModel(jsondata.get("sign"));
-
-		ru.ParserRegex(rum);
-		System.out.println(rum);
-		//System.out.println(((RegexUpdateModel)((RegexUpdateModel)rum.getContentexp().get("${x}")).getContentexp().get("{fromSheet(name=\"案例数据\",value=\"D,2\")}")).getContent());
+		for(Entry<String, String> e:jsondata.entrySet()) {
+			String key=e.getKey();
+			String value=e.getValue();
+			//把字符串抽成模型
+			RegexUpdateModel RegexUpdateModel=new RegexUpdateModel(value);
+			//模型解析
+			RegexInter.RegexDataUtils.ParserRegex(RegexUpdateModel);
+			//赋值
+			afterdata.put(key,RegexUpdateModel.getContent());
+		}
+		
 		return afterdata;
 	}
 	

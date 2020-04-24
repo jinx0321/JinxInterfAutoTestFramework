@@ -82,7 +82,7 @@ public class ExcelUtils {
 	@Test
 	public void test() throws IOException, Exception {
 		
-		readExcel("D:\\workspace\\test.xlsx").forEach((k,v)->{
+		readExcel("D:\\gitproject\\JinxInterAutoTestFramework\\AutoTestNg\\src\\main\\java\\AutoTest\\flow\\json_al.xlsx").forEach((k,v)->{
 			v.forEach(e->{
 			   e.forEach(x->{
 				   System.out.print(x+"--");
