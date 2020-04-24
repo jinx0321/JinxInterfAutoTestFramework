@@ -29,7 +29,6 @@ public class BaseFlow {
 			System.out.println("读取测试文件:" + filedir);
 			TestInfoList = dp.parser(filedir);
 			if (TestInfoList.size() > 0) {
-
 				// 初始化第一条
 				current_TestId = TestInfoList.get(0).getId();
 				current_testlist_no = 0;
@@ -70,13 +69,14 @@ public class BaseFlow {
 		}else if((this.current_testlist_no+1)<this.TestInfoList.size()) {
 			this.setCurrent_TestId(this.TestInfoList.get(this.current_testlist_no+1).getId());
 			this.setCurrent_testlist_no(this.current_testlist_no+1);
-			
 		}
-		
 	}
 
-	public Object[] returnExcelData() {
-		return TestInfoList.toArray();
+	public Object[][] returnExcelData() {
+		Object[][] object=new Object[1][TestInfoList.size()];
+		object[0]=TestInfoList.toArray();
+		
+		return object;
 	}
 
 	public String getCurrent_TestId() {

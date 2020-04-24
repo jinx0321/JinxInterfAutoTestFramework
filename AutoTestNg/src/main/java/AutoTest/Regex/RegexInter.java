@@ -17,7 +17,7 @@ import AutoTest.DataProvider.TestInfo;
 public class RegexInter{
 	
 	public static SheetExp SheetExp=new SheetExp();
-	public static JavaExp JavaExp=new JavaExp();
+	public static JavaExpdemo JavaExp=new JavaExpdemo();
 	public static VarReplaceExp VarReplaceExp=new VarReplaceExp();
 	public static RegexDataUtils RegexDataUtils=new RegexDataUtils();
 	

@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Suite">
-  <test  name="Test">
+  <test thread-count="5" name="Test">
     <classes>
+      <class name="AutoTest.DataProvider.ExcelUtils"/>
+      <class name="AutoTest.Regex.VarReplaceExp"/>
+      <class name="AutoTest.Regex.RegexDataUtils"/>
+      <class name="AutoTest.flow.form"/>
+      <class name="AutoTest.Regex.JavaExp"/>
       <class name="AutoTest.flow.json"/>
+      <class name="AutoTest.DataProvider.DataParser"/>
+      <class name="AutoTest.Regex.SheetExp"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

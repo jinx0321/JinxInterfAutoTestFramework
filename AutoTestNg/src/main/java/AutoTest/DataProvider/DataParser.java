@@ -32,9 +32,15 @@ public class DataParser {
 			System.out.println("excel解析错误");
 			e.printStackTrace();
 		}
-	
 		DataCache.exceldata=data;
-		
+		//案例信息解析
+	     Map<String,String> testinfo=new HashMap<String, String>();
+		try {
+			testinfo=TestinfoParser(data);
+		}catch(Exception e) {
+			System.out.println("header解析错误");
+			e.printStackTrace();
+		}
 		//头信息解析
 		Map<String,String> header=new HashMap<String, String>();
 		try {
@@ -91,6 +97,7 @@ public class DataParser {
 	    for(int i=0;i<caseinfos.size();i++) {
 	         TestInfo ti=new TestInfo();
 	         ti.setId(caseinfos.get(i).get("TestId"));
+	         ti.setTestInfo(testinfo);
 	         ti.setFormat(dataformat);
 	         ti.setHeaderInfo(header);
 	         ti.setCookieInfo(cookie);
@@ -120,8 +127,15 @@ public class DataParser {
 	 * @return
 	 */
 	private Map<String,String> TestinfoParser(Map<String,List<List<String>>> data){
+		Map<String,String> testinfo=new HashMap<String, String>();
+
+		List<List<String>> headerlist=data.get("案例信息");
+		for(int i=1;i<headerlist.size();i++) {
+			testinfo.put(headerlist.get(i).get(0),RegexParser(headerlist.get(i).get(1)));
+		}
 		
-		return null;
+		return testinfo;
+
 	}
 	
 	/**

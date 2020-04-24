@@ -19,7 +19,7 @@ public class SheetExp {
     private final String regex="\\{[\\s]*[F,f][R,r][O,o][M,m][\\s]*[S,s][H,h][E,e][E,e][T,t][\\s]*\\([\\s]*[N,n][A,a][M,m][E,e][\\s]*=[\\s]*\\\"[\\s]*[^\\)^\\\"]*\\\"[\\s]*,[\\s]*[V,v][A,a][L,l][U,u][E,e][\\s]*=[\\s]*\\\"[\\s]*[^\\)^\\\"]*\\\"[\\s]*\\)[\\s]*\\}[\\s]*";
     private final String[] word= {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
     private String[] row=new String[word.length*2];
- 
+    private Pattern sheetcheck=Pattern.compile(regex);
     public SheetExp() {
     	for(int i=0;i<word.length;i++) {
     		row[i]=word[i];
@@ -32,7 +32,7 @@ public class SheetExp {
      * @return
      */
     public boolean is_Sheet_Exp(String var) {
-    	return Pattern.compile(regex).matcher(var).find();
+    	return sheetcheck.matcher(var).find();
     }
     
     /**
@@ -67,9 +67,9 @@ public class SheetExp {
      * @param regex
      * @return
      */
+    private final String nameregex="[N,n][A,a][M,m][E,e][\\s]*=[\\s]*\\\"[\\s]*[^\\)^\\\"]*\\\"[\\s]*";
+    private final String valueregex="[V,v][A,a][L,l][U,u][E,e][\\s]*=[\\s]*\\\"[\\s]*[^\\)^\\\"]*\\\"[\\s]*";	
     private Map<String,String> regexParser(String regex){
-    	String nameregex="[N,n][A,a][M,m][E,e][\\s]*=[\\s]*\\\"[\\s]*[^\\)^\\\"]*\\\"[\\s]*";
-    	String valueregex="[V,v][A,a][L,l][U,u][E,e][\\s]*=[\\s]*\\\"[\\s]*[^\\)^\\\"]*\\\"[\\s]*";
     	String name="";
     	String value="";
     	
