@@ -107,8 +107,6 @@ public class SheetExp {
     				  return str;
     			  }
     			 
-    			  //System.out.println(x+":"+y);
-    			  //System.out.println(row.size());
     			  if(y>row.size()) {
     				  return str;
     			  }

@@ -1,6 +1,7 @@
 package AutoTest.DataProvider;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -15,15 +16,15 @@ public class TestInfo {
     	//数据格式
     	String format;
     	//案例信息
-        Map<String,String> TestInfo=new HashMap<String,String>();
+        Map<String,String> TestInfo=new LinkedHashMap<String,String>();
         //头信息
-        Map<String,String> HeaderInfo=new HashMap<String, String>();
+        Map<String,String> HeaderInfo=new LinkedHashMap<String, String>();
         //cookie信息
-        Map<String,String> CookieInfo=new HashMap<String, String>();
+        Map<String,String> CookieInfo=new LinkedHashMap<String, String>();
         //数据准备
         List<Map<String,String>> PreInfo=new LinkedList<Map<String,String>>();
         //发送数据
-        Map<String,String> SendData=new HashMap<String, String>();
+        Map<String,String> SendData=new LinkedHashMap<String, String>();
 		public String getId() {
 			return id;
 		}

@@ -3,11 +3,11 @@
 <suite name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="AutoTest.flow.json">
+      <class name="AutoTest.flow.form">
         <methods>
           <include name="test"/>
         </methods>
-      </class> <!-- AutoTest.flow.json -->
+      </class> <!-- AutoTest.flow.form -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

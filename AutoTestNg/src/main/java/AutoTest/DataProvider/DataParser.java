@@ -99,8 +99,8 @@ public class DataParser {
 	         ti.setId(caseinfos.get(i).get("TestId"));
 	         ti.setTestInfo(testinfo);
 	         ti.setFormat(dataformat);
-	         ti.setHeaderInfo(header);
-	         ti.setCookieInfo(cookie);
+	         ti.setHeaderInfo(HeaderandCookieRegexParser(header,caseinfos.get(i)));
+	         ti.setCookieInfo(HeaderandCookieRegexParser(cookie,caseinfos.get(i)));
 	         ti.setPreInfo(PreDataLoad(datapre,caseinfos.get(i)));
 	         //form数据装载
 	         if(ti.getFormat().equals(Content_Type.form)) {
@@ -167,6 +167,31 @@ public class DataParser {
 		return cookie;
 	}
 	
+	/**
+	 * header以及cookie的表达式解析
+	 * @return
+	 */
+	private Map<String,String> HeaderandCookieRegexParser(Map<String,String> data,Map<String,String> caseinfo){
+		Map<String,String> caseparam=new HashMap<String, String>();
+		Map<String,String> afterdata=new LinkedHashMap<String, String>();
+		for(Entry<String, String> e:caseinfo.entrySet()) {
+			if(!e.getKey().trim().toLowerCase().equals("testid")||!e.getKey().trim().toLowerCase().equals("testname")) {
+				caseparam.put(e.getKey(), e.getValue());
+			}
+		}
+		DataCache.casedata=caseparam;
+		for(Entry<String, String> e:data.entrySet()) {
+			String key=e.getKey();
+			String value=e.getValue();
+			//把字符串抽成模型
+			RegexUpdateModel RegexUpdateModel=new RegexUpdateModel(value);
+			//模型解析
+			RegexInter.RegexDataUtils.ParserRegex(RegexUpdateModel);
+			//赋值
+			afterdata.put(key,RegexUpdateModel.getContent());
+		}
+		return afterdata;
+	}
 	/**
 	 * 数据准备解析
 	 * @return
@@ -268,9 +293,15 @@ public class DataParser {
 		}
 		DataCache.casedata=caseparam;
 		for(Entry<String, String> e:formatdata.entrySet()) {
-			afterdata.put(e.getKey(), RegexInter.ExpFilter(e.getValue(), caseparam));
+			String key=e.getKey();
+			String value=e.getValue();
+			//把字符串抽成模型
+			RegexUpdateModel RegexUpdateModel=new RegexUpdateModel(value);
+			//模型解析
+			RegexInter.RegexDataUtils.ParserRegex(RegexUpdateModel);
+			//赋值
+			afterdata.put(key,RegexUpdateModel.getContent());
 		}
-		
 		return afterdata;
 	}
 	
@@ -344,7 +375,7 @@ public class DataParser {
 
 	@Test 
 	public void test() throws Exception {
-		parser("D:\\gitproject\\JinxInterAutoTestFramework\\AutoTestNg\\src\\main\\java\\AutoTest\\flow\\json_al.xlsx");
+		parser("D:\\gitproject\\JinxInterAutoTestFramework\\AutoTestNg\\src\\main\\java\\AutoTest\\flow\\form_al.xlsx");
 	
 	
 	}

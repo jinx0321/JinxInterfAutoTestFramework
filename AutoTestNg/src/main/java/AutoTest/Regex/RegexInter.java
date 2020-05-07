@@ -17,7 +17,7 @@ import AutoTest.DataProvider.TestInfo;
 public class RegexInter{
 	
 	public static SheetExp SheetExp=new SheetExp();
-	public static JavaExpdemo JavaExp=new JavaExpdemo();
+	public static JavaExp JavaExp=new JavaExp();
 	public static VarReplaceExp VarReplaceExp=new VarReplaceExp();
 	public static RegexDataUtils RegexDataUtils=new RegexDataUtils();
 	
@@ -56,12 +56,38 @@ public class RegexInter{
 					.stream().collect(
 		              Collectors.toMap(k->k.toString(),
 		            		  k->new RegexUpdateModel(SheetExp.return_Result(k,DataCache.exceldata))));
-		}else {
+		}
+		else {
 			return new HashMap<Object, Object>();
 		}
 		
 	}
 	
+	/**
+	 * 表达式自身预处理
+	 * @param content
+	 * @return
+	 */
+	public static String PreRegexDeal(String content) {
+		if(JavaExp.is_JavaExp(content)) {
+			return JavaExp.JavaParamUpdate(content);
+		}
+		
+		return content;
+	}
+	
+	
+	public static String AfterRegexDeal(String content) {
+		if(JavaExp.is_JavaExp(content)) {
+			try {
+				return JavaExp.JavaExec(content);
+			} catch (Exception e) {
+				System.out.println("Java表达式解析出错");
+				e.printStackTrace();
+			}
+		}
+		return content;
+	}
 	
 	
 	/**

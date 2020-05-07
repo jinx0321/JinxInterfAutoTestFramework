@@ -13,6 +13,8 @@ public class TestExecAction {
 	public void CaseAcceptAc(BaseFlow baseflow,TestInfo ti) {
 		System.out.println("当前执行案例id:"+baseflow.getCurrent_TestId());
 		System.out.println("案例信息:"+ti.getTestInfo().toString());
+		System.out.println("header信息:"+ti.getHeaderInfo().toString());
+		System.out.println("cookie信息:"+ti.getCookieInfo().toString());
 		System.out.println("执行数据:"+ti.getSendData().toString());
 		
 		

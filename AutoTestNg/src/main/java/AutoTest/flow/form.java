@@ -14,10 +14,9 @@ public class form extends BaseFlow{
 	final String url="";
 	
 	@DataProvider(name="data")
-	public Object[] returnData(){
+	public Object[][] returnData(){
 	   return returnExcelData();	
 	}
-	
 	
 	@Test(dataProvider ="data")
 	public void test(TestInfo ti) throws Exception {

@@ -21,6 +21,22 @@ import AutoTest.Utils.RegexUtils;
 public class RegexDataUtils {
 
 	/**
+	 * 表达式预更新
+	 * @param regexupdatemodel
+	 */
+	private void PreRegexUpdate(RegexUpdateModel regexupdatemodel) {
+		regexupdatemodel.setContent(RegexInter.PreRegexDeal(regexupdatemodel.getContent()));
+	}
+	
+	/**
+	 * 表达式后加载
+	 * @param regexupdatemodel
+	 */
+	private void AfterRegexLoad(RegexUpdateModel regexupdatemodel) {
+		regexupdatemodel.setContent(RegexInter.AfterRegexDeal(regexupdatemodel.getContent()));
+	}
+	
+	/**
 	 * 表达式预加载
 	 */
 	private void PreRegexLoad(RegexUpdateModel regexupdatemodel) {
@@ -30,6 +46,7 @@ public class RegexDataUtils {
 			//解析模型表达式
 			regexupdatemodel.setContentexp(RegexInter.ReturnRegexs(regexupdatemodel.getContent()));
 			
+			PreRegexUpdate(regexupdatemodel);
 			//设置表达式预加载标志为true
 		    regexupdatemodel.setIs_pre(true);		
 		    
@@ -75,6 +92,7 @@ public class RegexDataUtils {
 	 * @param regexupdatemodel
 	 */
 	public void ParserRegex(RegexUpdateModel regexupdatemodel) {
+		//表达式预装载
 		PreRegexLoad(regexupdatemodel);
 		while(true){
 			if(regexupdatemodel.getContentexp().size()>0) {
@@ -83,6 +101,12 @@ public class RegexDataUtils {
 				break;
 			}
 		}
+		
+		//表达式后装载
+		AfterRegexLoad(regexupdatemodel);
+			
+
+		
 		
 	}
 	
