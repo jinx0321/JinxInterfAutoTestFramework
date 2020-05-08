@@ -34,7 +34,22 @@ public class DataInsert {
 	 * @param TableName
 	 */
     public synchronized void DataInsert(List<String> data,String TableName){
+    	//获取瞬时表信息
     	DataTableInfo dti=datapoolconnector.Get_TempTableInfo(TableName);
+    	System.out.println(dti.getPartinfo());
+    	//获取分区信息
+    	Map<String,Object> partinfo=(Map<String, Object>) partutils.SingleSelect(dti);
+    	
+    	System.out.println(dti.getPartinfo());
+    	
+    	if(partinfo.get("is_create_new").equals("false")) {
+    	    //如果不需要分区
+    		//Insert_SingleData(dti,null,null);
+    	}else {
+    		
+    	}
+    	
+    	
     	System.out.println(partutils.SingleSelect(dti));
 		
 	}
@@ -55,7 +70,10 @@ public class DataInsert {
 	 */
     public synchronized void DataInsertBatch1(List<List<String>> data,String TableName){
     	
+    	//获取瞬时表信息
     	DataTableInfo dti=datapoolconnector.Get_TempTableInfo(TableName);
+    	//获取分区信息
+    	Map<String,String> partinfo=partutils.MultipleSelect(dti, data.size());
 		
 	}
 }

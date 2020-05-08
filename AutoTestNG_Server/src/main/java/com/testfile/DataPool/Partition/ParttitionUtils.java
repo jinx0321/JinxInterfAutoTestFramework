@@ -1,11 +1,15 @@
 package com.testfile.DataPool.Partition;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.testfile.DataPool.DataTableInfo;
@@ -18,52 +22,46 @@ import com.testfile.DataPool.DataTableInfo;
  */
 @Component
 public class ParttitionUtils {
+	@Value("${DataPool.TableCapacity}")
+	private String defaultcount;
 	
 	/**
 	 * 单条数据分区
+	 * [{
+	 *    index:num
+	 *    count:num
+	 *    liststart:num
+	 *    listend:num
 	 * 
+	 * }]
 	 * return：
-	 * {
-	 *    is_create_new:true|false, --是否需要创建新分区
-	 *    addcount  :  , --新增数量
-	 *    addpartno :  {[1,2,3]}新增分区号
-	 *    addpartinfo :{
-	 *                   partid : count ,--分区新增数量
-	 *                   new : count
-	 *                 }
-	 * }
 	 * @param dti
 	 */
-	public Map<String,Object> SingleSelect(DataTableInfo dti) {
+	public PartInfo SingleSelect(DataTableInfo dti) {
 		int cap=Integer.valueOf(dti.getPartcapacity());
-		Map<String,Object> partinfo=new HashMap<String, Object>();
-		partinfo.put("is_create_new", "true");
-	    //新增分区号
- 	    List<String> addpartno=new LinkedList<String>();
- 	    //分区数量信息
- 	    Map<String,String> addpartinfo=new HashMap<String, String>();
- 	    
- 	    partinfo.put("addpartno", addpartno);
-	    partinfo.put("addpartinfo", addpartinfo);
-	    partinfo.put("addcount", "0");
-	   
-	    int addcount=0;
-	    String lastindex = "";
-	    for(Entry<String, Map<String,String>> e:dti.getPartinfo().entrySet()) {
-	        if(Integer.valueOf(e.getValue().get("count"))<cap) {
-	        	   partinfo.put("is_create_new", "false");
-	        	   partinfo.put("addcount", String.valueOf(Integer.valueOf((String) partinfo.get("partinfo"))+1));
-	        	   addpartinfo.put(e.getValue().get("id"), "1");
-	           }
-	           //获取最后区号
-	           lastindex=e.getKey();
-	    }
-		
-		if(partinfo.get("is_create_new").equals("true")) {
-			addpartinfo.put("new", "1");
-			addpartno.add(String.valueOf(Integer.valueOf(lastindex)+1));
+		int used=dti.used_Partcapacity();
+		PartInfo pi=new PartInfo();
+		if(used==0) {
+			System.out.println(dti.getTablename()+"的容量已经用完");
+			pi.setIs_insert(false);
+		}else {
+			pi.setIs_insert(true);
+			Map<String,String> localpart=new LinkedHashMap<String, String>(); 
+			if(dti.get_CurrentPartCount()==Integer.valueOf(defaultcount)) {
+				localpart.put("index", String.valueOf(dti.get_CurrentPart()+1));
+				pi.setIs_part(true);
+			}else {
+				localpart.put("index", String.valueOf(dti.get_CurrentPart()));
+				pi.setIs_part(false);
+			}
+			
+			localpart.put("count", String.valueOf(1));
+			
+			List<Map<String,String>> list=new LinkedList<Map<String,String>>();
+			
+			pi.setPartlocal(list);
 		}
-		return partinfo;
+		return pi;
 	}
 
 	

@@ -1,5 +1,6 @@
 package com.testfile.DataPool;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -69,6 +70,14 @@ public class DataPoolConnector {
 		datapoolxmlutils.Get_Table_Info(dti, TableName);
 		return dti;
 	} 
+	
+	/**
+	 * 插入单条数据
+	 * @param partno
+	 */
+	public void Insert_SingleData(DataTableInfo dti,int partno,List<String> data) {
+		
+	}
 	
 	
  
