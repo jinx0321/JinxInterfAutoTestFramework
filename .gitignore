@@ -1,0 +1,5 @@
+/AutoTestNg/.settings
+/AutoTestNg/target
+/AutoTestNg/test-output
+.classpath
+.project
