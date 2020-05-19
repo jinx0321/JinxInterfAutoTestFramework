@@ -1,28 +1,13 @@
 package AutoTest.DataAction;
 
 import AutoTest.Base.BaseFlow;
-import AutoTest.DataProvider.TestInfo;
-import AutoTest.flow.form;
+import AutoTest.Base.TestInfo;
 
-public class TestExecAction {
-
-	/**
-	 * 案例接收器
-	 * @param form 
-	 */
-	public void CaseAcceptAc(BaseFlow baseflow,TestInfo ti) {
-		System.out.println("当前执行案例id:"+baseflow.getCurrent_TestId());
-		System.out.println("案例信息:"+ti.getTestInfo().toString());
-		System.out.println("header信息:"+ti.getHeaderInfo().toString());
-		System.out.println("cookie信息:"+ti.getCookieInfo().toString());
-		System.out.println("执行数据:"+ti.getSendData().toString());
-		
-		
-		
+public abstract class TestExecAction<T extends TestInfo> {
 	
-		
-		
-		
-	}
+
+	public abstract Object CaseAcceptAc(BaseFlow baseflow,T ti,/*额外数据*/Object o);
+	
+	
 	
 }

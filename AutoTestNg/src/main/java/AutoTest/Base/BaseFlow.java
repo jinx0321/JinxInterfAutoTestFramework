@@ -8,22 +8,27 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
-import AutoTest.DataProvider.DataParser;
-import AutoTest.DataProvider.TestInfo;
-import AutoTest.Dict.ActionPrepare;
 
-public class BaseFlow {
+import AutoTest.DataAction.TestExecAction;
+import AutoTest.DataProvider.DataCache;
+import AutoTest.DataProvider.DataParser;
+import AutoTest.Dict.ActionPrepare;
+import AutoTest.SuitInfo.HttpSuit.HttpDataParser;
+
+public abstract class BaseFlow<T extends TestInfo,K extends TestExecAction<T>>{
 	final private String _tail = "_al";
 	final private String _filetype = ".xlsx";
-
+    private K k;
+	
 	String current_TestId = "";
 	// 迭代器给before和after识别用
 	int current_testlist_no = -1;
 
-	List<TestInfo> TestInfoList = new LinkedList<TestInfo>();
+	List<T> TestInfoList = new LinkedList<T>();
+	
 
 	{
-		DataParser dp = new DataParser();
+		DataParser dp = DataCache.DataParser;
 		try {
 			String filedir = this.getClass().getResource("").getPath() + this.getClass().getSimpleName() + _tail+ _filetype;
 			System.out.println("读取测试文件:" + filedir);
@@ -73,9 +78,10 @@ public class BaseFlow {
 	}
 
 	public Object[][] returnExcelData() {
-		Object[][] object=new Object[1][TestInfoList.size()];
-		object[0]=TestInfoList.toArray();
-		
+		Object[][] object=new Object[TestInfoList.size()][1];
+		for(int i=0;i<TestInfoList.size();i++) {
+			object[i][0]=TestInfoList.get(i);
+		}
 		return object;
 	}
 
@@ -95,12 +101,19 @@ public class BaseFlow {
 		this.current_testlist_no = current_testlist_no;
 	}
 
-	public List<TestInfo> getTestInfoList() {
+	public List<T> getTestInfoList() {
 		return TestInfoList;
 	}
 
-	public void setTestInfoList(List<TestInfo> TestInfoList) {
+	public void setTestInfoList(List<T> TestInfoList) {
 		this.TestInfoList = TestInfoList;
+	}
+	
+	public Object CaseExec(T ti,K exec,Object o) {
+	
+	   return exec.CaseAcceptAc(this, ti,o);
+		
+
 	}
 
 }

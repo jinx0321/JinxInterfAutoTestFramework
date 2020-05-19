@@ -12,121 +12,23 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
+import AutoTest.Base.TestInfo;
 import AutoTest.Dict.Content_Type;
 import AutoTest.Regex.RegexInter;
 import AutoTest.Regex.RegexUpdateModel;
 import AutoTest.Regex.RegexDataUtils;
 
 
-public class DataParser {
+public abstract class DataParser<T> {
 	
-	public List<TestInfo> parser(String filedir) throws Exception {
-		Map<String,List<List<String>>> data=new HashMap<String, List<List<String>>>();
-		
-		String dataformat="";
-
-		try {
-			data=ExcelUtils.readExcel(filedir);
-		}
-		catch(Exception e) {
-			System.out.println("excel解析错误");
-			e.printStackTrace();
-		}
-		DataCache.exceldata=data;
-		//案例信息解析
-	     Map<String,String> testinfo=new HashMap<String, String>();
-		try {
-			testinfo=TestinfoParser(data);
-		}catch(Exception e) {
-			System.out.println("header解析错误");
-			e.printStackTrace();
-		}
-		//头信息解析
-		Map<String,String> header=new HashMap<String, String>();
-		try {
-			header=HeaderParser(data);
-		}catch(Exception e) {
-			System.out.println("header解析错误");
-			e.printStackTrace();
-		}
-		//缓存解析
-		Map<String,String> cookie=new HashMap<String, String>();
-		try {
-			cookie=CookieParser(data);
-		}catch(Exception e) {
-			System.out.println("cookie解析错误");
-			e.printStackTrace();
-		}
-		//数据准备解析
-		List<Map<String,String>> datapre=new LinkedList<Map<String,String>>();
-		try {
-			datapre=DataPreParser(data);
-		}catch(Exception e) {
-			System.out.println("数据准备解析错误");
-			e.printStackTrace();
-		}
-		//案例数据解析
-		List<Map<String,String>> caseinfos=new LinkedList<Map<String,String>>();
-		try {
-			caseinfos=CaseParser(data);
-		}catch(Exception e) {
-			System.out.println("案例数据解析错误");
-			e.printStackTrace();
-		}
-		//发送数据解析
-		Map<String,String> senddata=new HashMap<String, String>();
-		try {
-		if(data.containsKey("json")) {
-			senddata=DataFormatParser("json",data);
-			dataformat=Content_Type.json;
-		}else if(data.containsKey("form")) {
-			senddata=DataFormatParser("form",data);
-			dataformat=Content_Type.form;
-		}
-		}catch(Exception e) {
-			System.out.println("发送数据格式解析错误");
-			e.printStackTrace();
-		}
-		
-		if(caseinfos.size()==0) {
-			throw new Exception("案例数据量为0,发生异常");
-		}
-		
-		List<TestInfo> til=new LinkedList<TestInfo>();
-		//实例化案例信息
-	    for(int i=0;i<caseinfos.size();i++) {
-	         TestInfo ti=new TestInfo();
-	         ti.setId(caseinfos.get(i).get("TestId"));
-	         ti.setTestInfo(testinfo);
-	         ti.setFormat(dataformat);
-	         ti.setHeaderInfo(HeaderandCookieRegexParser(header,caseinfos.get(i)));
-	         ti.setCookieInfo(HeaderandCookieRegexParser(cookie,caseinfos.get(i)));
-	         ti.setPreInfo(PreDataLoad(datapre,caseinfos.get(i)));
-	         //form数据装载
-	         if(ti.getFormat().equals(Content_Type.form)) {
-	            ti.setSendData(FormDataLoad(senddata,caseinfos.get(i)));
-	         }
-	         //json数据装载
-	         else if(ti.getFormat().equals(Content_Type.json)) {
-	        	 if(!senddata.containsKey("content")) {
-	        		 throw new Exception("json数据表单中必须有content字段"); 
-	        	 }else {
-	        		 ti.setSendData(JsonDataLoad(senddata,caseinfos.get(i)));
-	        	 } 
-	         }else {
-	        	 throw new Exception("未知数据格式"); 
-	         }
-	         til.add(ti);
-	    }
-	    return til;
-	}
+	public abstract List<T> parser(String filedir);
 	
 	/**
 	 * 案例信息解析
 	 * @param data
 	 * @return
 	 */
-	private Map<String,String> TestinfoParser(Map<String,List<List<String>>> data){
+	protected Map<String,String> TestinfoParser(Map<String,List<List<String>>> data){
 		Map<String,String> testinfo=new HashMap<String, String>();
 
 		List<List<String>> headerlist=data.get("案例信息");
@@ -142,7 +44,7 @@ public class DataParser {
 	 * http头解析
 	 * @return
 	 */
-	private Map<String,String> HeaderParser(Map<String,List<List<String>>> data){
+	protected Map<String,String> HeaderParser(Map<String,List<List<String>>> data){
 		Map<String,String> header=new HashMap<String, String>();
 
 		List<List<String>> headerlist=data.get("header");
@@ -153,50 +55,41 @@ public class DataParser {
 		return header;
 	}
 	/**
-	 * httpcookie解析
+	 * k-v关系型数据解析
 	 * @return
 	 */
-	private Map<String,String> CookieParser(Map<String,List<List<String>>> data){
-		Map<String,String> cookie=new HashMap<String, String>();
+	protected Map<String,String> K_V_Parser(Map<String,List<List<String>>> data){
+		Map<String,String> kvdata=new HashMap<String, String>();
 
-		List<List<String>> cookielist=data.get("cookie");
-		for(int i=1;i<cookielist.size();i++) {
-			cookie.put(cookielist.get(i).get(0),RegexParser(cookielist.get(i).get(1)));
+		List<List<String>> kvdatalist=data.get("cookie");
+		for(int i=1;i<kvdatalist.size();i++) {
+			kvdata.put(kvdatalist.get(i).get(0),RegexParser(kvdatalist.get(i).get(1)));
 		}
 		
-		return cookie;
+		return kvdata;
 	}
 	
 	/**
-	 * header以及cookie的表达式解析
+	 * 发送数据解析
 	 * @return
 	 */
-	private Map<String,String> HeaderandCookieRegexParser(Map<String,String> data,Map<String,String> caseinfo){
-		Map<String,String> caseparam=new HashMap<String, String>();
-		Map<String,String> afterdata=new LinkedHashMap<String, String>();
-		for(Entry<String, String> e:caseinfo.entrySet()) {
-			if(!e.getKey().trim().toLowerCase().equals("testid")||!e.getKey().trim().toLowerCase().equals("testname")) {
-				caseparam.put(e.getKey(), e.getValue());
-			}
+	protected Map<String,String> SendDataParser(Map<String,List<List<String>>> data){
+		Map<String,String> senddata=new HashMap<String, String>();
+
+		List<List<String>> senddatalist=data.get("senddata");
+		for(int i=0;i<senddatalist.get(0).size();i++) {
+			senddata.put(senddatalist.get(0).get(i), senddatalist.get(1).get(i));
 		}
-		DataCache.casedata=caseparam;
-		for(Entry<String, String> e:data.entrySet()) {
-			String key=e.getKey();
-			String value=e.getValue();
-			//把字符串抽成模型
-			RegexUpdateModel RegexUpdateModel=new RegexUpdateModel(value);
-			//模型解析
-			RegexInter.RegexDataUtils.ParserRegex(RegexUpdateModel);
-			//赋值
-			afterdata.put(key,RegexUpdateModel.getContent());
-		}
-		return afterdata;
+		
+		return senddata;
 	}
+	
+
 	/**
 	 * 数据准备解析
 	 * @return
 	 */
-	private List<Map<String,String>> DataPreParser(Map<String,List<List<String>>> data){
+	protected List<Map<String,String>> DataPreParser(Map<String,List<List<String>>> data){
 		
 		List<Map<String,String>> datapre=new LinkedList<Map<String,String>>();
 		
@@ -224,7 +117,7 @@ public class DataParser {
 	/**
 	 * 案例信息解析
 	 */
-	private List<Map<String,String>> CaseParser(Map<String,List<List<String>>> data) {
+	protected List<Map<String,String>> CaseParser(Map<String,List<List<String>>> data) {
 		
 		List<Map<String,String>> cases=new LinkedList<Map<String,String>>();
 		
@@ -254,45 +147,23 @@ public class DataParser {
 	}
 	
 	/**
-	 * 发送数据格式解析
-	 * @param type
+	 * 通用数据装载,包括表达式转换
 	 * @param data
-	 * @return
-	 */
-	private Map<String,String> DataFormatParser(String type,Map<String,List<List<String>>> data){
-		Map<String,String> senddata=new HashMap<String, String>();
-		List<List<String>> datalist=data.get(type);
-        List<String> keylist=datalist.get(0);
-	    
-	
-	    for(int i=0;i<keylist.size();i++) {
-	    	if(datalist.size()==1) {
-	    		senddata.put(keylist.get(i), "");
-	    	}else {
-	    		List<String> valuelist=datalist.get(1);
-	    		senddata.put(keylist.get(i), valuelist.get(i));
-	    	}
-	    }
-		return senddata ;
-	}
-	
-	/**
-	 * form数据预加载
-	 * 如果变量定位到其他表达式时,表达式会继续执行,直到非表达式为止
-	 * @param formatdata
 	 * @param caseinfo
 	 * @return
 	 */
-	private Map<String,String> FormDataLoad(Map<String,String> formatdata,Map<String,String> caseinfo){
-		Map<String,String> caseparam=new HashMap<String, String>();
+	protected Map<String,String> GeneralDataLoad(Map<String,String> data,Map<String,String> caseinfo){
+		
 		Map<String,String> afterdata=new LinkedHashMap<String, String>();
+		Map<String,String> caseparam=new HashMap<String, String>();
 		for(Entry<String, String> e:caseinfo.entrySet()) {
 			if(!e.getKey().trim().toLowerCase().equals("testid")||!e.getKey().trim().toLowerCase().equals("testname")) {
 				caseparam.put(e.getKey(), e.getValue());
 			}
 		}
 		DataCache.casedata=caseparam;
-		for(Entry<String, String> e:formatdata.entrySet()) {
+		
+		for(Entry<String, String> e:data.entrySet()) {
 			String key=e.getKey();
 			String value=e.getValue();
 			//把字符串抽成模型
@@ -302,37 +173,11 @@ public class DataParser {
 			//赋值
 			afterdata.put(key,RegexUpdateModel.getContent());
 		}
+		
 		return afterdata;
+		
 	}
 	
-	/**
-	 * json数据预装载
-	 * @return
-	 */
-	private Map<String,String> JsonDataLoad(Map<String,String> jsondata,Map<String,String> caseinfo){
-		
-		Map<String,String> afterdata=new LinkedHashMap<String, String>();
-		Map<String,String> caseparam=new HashMap<String, String>();
-		for(Entry<String, String> e:caseinfo.entrySet()) {
-			if(!e.getKey().trim().toLowerCase().equals("testid")||!e.getKey().trim().toLowerCase().equals("testname")) {
-				caseparam.put(e.getKey(), e.getValue());
-			}
-		}
-		DataCache.casedata=caseparam;
-		
-		for(Entry<String, String> e:jsondata.entrySet()) {
-			String key=e.getKey();
-			String value=e.getValue();
-			//把字符串抽成模型
-			RegexUpdateModel RegexUpdateModel=new RegexUpdateModel(value);
-			//模型解析
-			RegexInter.RegexDataUtils.ParserRegex(RegexUpdateModel);
-			//赋值
-			afterdata.put(key,RegexUpdateModel.getContent());
-		}
-		
-		return afterdata;
-	}
 	
 	/**
 	 * json中的存在的表达式解析
@@ -342,7 +187,7 @@ public class DataParser {
 	 * }
 	 * @return
 	 */
-	private Map<String,String> JsonDataParser(String content){
+	protected Map<String,String> JsonDataParser(String content){
 		return RegexInter.ReturnVarRegexs(content).stream()
 				.collect(Collectors.toMap(x->x.toString(), x->x.toString()));
 	}
@@ -353,7 +198,7 @@ public class DataParser {
 	 * @param caseinfo
 	 * @return
 	 */
-	private  List<Map<String,String>> PreDataLoad(List<Map<String,String>> datepre,Map<String,String> caseinfo){
+	protected  List<Map<String,String>> PreDataLoad(List<Map<String,String>> datepre,Map<String,String> caseinfo){
 	    List<Map<String,String>> dataepreafter=new LinkedList<Map<String,String>>();
 	    for(int i=0;i<datepre.size();i++) {
 	    	if(datepre.get(i).get("TestId").equals(caseinfo.get("TestId"))) {
@@ -365,7 +210,7 @@ public class DataParser {
 	/**
 	 * 表达式解析器
 	 */
-	private String RegexParser(String regex) {
+	protected String RegexParser(String regex) {
 		
 		
 		return regex;

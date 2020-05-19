@@ -7,8 +7,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import AutoTest.Base.BaseFlow;
+import AutoTest.Base.TestInfo;
 import AutoTest.DataAction.TestExecAction;
-import AutoTest.DataProvider.TestInfo;
 
 public class json extends BaseFlow{
 	final String url="";
@@ -21,7 +21,7 @@ public class json extends BaseFlow{
 	
 	@Test(dataProvider ="data")
 	public void test(TestInfo ti) throws Exception {
-		TestExecAction.class.newInstance().CaseAcceptAc(this,ti);
+		
 	}
 
 }

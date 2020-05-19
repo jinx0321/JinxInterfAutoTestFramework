@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import AutoTest.Base.TestInfo;
 import AutoTest.DataProvider.DataCache;
-import AutoTest.DataProvider.TestInfo;
 
 /**
  * 表达式接口,提供表达式工具

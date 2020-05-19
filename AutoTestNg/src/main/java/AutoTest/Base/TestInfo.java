@@ -1,4 +1,4 @@
-package AutoTest.DataProvider;
+package AutoTest.Base;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -13,30 +13,20 @@ public class TestInfo {
     	}
         //案例id
     	String id;
-    	//数据格式
-    	String format;
     	//案例信息
         Map<String,String> TestInfo=new LinkedHashMap<String,String>();
         //头信息
         Map<String,String> HeaderInfo=new LinkedHashMap<String, String>();
-        //cookie信息
-        Map<String,String> CookieInfo=new LinkedHashMap<String, String>();
         //数据准备
         List<Map<String,String>> PreInfo=new LinkedList<Map<String,String>>();
         //发送数据
         Map<String,String> SendData=new LinkedHashMap<String, String>();
+      
 		public String getId() {
 			return id;
 		}
 		public void setId(String id) {
 			this.id = id;
-		}
-		
-		public String getFormat() {
-			return format;
-		}
-		public void setFormat(String format) {
-			this.format = format;
 		}
 		public Map<String, String> getTestInfo() {
 			return TestInfo;
@@ -50,13 +40,6 @@ public class TestInfo {
 		public void setHeaderInfo(Map<String, String> headerInfo) {
 			HeaderInfo = headerInfo;
 		}
-		public Map<String, String> getCookieInfo() {
-			return CookieInfo;
-		}
-		public void setCookieInfo(Map<String, String> cookieInfo) {
-			CookieInfo = cookieInfo;
-		}
-		
 		public List<Map<String, String>> getPreInfo() {
 			return PreInfo;
 		}
@@ -68,6 +51,11 @@ public class TestInfo {
 		}
 		public void setSendData(Map<String, String> sendData) {
 			SendData = sendData;
+		}
+		@Override
+		public String toString() {
+			return "TestInfo [id=" + id + ", TestInfo=" + TestInfo + ", HeaderInfo=" + HeaderInfo + ", PreInfo="
+					+ PreInfo + ", SendData=" + SendData + "]";
 		}
 		
         
