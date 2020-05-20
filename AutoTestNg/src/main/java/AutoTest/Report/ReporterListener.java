@@ -28,8 +28,10 @@ public class ReporterListener implements IReporter {
        Date endDate = new Date();
 
        int TOTAL = 0;
-       int SUCCESS = 1;
+       int SUCCESS = 0;
+       //mock数据
        int FAILED = 0;
+       
        int ERROR = 0;
        int SKIPPED = 0;
 
@@ -66,6 +68,29 @@ public class ReporterListener implements IReporter {
        /* 计算总数 */
        TOTAL = SUCCESS + FAILED + SKIPPED + ERROR;
 
+       int max=0;
+       int min=999999;
+       
+       if(SUCCESS>max) {
+    	   max=SUCCESS;
+       } if(FAILED>max) {
+    	   max=FAILED;
+       } if(SKIPPED>max) {
+    	   max=SKIPPED;
+       } if(ERROR>max) {
+    	   max=ERROR;
+       }
+       if(SUCCESS<min) {
+    	   min=SUCCESS;
+       } if(FAILED<min) {
+    	   min=FAILED;
+       } if(SKIPPED<min) {
+    	   min=SKIPPED;
+       } if(ERROR<min) {
+    	   min=ERROR;
+       }
+       
+       
        //数据排列
        this.sort(list);
        //结果集解析
@@ -82,6 +107,8 @@ public class ReporterListener implements IReporter {
        context.put("ERROR", ERROR);
        //跳过案例数
        context.put("SKIPPED", SKIPPED);
+       context.put("MAX", max);
+       context.put("MIN", min);
        //开始时间
        context.put("startTime", ReportUtil.formatDate(startDate.getTime()));
        //经过时间
