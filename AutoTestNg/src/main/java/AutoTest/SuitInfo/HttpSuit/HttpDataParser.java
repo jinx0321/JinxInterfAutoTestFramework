@@ -77,6 +77,7 @@ public class HttpDataParser extends DataParser<HttpTestInfo>{
 	    for(int i=0;i<caseinfos.size();i++) {
 	    	HttpTestInfo ti=new HttpTestInfo();
 	         ti.setId(caseinfos.get(i).get("TestId"));
+	         ti.setTestname(caseinfos.get(i).get("TestName"));
 	         ti.setTestInfo(testinfo);
 	         ti.setHeaderInfo(GeneralDataLoad(header,caseinfos.get(i)));
 	         ti.setCookieInfo(GeneralDataLoad(cookie,caseinfos.get(i)));

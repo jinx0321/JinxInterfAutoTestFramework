@@ -1,6 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.aliyun.com/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.aliyun.com/POM/4.0.0 https://maven.aliyun.com/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>AutoTestNg</groupId>
 	<artifactId>AutoTestNg</artifactId>
@@ -23,24 +23,24 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.47</version>
 		</dependency>
-		
-		 <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <!-- 去掉scope作用域，使用默认的compile，编译、测试、运行都有效的作用域 -->
-            <!-- <scope>test</scope>-->
-        </dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<!-- 去掉scope作用域，使用默认的compile，编译、测试、运行都有效的作用域 -->
+			<!-- <scope>test</scope> -->
+		</dependency>
 
 
-  
+
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>6.8</version>
-		  <!-- <scope>test</scope>-->
+			<!-- <scope>test</scope> -->
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -71,26 +71,58 @@
 			<version>4.5.3</version>
 		</dependency>
 
-	
+
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson.version}</version>
 		</dependency>
-	
+
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.8.6</version>
 		</dependency>
-		
+
+
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>3.0.5.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity-tools</artifactId>
+			<version>2.0</version>
+		</dependency>
 	</dependencies>
+	
+	<!-- 添加阿里云镜像地址 -->
+	<repositories><!-- 代码库 -->
+		<repository>
+			<id>maven-ali</id>
+			<url>http://maven.aliyun.com/nexus/content/groups/public//</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>fail</checksumPolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 
 	<build>
 
 		<plugins>
-		<plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.4.1</version>
@@ -101,9 +133,9 @@
 					</descriptorRefs>
 					<!-- MainClass in mainfest make a executable jar -->
 					<archive>
-		
+
 					</archive>
- 
+
 				</configuration>
 				<executions>
 					<execution>
@@ -117,7 +149,7 @@
 				</executions>
 			</plugin>
 
-		
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -126,6 +158,30 @@
 					<target>${JDK.version}</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<suiteXmlFiles>
+						<suiteXmlFile>testng.xml</suiteXmlFile>
+					</suiteXmlFiles>
+
+					<properties>
+						<!-- 案例最大线程池数 
+						<property>
+							<name>suitethreadpoolsize</name>
+							
+							<value>1</value>
+						</property>
+						-->
+					</properties>
+					
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>

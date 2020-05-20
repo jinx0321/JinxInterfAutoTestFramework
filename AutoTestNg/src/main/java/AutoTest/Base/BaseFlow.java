@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
@@ -27,27 +30,54 @@ public abstract class BaseFlow<T extends TestInfo,K extends TestExecAction<T>>{
 	List<T> TestInfoList = new LinkedList<T>();
 	
 
+	/**
+	 * 初始化类时把数据初始化进类中
+	 */
 	{
 		DataParser dp = DataCache.DataParser;
 		try {
 			String filedir = this.getClass().getResource("").getPath() + this.getClass().getSimpleName() + _tail+ _filetype;
-			System.out.println("读取测试文件:" + filedir);
 			TestInfoList = dp.parser(filedir);
 			if (TestInfoList.size() > 0) {
 				// 初始化第一条
 				current_TestId = TestInfoList.get(0).getId();
 				current_testlist_no = 0;
+				
+			System.out.println(this.getClass().getName()+"数据初始化成功");
 			}
-			
-			System.out.println("-------------------------------------------------\n\n");
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println(this.getClass().getName()+"数据初始化失败");
 		}
 
 	}
+	
+	/**
+	 * 
+	 */
+	@BeforeClass
+	public void beforeclass() {
+		System.out.println("");
+		System.out.println("");
+		System.out.println("<------------------"+"执行测试类:"+this.getClass().getName()+" Start--------------------------->");
+		System.out.println("");
+		System.out.println("");
+	}
+	
+	
+	@AfterClass
+	public void alterclass() {
+		System.out.println("");
+		System.out.println("");
+		System.out.println("<------------------"+"测试类:"+this.getClass().getName()+" END--------------------------->");
+		System.out.println("");
+		System.out.println("");
+	}
 
 	@BeforeMethod
-	public void before() {
+	public void beforemethod() {
+		
+		
 	   //获取当前案例的测试准备数据
        List<Map<String,String>> datepre=TestInfoList.get(current_testlist_no).getPreInfo();
        for(int i=0;i<datepre.size();i++) {
@@ -58,7 +88,7 @@ public abstract class BaseFlow<T extends TestInfo,K extends TestExecAction<T>>{
 	}
 
 	@AfterMethod
-	public void after() {
+	public void aftermethod() {
 		 //获取当前案例的测试准备数据
 	       List<Map<String,String>> datepre=TestInfoList.get(current_testlist_no).getPreInfo();
 	       for(int i=0;i<datepre.size();i++) {
@@ -67,7 +97,7 @@ public abstract class BaseFlow<T extends TestInfo,K extends TestExecAction<T>>{
 	    	   }
 	       }
 	       
-	   	System.out.println("-------------------------------------------------\n\n");
+	   	System.out.println("<<<<<<<<<<<<<\n\n");
 	   	
       if((this.current_testlist_no)==this.TestInfoList.size()) {
 			

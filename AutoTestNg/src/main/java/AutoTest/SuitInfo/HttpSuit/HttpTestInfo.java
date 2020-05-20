@@ -15,4 +15,6 @@ public class HttpTestInfo extends TestInfo{
 	public void setCookieInfo(Map<String, String> cookieInfo) {
 		CookieInfo = cookieInfo;
 	}
+	
+	
 }

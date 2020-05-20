@@ -13,6 +13,8 @@ public class TestInfo {
     	}
         //案例id
     	String id;
+    	//案例名
+    	String testname;
     	//案例信息
         Map<String,String> TestInfo=new LinkedHashMap<String,String>();
         //头信息
@@ -27,6 +29,12 @@ public class TestInfo {
 		}
 		public void setId(String id) {
 			this.id = id;
+		}
+		public String getTestname() {
+			return testname;
+		}
+		public void setTestname(String testname) {
+			this.testname = testname;
 		}
 		public Map<String, String> getTestInfo() {
 			return TestInfo;

@@ -1,7 +1,9 @@
 .settings
 /AutoTestNg/target
 /AutoTestNg/test-output
+/AutoTestNg/report/report.html
 .classpath
 .project
 /TestProject/target
 /TestProject/test-output
+/TestProject/report/report.html

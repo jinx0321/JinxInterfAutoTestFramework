@@ -1,6 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.aliyun.com/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.aliyun.com/POM/4.0.0 https://maven.aliyun.com/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>TestProject</groupId>
 	<artifactId>TestProject</artifactId>
@@ -12,23 +12,38 @@
 	</properties>
 
 	<dependencies>
-	 <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>6.8</version>
-      <scope>test</scope>
-    </dependency>
-	
-    <dependency>
-            <groupId>AutoTestNg</groupId>
-            <artifactId>AutoTestNg</artifactId>
-            <version>0.0.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/AutoTestNg-0.0.1-SNAPSHOT-jar-with-dependencies.jar</systemPath>
-        </dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.8</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>AutoTestNg</groupId>
+			<artifactId>AutoTestNg</artifactId>
+			<version>0.0.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/AutoTestNg-0.0.1-SNAPSHOT-jar-with-dependencies.jar</systemPath>
+		</dependency>
 
 	</dependencies>
 
+	<!-- 添加阿里云镜像地址 -->
+	<repositories><!-- 代码库 -->
+		<repository>
+			<id>maven-ali</id>
+			<url>http://maven.aliyun.com/nexus/content/groups/public//</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>fail</checksumPolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 	<build>
 
 		<plugins>
@@ -40,19 +55,28 @@
 					<target>${JDK.version}</target>
 				</configuration>
 			</plugin>
-			
-			 <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-                </configuration>
-            </plugin>
-			
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<suiteXmlFiles>
+						<suiteXmlFile>testng.xml</suiteXmlFile>
+					</suiteXmlFiles>
+
+					<properties>
+						<!-- 案例最大线程池数 -->
+						<property>
+							<name>suitethreadpoolsize</name>
+							<value>2</value>
+						</property>
+					</properties>
+
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
