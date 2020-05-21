@@ -4,8 +4,25 @@ import org.testng.ITestResult;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
  
 public class TestResultCollection {
+	
+	private String uid;
+	
+	private String classid;
+	
+	public String getClassid() {
+		return classid;
+	}
+
+
+
+	public void setClassid(String classid) {
+		this.classid = classid;
+	}
+
+	private String classname;
  
     private int totalSize = 0;
  
@@ -18,7 +35,14 @@ public class TestResultCollection {
     private int skippedSize = 0;
  
     private List<TestResult> resultList;
+    
+    public TestResultCollection() 
+    {
+    	
+    	this.uid=UUID.randomUUID().toString().replaceAll("-", "");
+    }
  
+    
  
     public void addTestResult(TestResult result) {
         if (resultList == null) {
@@ -90,5 +114,24 @@ public class TestResultCollection {
     public void setResultList(List<TestResult> resultList) {
         this.resultList = resultList;
     }
+
+	public String getClassname() {
+		return classname;
+	}
+
+	public void setClassname(String classname) {
+		this.classid=classname;
+		this.classname = classname.replaceAll("_", ".");
+	}
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+	
+    
 }
 

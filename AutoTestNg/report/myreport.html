@@ -1,0 +1,257 @@
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- layui的样式 -->
+<link rel="stylesheet" href="layui/css/layui.css" media="all">
+<script src="layui/layui.js"></script>
+<!-- echarts表图组件 -->
+<script src="echarts/echarts.js"></script>
+<script src="echarts/echarts.common.js"></script>
+<title>- MYREPORT</title>
+</head>
+
+<body>
+	<div class="layui-container">
+		<!-- 标题    -->
+		<div class="layui-row">
+			<div class="layui-col-md12">
+				<h1>MYREPORT</h1>
+			</div>
+		</div>
+
+		<hr class="layui-bg-black">
+
+		<div class="layui-row">
+			<div class="layui-col-md12">
+				<h2>汇总</h2>
+				<br>
+			</div>
+			<!-- 汇总图表组件 -->
+			<div class="layui-col-md12">
+				<div id="summary" style="width: 600px; height: 400px;"></div>
+			</div>
+		</div>
+		<hr class="layui-bg-black">
+
+		<div class="layui-row">
+			<div class="layui-col-md12">
+				<h2>详情</h2>
+				<br>
+			</div>
+
+			<div class="layui-col-md12">
+								<!-- 时间线 -->
+				<fieldset class="layui-elem-field layui-field-title"
+					style="margin-top: 20px;">
+					<legend>AutoTest_flow_form</legend>
+				</fieldset>
+				<div class="layui-collapse" lay-filter="test">
+					<div class="layui-colla-item">
+						<h2 class="layui-colla-title">AutoTest_flow_form   详情</h2>
+						<div class="layui-colla-content">
+
+							<table id="AutoTest_flow_form" class="layui-table">
+							</table>
+							<br>
+						</div>
+
+					</div>
+				</div>
+
+				<br> 				<!-- 时间线 -->
+				<fieldset class="layui-elem-field layui-field-title"
+					style="margin-top: 20px;">
+					<legend>AutoTest_flow_form2</legend>
+				</fieldset>
+				<div class="layui-collapse" lay-filter="test">
+					<div class="layui-colla-item">
+						<h2 class="layui-colla-title">AutoTest_flow_form2   详情</h2>
+						<div class="layui-colla-content">
+
+							<table id="AutoTest_flow_form2" class="layui-table">
+							</table>
+							<br>
+						</div>
+
+					</div>
+				</div>
+
+				<br> 			</div>
+		</div>
+
+		<!-- 总布局框 -->
+	</div>
+
+
+
+	<!-- 脚本代码 -->
+
+	<!-- layui的表格渲染 -->
+	<script type="text/javascript">
+      var rjson=[{"failedSize":0,"uid":"be808e91411449bd9fe1a9f32c123093","classid":"AutoTest_flow_form","successSize":21,"totalSize":21,"classname":"AutoTest.flow.form","errorSize":0,"resultList":[{"output":[],"duration":"2.193","uid":"463066280bf04072bf53f200698d5009","success":false,"className":"AutoTest.flow.form","id":"1","params":"{param3=111222333, param4=4455, param1=11122233312312312.22, param2=111222333}","status":1,"testName":"测试方法1"},{"output":[],"duration":"0.006","uid":"aeb56b3f26f64e2297a4f8bc8ba40eea","success":false,"className":"AutoTest.flow.form","id":"2","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法2"},{"output":[],"duration":"0.007","uid":"f1b3e3609f594a0184d759a18a9baa84","success":false,"className":"AutoTest.flow.form","id":"3","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法3"},{"output":[],"duration":"0.008","uid":"63dec5609240441cb23fced8fd400ff6","success":false,"className":"AutoTest.flow.form","id":"4","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法4"},{"output":[],"duration":"0.005","uid":"da46225dccbf4c1ca6fc5c38ae6278f7","success":false,"className":"AutoTest.flow.form","id":"5","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法5"},{"output":[],"duration":"0.006","uid":"ec540c60d43a474e8552a513f1ec26af","success":false,"className":"AutoTest.flow.form","id":"6","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法6"},{"output":[],"duration":"0.007","uid":"6836aac024184ce68ee6e1f190859347","success":false,"className":"AutoTest.flow.form","id":"7","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法7"},{"output":[],"duration":"0.005","uid":"ef6f36710d9443b7b1ccbeed5b4913b0","success":false,"className":"AutoTest.flow.form","id":"8","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法8"},{"output":[],"duration":"0.007","uid":"39662a8f1f564c6297f9ada36881db7a","success":false,"className":"AutoTest.flow.form","id":"9","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法9"},{"output":[],"duration":"0.005","uid":"395d916d0e214f299e4804867eb1e653","success":false,"className":"AutoTest.flow.form","id":"10","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法10"},{"output":[],"duration":"0.006","uid":"c907d51292ee49e3ba0838bf5e90d059","success":false,"className":"AutoTest.flow.form","id":"11","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法11"},{"output":[],"duration":"0.010","uid":"a20f3b57c97e47d2b96067a7e53f6df8","success":false,"className":"AutoTest.flow.form","id":"12","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法12"},{"output":[],"duration":"0.006","uid":"160ebe5a3ece438b9d7f4c867aa708c1","success":false,"className":"AutoTest.flow.form","id":"13","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法13"},{"output":[],"duration":"0.006","uid":"d78a86537de94222aaf58f205e4054f4","success":false,"className":"AutoTest.flow.form","id":"14","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法14"},{"output":[],"duration":"0.007","uid":"2a0012289fdc4266bf6fc41512fb025e","success":false,"className":"AutoTest.flow.form","id":"15","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法15"},{"output":[],"duration":"0.007","uid":"4fd82cbff10b4d25a80f90df1cccec80","success":false,"className":"AutoTest.flow.form","id":"16","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法16"},{"output":[],"duration":"0.008","uid":"9950c4425cb04b13928e231270d194e1","success":false,"className":"AutoTest.flow.form","id":"17","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法17"},{"output":[],"duration":"0.007","uid":"a7c8173e936c49088975629a6d684864","success":false,"className":"AutoTest.flow.form","id":"18","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法18"},{"output":[],"duration":"0.007","uid":"d8ad1827c878460db672c934d377d57a","success":false,"className":"AutoTest.flow.form","id":"19","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法19"},{"output":[],"duration":"0.010","uid":"23288bf314d7451e93682ce5383530c5","success":false,"className":"AutoTest.flow.form","id":"20","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法20"},{"output":[],"duration":"0.005","uid":"1c10eaa024c0453fb492c064d16b122c","success":false,"className":"AutoTest.flow.form","id":"21","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法21"}],"skippedSize":0},{"failedSize":0,"uid":"492816b7924c442fbd6df31fd061248d","classid":"AutoTest_flow_form2","successSize":4,"totalSize":4,"classname":"AutoTest.flow.form2","errorSize":0,"resultList":[{"output":[],"duration":"0.008","uid":"06def06183a341b8b434dccb569308c2","success":false,"className":"AutoTest.flow.form2","id":"1","params":"{param3=111222333, param4=4455, param1=11122233312312312.22, param2=111222333}","status":1,"testName":"test1"},{"output":[],"duration":"0.004","uid":"b465da7f0a0b43c6977669db47ac325f","success":false,"className":"AutoTest.flow.form2","id":"2","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"test2"},{"output":[],"duration":"0.005","uid":"3a51e257533a4c16ac71e26567e86b99","success":false,"className":"AutoTest.flow.form2","id":"3","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"test3"},{"output":[],"duration":"0.006","uid":"a04581f20b9148d39424fae65de68d62","success":false,"className":"AutoTest.flow.form2","id":"4","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"test4"}],"skippedSize":0}];
+      
+      layui.use(['layer','table','element'], function(){
+    	  var layer = layui.layer;
+		   var table = layui.table;
+		   var element = layui.element; 
+		   element.on('collapse(test)', function(data){
+			   
+		     });
+		   
+    	  for(var obj of rjson){
+    		    var classid=obj.classid; 
+			    var classname=obj.classname;
+				var total=obj.totalSize;
+				var success=obj.successSize;
+				var failed=obj.failedSize;
+				var error=obj.errorSize;
+				var skipped=0;
+				var resultList=obj.resultList;
+				var data={"data":[]};
+				for(var d of resultList){
+				   var caseid=d.id;
+                   var casestatus=d.status;
+                   var testName=d.testName;
+                   var log='log';
+                   var casedur=d.duration;	
+                   var flag='';
+				   if(casestatus=='1'){
+				   flag='success'}
+				   else if(casestatus=='2') 
+				   {flag='fail'}
+				   else{flag='fail'}
+				   
+				   
+				   var tableobj = {
+				       "status": flag,
+					   "id" :caseid,
+					   "duration" :casedur,
+					   "testName":testName,
+					   "log":log
+				   
+				   }
+                    data.data.push(tableobj);
+
+				}
+				
+				var colsieze=150;
+				 table.render({
+						//指定表id
+					  elem:'#'+classid,	
+	                  page :true,
+					  limit:10,
+					  cols: [
+						       [ //1级标题栏
+	                            {align: 'left', title: '测试类', width: colsieze, colspan: 1 ,colGroup:true}, //横跨两个单元格
+	                            {align: 'left', title: classname, width: colsieze*4, colspan: 4,colGroup:true }] 
+							   ,
+							   [ //2级标题栏
+	                            {align: 'left', title: 'TOTAL: '+total, width: colsieze, colspan: 1,colGroup:true},
+	                            {align: 'left', title: 'SUCCESS: '+success, width: colsieze, colspan: 1,colGroup:true},
+							    {align: 'left', title: 'FAILED: '+failed, width: colsieze, colspan: 1,colGroup:true},
+								{align: 'left', title: 'ERROR: '+error, width: colsieze, colspan: 1,colGroup:true},
+								{align: 'left', title: 'SKIPPED: '+skipped, width: colsieze, colspan: 1,colGroup:true}]
+								,
+								[ //3级标题栏
+								{align: 'left', title: 'Status',field:'status', width: colsieze, rowspan: 1,templet: function(d){
+								   if(d.status=='success'){
+	                               return '<span style="color: 009933;" >'+ d.status +'</span>';
+								   }
+								   if(d.status=='fail'){
+								   return   '<span style="color: #c00;">'+ d.status +'</span>';
+								   }
+	                              }},
+	                            {align: 'left', title: 'ID',field:'id',  width: colsieze, rowspan: 1},
+							    {align: 'left', title: 'TestName',field:'testName',  width: colsieze, rowspan: 1},
+								{align: 'left', title: 'Duration', field:'duration', width: colsieze, rowspan: 1},
+								{align: 'left', title: 'Detail', field:'log', width: colsieze, rowspan: 1 }]
+								
+	                            ],
+	                   data: data.data							
+								
+								
+								});     
+			
+			}
+    	  
+    	  
+    	});
+      
+      
+  
+  
+  </script>
+
+	<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+  var summary = echarts.init(document.getElementById('summary'));
+
+        // 指定图表的配置项和数据
+      var summary_info = {
+    backgroundColor: '#2c343c',
+
+    title: {
+        text: '测试类总数: 25   成功率: 100.00%',
+        left: 'center',
+        top: 20,
+        textStyle: {
+            color: '#ccc'
+        }
+    },
+
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+    },
+
+    visualMap: {
+        show: false,
+        min: 0,
+        max: 25,
+        inRange: {
+            colorLightness: [0, 1]
+        }
+    },
+    series: [
+        {
+            name: '测试情况',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: [
+                {value: 25, name: 'SUCCESS'},
+                {value: 0, name: 'FAILED'},
+                {value: 0, name: 'ERROR'},
+                {value: 0, name: 'SKIPPED'}
+            ].sort(function (a, b) { return a.value - b.value; }),
+            roseType: 'radius',
+            label: {
+                color: 'rgba(255, 255, 255, 0.3)'
+            },
+            labelLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                },
+                smooth: 0.2,
+                length: 10,
+                length2: 20
+            },
+            itemStyle: {
+                color: '#c23531',
+                shadowBlur: 200,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+                return Math.random() * 200;
+            }
+        }
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        summary.setOption(summary_info);
+    </script>
+</body>

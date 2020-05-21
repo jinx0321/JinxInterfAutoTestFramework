@@ -7,11 +7,15 @@ import org.testng.ISuite;
 import org.testng.xml.XmlSuite;
 
 import AutoTest.Base.TestInfo;
+import AutoTest.Report.SpecialReport.MyReport;
+import AutoTest.Report.SpecialReport.SpecialReport;
+import AutoTest.Report.SpecialReport.VelocityUtils;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.junit.Test;
 import org.testng.*;
 import org.testng.xml.XmlSuite;
 
@@ -68,85 +72,37 @@ public class ReporterListener implements IReporter {
        /* 计算总数 */
        TOTAL = SUCCESS + FAILED + SKIPPED + ERROR;
 
-       int max=0;
-       int min=999999;
-       
-       if(SUCCESS>max) {
-    	   max=SUCCESS;
-       } if(FAILED>max) {
-    	   max=FAILED;
-       } if(SKIPPED>max) {
-    	   max=SKIPPED;
-       } if(ERROR>max) {
-    	   max=ERROR;
-       }
-       if(SUCCESS<min) {
-    	   min=SUCCESS;
-       } if(FAILED<min) {
-    	   min=FAILED;
-       } if(SKIPPED<min) {
-    	   min=SKIPPED;
-       } if(ERROR<min) {
-    	   min=ERROR;
-       }
-       
-       
        //数据排列
        this.sort(list);
        //结果集解析
        Map<String, TestResultCollection> collections = this.parse(list);
-       VelocityContext context = new VelocityContext();
+       
+       ReportResult reportresult=new ReportResult();
+        
+       reportresult.setTOTAL(TOTAL);
+       reportresult.setSUCCESS(SUCCESS);
+       reportresult.setERROR(ERROR);
+       reportresult.setFAILED(FAILED);
+       reportresult.setSKIPPED(SKIPPED);
+       reportresult.setSTARTTIME(ReportUtil.formatDate(startDate.getTime()));
+       reportresult.setDURATION(ReportUtil.formatDuration(endDate.getTime()-startDate.getTime()));
+       reportresult.setCollections(collections);
 
-       //总时间
-       context.put("TOTAL", TOTAL);
-       //成功案例数
-       context.put("SUCCESS", SUCCESS);
-       //失败案例数
-       context.put("FAILED", FAILED);
-       //错误案例数
-       context.put("ERROR", ERROR);
-       //跳过案例数
-       context.put("SKIPPED", SKIPPED);
-       context.put("MAX", max);
-       context.put("MIN", min);
-       //开始时间
-       context.put("startTime", ReportUtil.formatDate(startDate.getTime()));
-       //经过时间
-       context.put("DURATION", ReportUtil.formatDuration(endDate.getTime()-startDate.getTime()));
-       //案例集合
-       context.put("results", collections);
-
-       write(context, outputDirectory);
+       /**
+        * 报表数据处理输出
+        */
+       SpecialReport specialreport=new MyReport();
+       
+       VelocityUtils.write(
+    		   specialreport.returnContent(reportresult),
+    		   outputDirectory,
+    		   specialreport.returnVmDir(),
+    		   specialreport.returnReportDir()
+    		   );
    }
 
 
-   private void write(VelocityContext context, String outputDirectory) {
-	   outputDirectory=System.getProperties().get("user.dir")+"\\report";
-	   if(!new File(outputDirectory).exists()) {
-		   new File(outputDirectory).mkdir()	;
-	   }
-	   
-       try {
-           //写文件
-           VelocityEngine ve = new VelocityEngine();
-           Properties p = new Properties();
-           p.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, outputDirectory);
-           p.setProperty(Velocity.ENCODING_DEFAULT, "utf-8");
-           p.setProperty(Velocity.INPUT_ENCODING, "utf-8");
-           p.setProperty(Velocity.OUTPUT_ENCODING, "utf-8");
-           ve.init(p);
-
-
-           Template t = ve.getTemplate("report.vm");
-           OutputStream out = new FileOutputStream(new File(outputDirectory+"/report.html"));
-           BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "utf-8"));
-           // 转换输出
-           t.merge(context, writer);
-           writer.flush();
-       } catch (IOException e) {
-           e.printStackTrace();
-       }
-   }
+  
 
    /**
     * 列表排序
@@ -197,15 +153,15 @@ public class ReporterListener implements IReporter {
 
        for (ITestResult t: list) {
     	   //获取类名
-           String className = t.getTestClass().getName();
+           String className = t.getTestClass().getName().replaceAll("\\.", "_");
            if (collectionMap.containsKey(className)) {
-        	   
                TestResultCollection collection = collectionMap.get(className);
                collection.addTestResult(toTestResult(t));
 
            } else {
                TestResultCollection collection = new TestResultCollection();
                collection.addTestResult(toTestResult(t));
+               collection.setClassname(className);
                collectionMap.put(className, collection);
            }
        }
@@ -227,7 +183,6 @@ public class ReporterListener implements IReporter {
        testResult.setParams(ti.getSendData().toString());
        //测试名
        testResult.setTestName(ti.getTestname());
-       testResult.setCaseName(ti.getTestname());
        //测试状态
        testResult.setStatus(t.getStatus());
 
@@ -239,6 +194,15 @@ public class ReporterListener implements IReporter {
 
        
        return testResult;
+   }
+   
+   
+   @Test
+   public void test() {
+	 String x="a.b.c";
+	 System.out.println(x.replaceAll("\\.", "_"));
+
+	 System.out.println(x.replaceAll("\\.", "_").replaceAll("_", "."));
    }
 }
 

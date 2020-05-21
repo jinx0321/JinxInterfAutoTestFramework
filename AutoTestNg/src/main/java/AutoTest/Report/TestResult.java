@@ -1,11 +1,13 @@
 package AutoTest.Report;
 
 import java.util.List;
+import java.util.UUID;
 
 public class TestResult {
  
+	private String uid;
 	private String id; //测试id
-    private String testName; //测试方法名
+    private String testName; //测试名
     private String className; //测试类名
     private String caseName;
 	private String params; //测试用参数
@@ -18,8 +20,20 @@ public class TestResult {
  
     private boolean success;
  
- 
-    public String getId() {
+    public TestResult() {
+    	this.uid=UUID.randomUUID().toString().replaceAll("-", "");
+    }
+    
+    
+    public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public String getId() {
 		return id;
 	}
 

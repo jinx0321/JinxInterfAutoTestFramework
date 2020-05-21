@@ -1,0 +1,241 @@
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- layui的样式 -->
+<link rel="stylesheet" href="layui/css/layui.css" media="all">
+<script src="layui/layui.js"></script>
+<!-- echarts表图组件 -->
+<script src="echarts/echarts.js"></script>
+<script src="echarts/echarts.common.js"></script>
+<title>- $REPORTNAME</title>
+</head>
+
+<body>
+	<div class="layui-container">
+		<!-- 标题    -->
+		<div class="layui-row">
+			<div class="layui-col-md12">
+				<h1>MYREPORT</h1>
+			</div>
+		</div>
+
+		<hr class="layui-bg-black">
+
+		<div class="layui-row">
+			<div class="layui-col-md12">
+				<h2>汇总</h2>
+				<br>
+			</div>
+			<!-- 汇总图表组件 -->
+			<div class="layui-col-md12">
+				<div id="summary" style="width: 600px; height: 400px;"></div>
+			</div>
+		</div>
+		<hr class="layui-bg-black">
+
+		<div class="layui-row">
+			<div class="layui-col-md12">
+				<h2>详情</h2>
+				<br>
+			</div>
+
+			<div class="layui-col-md12">
+				#foreach($result in $results.entrySet())
+				<!-- 时间线 -->
+				<fieldset class="layui-elem-field layui-field-title"
+					style="margin-top: 20px;">
+					<legend>$result.key</legend>
+				</fieldset>
+				<div class="layui-collapse" lay-filter="test">
+					<div class="layui-colla-item">
+						<h2 class="layui-colla-title">$result.key   详情</h2>
+						<div class="layui-colla-content">
+
+							<table id="$result.key" class="layui-table">
+							</table>
+							<br>
+						</div>
+
+					</div>
+				</div>
+
+				<br> #end
+			</div>
+		</div>
+
+		<!-- 总布局框 -->
+	</div>
+
+
+
+	<!-- 脚本代码 -->
+
+	<!-- layui的表格渲染 -->
+	<script type="text/javascript">
+      var rjson=$resultsjson;
+      
+      layui.use(['layer','table','element'], function(){
+    	  var layer = layui.layer;
+		   var table = layui.table;
+		   var element = layui.element; 
+		   element.on('collapse(test)', function(data){
+			   
+		     });
+		   
+    	  for(var obj of rjson){
+    		    var classid=obj.classid; 
+			    var classname=obj.classname;
+				var total=obj.totalSize;
+				var success=obj.successSize;
+				var failed=obj.failedSize;
+				var error=obj.errorSize;
+				var skipped=0;
+				var resultList=obj.resultList;
+				var data={"data":[]};
+				for(var d of resultList){
+				   var caseid=d.id;
+                   var casestatus=d.status;
+                   var testName=d.testName;
+                   var log='log';
+                   var casedur=d.duration;	
+                   var flag='';
+				   if(casestatus=='1'){
+				   flag='success'}
+				   else if(casestatus=='2') 
+				   {flag='fail'}
+				   else{flag='fail'}
+				   
+				   
+				   var tableobj = {
+				       "status": flag,
+					   "id" :caseid,
+					   "duration" :casedur,
+					   "testName":testName,
+					   "log":log
+				   
+				   }
+                    data.data.push(tableobj);
+
+				}
+				
+				var colsieze=150;
+				 table.render({
+						//指定表id
+					  elem:'#'+classid,	
+	                  page :true,
+					  limit:10,
+					  cols: [
+						       [ //1级标题栏
+	                            {align: 'left', title: '测试类', width: colsieze, colspan: 1 ,colGroup:true}, //横跨两个单元格
+	                            {align: 'left', title: classname, width: colsieze*4, colspan: 4,colGroup:true }] 
+							   ,
+							   [ //2级标题栏
+	                            {align: 'left', title: 'TOTAL: '+total, width: colsieze, colspan: 1,colGroup:true},
+	                            {align: 'left', title: 'SUCCESS: '+success, width: colsieze, colspan: 1,colGroup:true},
+							    {align: 'left', title: 'FAILED: '+failed, width: colsieze, colspan: 1,colGroup:true},
+								{align: 'left', title: 'ERROR: '+error, width: colsieze, colspan: 1,colGroup:true},
+								{align: 'left', title: 'SKIPPED: '+skipped, width: colsieze, colspan: 1,colGroup:true}]
+								,
+								[ //3级标题栏
+								{align: 'left', title: 'Status',field:'status', width: colsieze, rowspan: 1,templet: function(d){
+								   if(d.status=='success'){
+	                               return '<span style="color: 009933;" >'+ d.status +'</span>';
+								   }
+								   if(d.status=='fail'){
+								   return   '<span style="color: #c00;">'+ d.status +'</span>';
+								   }
+	                              }},
+	                            {align: 'left', title: 'ID',field:'id',  width: colsieze, rowspan: 1},
+							    {align: 'left', title: 'TestName',field:'testName',  width: colsieze, rowspan: 1},
+								{align: 'left', title: 'Duration', field:'duration', width: colsieze, rowspan: 1},
+								{align: 'left', title: 'Detail', field:'log', width: colsieze, rowspan: 1 }]
+								
+	                            ],
+	                   data: data.data							
+								
+								
+								});     
+			
+			}
+    	  
+    	  
+    	});
+      
+      
+  
+  
+  </script>
+
+	<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+  var summary = echarts.init(document.getElementById('summary'));
+
+        // 指定图表的配置项和数据
+      var summary_info = {
+    backgroundColor: '#2c343c',
+
+    title: {
+        text: '测试类总数: $TOTAL   成功率: $Pass_rate',
+        left: 'center',
+        top: 20,
+        textStyle: {
+            color: '#ccc'
+        }
+    },
+
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+    },
+
+    visualMap: {
+        show: false,
+        min: ${MIN},
+        max: ${MAX},
+        inRange: {
+            colorLightness: [0, 1]
+        }
+    },
+    series: [
+        {
+            name: '测试情况',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: [
+                {value: $SUCCESS, name: 'SUCCESS'},
+                {value: $FAILED, name: 'FAILED'},
+                {value: $ERROR, name: 'ERROR'},
+                {value: $SKIPPED, name: 'SKIPPED'}
+            ].sort(function (a, b) { return a.value - b.value; }),
+            roseType: 'radius',
+            label: {
+                color: 'rgba(255, 255, 255, 0.3)'
+            },
+            labelLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                },
+                smooth: 0.2,
+                length: 10,
+                length2: 20
+            },
+            itemStyle: {
+                color: '#c23531',
+                shadowBlur: 200,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+                return Math.random() * 200;
+            }
+        }
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        summary.setOption(summary_info);
+    </script>
+</body>
