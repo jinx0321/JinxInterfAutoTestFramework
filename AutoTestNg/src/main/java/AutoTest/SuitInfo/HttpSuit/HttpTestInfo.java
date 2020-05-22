@@ -3,9 +3,9 @@ package AutoTest.SuitInfo.HttpSuit;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import AutoTest.Base.TestInfo;
+import AutoTest.Base.CaseInfo;
 
-public class HttpTestInfo extends TestInfo{
+public class HttpTestInfo extends CaseInfo{
 	 //cookie–≈œ¢
     Map<String,String> CookieInfo=new LinkedHashMap<String, String>();
     

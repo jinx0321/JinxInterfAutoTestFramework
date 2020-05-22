@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import AutoTest.Base.TestInfo;
+import AutoTest.Base.CaseInfo;
 import AutoTest.DataAction.TestExecAction;
 import AutoTest.SuitInfo.HttpSuit.HttpDataParser;
 

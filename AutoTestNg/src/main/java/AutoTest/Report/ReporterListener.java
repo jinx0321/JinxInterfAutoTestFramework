@@ -6,7 +6,7 @@ import org.testng.IReporter;
 import org.testng.ISuite;
 import org.testng.xml.XmlSuite;
 
-import AutoTest.Base.TestInfo;
+import AutoTest.Base.CaseInfo;
 import AutoTest.Report.SpecialReport.MyReport;
 import AutoTest.Report.SpecialReport.SpecialReport;
 import AutoTest.Report.SpecialReport.VelocityUtils;
@@ -173,7 +173,7 @@ public class ReporterListener implements IReporter {
        TestResult testResult = new TestResult();
        Object[] params = t.getParameters();
 
-       TestInfo ti=(TestInfo)params[0];
+       CaseInfo ti=(CaseInfo)params[0];
        
        testResult.setId(ti.getId());
 
@@ -185,12 +185,15 @@ public class ReporterListener implements IReporter {
        testResult.setTestName(ti.getTestname());
        //测试状态
        testResult.setStatus(t.getStatus());
-
+       //请求信息|请求层面异常
+       testResult.setOutput(ti.getMsg());
+       
+       //案例层面异常
        testResult.setThrowable(t.getThrowable());
        long duration = t.getEndMillis() - t.getStartMillis();
        testResult.setDuration(ReportUtil.formatDuration(duration));
 
-       testResult.setOutput(Reporter.getOutput(t));
+  
 
        
        return testResult;

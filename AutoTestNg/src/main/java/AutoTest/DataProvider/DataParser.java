@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import AutoTest.Base.TestInfo;
+import AutoTest.Base.CaseInfo;
 import AutoTest.Dict.Content_Type;
 import AutoTest.Regex.RegexInter;
 import AutoTest.Regex.RegexUpdateModel;

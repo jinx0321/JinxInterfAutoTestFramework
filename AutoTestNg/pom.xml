@@ -165,6 +165,7 @@
 				<version>2.19</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
+                    <testFailureIgnore>true</testFailureIgnore>
 					<suiteXmlFiles>
 						<suiteXmlFile>testng.xml</suiteXmlFile>
 					</suiteXmlFiles>

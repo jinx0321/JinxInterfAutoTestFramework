@@ -7,7 +7,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import AutoTest.Base.BaseFlow;
-import AutoTest.Base.TestInfo;
+import AutoTest.Base.CaseInfo;
 import AutoTest.DataAction.TestExecAction;
 import AutoTest.SuitInfo.HttpSuit.HttpExecAction;
 import AutoTest.SuitInfo.HttpSuit.HttpTestInfo;
@@ -22,9 +22,10 @@ public class form2 extends BaseFlow<HttpTestInfo,HttpExecAction>{
 	
 	@Test(dataProvider ="data")
 	public void test(HttpTestInfo ti) throws Exception {
-		String result=(String)CaseExec(ti,new HttpExecAction(),url);
+		HttpExecAction httpexecaction=new HttpExecAction();
+		CaseExec(ti,httpexecaction,url);
+		CaseResultDeal(ti,httpexecaction);
 		
-		System.out.println("·µ»ØÊý¾Ý:"+result);
 	}
 
 }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Layui</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="layui/css/layui.css"  media="all">
+  <script src="layui/layui.js" charset="utf-8"></script>
+</head>
+<body>
+ 
+<table class="layui-table" id="test1" lay-filter="test1"></table>
+<br>
+<table class="layui-table" id="test2" lay-filter="test2"></table>
+<br>
+<table class="layui-table" id="test3" lay-filter="test3"></table>
+ 
+ 
+<script>
+layui.use('table', function(){
+  var table = layui.table;
+
+  var x=["1","2","3"];
+  
+  for(var i of x){
+  var data=[{"aa":"123456"+i,"bb":"333333"}];
+  var idd='test'+i;
+ 
+  table.render({
+    elem: '#'+idd,
+    toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+    ,title: '用户数据表'
+    ,cols: [[
+      {field:'aa', title:'aaa', width:80, fixed: 'left', unresize: true, sort: true},
+	  {field:'bb', title:'bbb', width:80, fixed: 'left', unresize: true, sort: true,toolbar:'#xx'}
+    ]]
+    ,page: true,
+	 data:data
+  });
+  
+  console.log(idd);
+  table.on('tool('+idd+')', function(obj){
+
+				    if(obj.event=='loginfo'){
+				       layer.open({
+                       type: 1, 
+                        content: obj.data.bb //这里content是一个普通的String
+                        });
+				    }
+                  });
+				  }
+  });
+
+</script>
+<script type="text/html" id="xx">
+<div class="layui-btn-container">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="loginfo">返回信息</a>
+	</div>
+</script>
+</body>
+</html>

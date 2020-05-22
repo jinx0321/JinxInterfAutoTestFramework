@@ -57,11 +57,6 @@ public class HttpUtils {
 					params.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
 				}
 			}
-			
-			 System.out.println("请求数据");
-			 param.forEach((k,v)->{
-	        	 System.out.println(k+":"+v);
-	         });
 			post.setEntity(new UrlEncodedFormEntity(params, "utf-8"));
 			response = (CloseableHttpResponse) httpClient.execute(post);
 			HttpEntity entity = response.getEntity();
@@ -107,10 +102,7 @@ public class HttpUtils {
 					}
 				}
 				
-				 System.out.println("请求数据");
-				 param.forEach((k,v)->{
-		        	 System.out.println(k+":"+v);
-		         });
+				
 				response = (CloseableHttpResponse) httpClient.execute(get);
 				HttpEntity entity = response.getEntity();
 				Header[] headers = response.getAllHeaders();

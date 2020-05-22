@@ -3,6 +3,8 @@ package AutoTest.Report;
 import java.util.List;
 import java.util.UUID;
 
+import AutoTest.Base.CaseResult;
+
 public class TestResult {
  
 	private String uid;
@@ -12,7 +14,7 @@ public class TestResult {
     private String caseName;
 	private String params; //²âÊÔÓÃ²ÎÊı
     private String description; //²âÊÔÃèÊö
-    private List<String> output; //Reporter Output
+    private CaseResult output; //Reporter Output
     private Throwable throwable; //²âÊÔÒì³£Ô­Òò
     private String throwableTrace;
     private int status; //×´Ì¬
@@ -81,11 +83,11 @@ public class TestResult {
         this.description = description;
     }
  
-    public List<String> getOutput() {
+    public CaseResult getOutput() {
         return output;
     }
  
-    public void setOutput(List<String> output) {
+    public void setOutput(CaseResult output) {
         this.output = output;
     }
  

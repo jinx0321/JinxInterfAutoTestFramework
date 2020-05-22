@@ -6,9 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class TestInfo {
+public class CaseInfo {
 	  
-    public TestInfo() {
+    public CaseInfo() {
     		
     	}
         //案例id
@@ -23,6 +23,8 @@ public class TestInfo {
         List<Map<String,String>> PreInfo=new LinkedList<Map<String,String>>();
         //发送数据
         Map<String,String> SendData=new LinkedHashMap<String, String>();
+        //返回信息:还没想好怎么写
+        CaseResult Msg=new CaseResult();
       
 		public String getId() {
 			return id;
@@ -59,6 +61,12 @@ public class TestInfo {
 		}
 		public void setSendData(Map<String, String> sendData) {
 			SendData = sendData;
+		}
+		public CaseResult getMsg() {
+			return Msg;
+		}
+		public void setMsg(CaseResult msg) {
+			Msg = msg;
 		}
 		@Override
 		public String toString() {

@@ -18,9 +18,10 @@ import AutoTest.DataProvider.DataParser;
 import AutoTest.Dict.ActionPrepare;
 import AutoTest.SuitInfo.HttpSuit.HttpDataParser;
 
-public abstract class BaseFlow<T extends TestInfo,K extends TestExecAction<T>>{
+public abstract class BaseFlow<T extends CaseInfo,K extends TestExecAction<T>>{
 	final private String _tail = "_al";
 	final private String _filetype = ".xlsx";
+	private CaseResult testresult;
     private K k;
 	
 	String current_TestId = "";
@@ -139,11 +140,15 @@ public abstract class BaseFlow<T extends TestInfo,K extends TestExecAction<T>>{
 		this.TestInfoList = TestInfoList;
 	}
 	
-	public Object CaseExec(T ti,K exec,Object o) {
-	
-	   return exec.CaseAcceptAc(this, ti,o);
-		
-
+	public void CaseExec(T ti,K exec,Object o) {
+	   testresult=(CaseResult) exec.CaseAcceptAc(this, ti,o);
 	}
+	
+	public void CaseResultDeal(T ti,K exec) {
+		exec.ResultGather(this, ti, testresult);
+		
+	}
+	
+
 
 }
