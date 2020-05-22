@@ -81,16 +81,17 @@
 				<br> 			</div>
 		</div>
 
-		<div id="showdetail" class="layui-container" hidden=true>
+	
+		<div id="showdetail" class="layui-container" hidden=true style="width:700px">
 
 			<div class="layui-row">
-				<div class="layui-col-md3">
+				<div class="layui-col-md12">
 
 					<table id="showtable" class="layui-table" lay-filter="showtable">
 						<thead>
 							<tr>
-								<th lay-data="{field:'key', width:100, sort: true}">属性</th>
-								<th lay-data="{field:'value', width:300}">值</th>
+								<th lay-data="{field:'key', width:'20%', sort: true}">属性</th>
+								<th lay-data="{field:'value', width:'80%'}">值</th>
 							</tr>
 						</thead>
 					</table>
@@ -114,8 +115,8 @@
 		   var element = layui.element; 
            var $=layui.$;
 	       <!--屏幕坐标-->
-	       var top  = window.screen.availHeight /3;
-           var left =  window.screen.availWidth /3;
+	       var top  = window.screen.availHeight/10;
+           var left =  window.screen.availWidth/10;
 		   element.on('collapse(test)', function(data){
 			   
 		     });
@@ -227,7 +228,7 @@
 				
 					   
 				     var index= layer.open({
-					 area: 'auto',
+					 area: ['750px', '350px'],
 					  title: obj.data.testName,
 					  scrollbar :false,
 					  skin:'layui-layer-lan',	

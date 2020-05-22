@@ -42,7 +42,7 @@ public class HttpExecAction extends TestExecAction<HttpTestInfo>{
 	    	tr.setExceptionMsg(e.getMessage());
 	    	
 	    }
-		tr.setExceptionMsg("≤‚ ‘“Ï≥£");
+		tr.setExceptionMsg("123≤‚ ‘“Ïsdfqwfasfasfaf≥£≤‚ ‘“Ï≥£≤‚ ‘“Ï≥£≤‚ ‘“Ï≥£≤‚ ‘“Ï≥£≤‚ ‘“Ï≥£≤‚ ‘“Ï≥£");
 		tr.setExtraData(msg);
 		return tr;
 		

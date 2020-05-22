@@ -65,16 +65,17 @@
 			</div>
 		</div>
 
-		<div id="showdetail" class="layui-container" hidden=true>
+	
+		<div id="showdetail" class="layui-container" hidden=true style="width:700px">
 
 			<div class="layui-row">
-				<div class="layui-col-md3">
+				<div class="layui-col-md12">
 
 					<table id="showtable" class="layui-table" lay-filter="showtable">
 						<thead>
 							<tr>
-								<th lay-data="{field:'key', width:100, sort: true}">属性</th>
-								<th lay-data="{field:'value', width:300}">值</th>
+								<th lay-data="{field:'key', width:'20%', sort: true}">属性</th>
+								<th lay-data="{field:'value', width:'80%'}">值</th>
 							</tr>
 						</thead>
 					</table>
@@ -98,8 +99,8 @@
 		   var element = layui.element; 
            var $=layui.$;
 	       <!--屏幕坐标-->
-	       var top  = window.screen.availHeight /3;
-           var left =  window.screen.availWidth /3;
+	       var top  = window.screen.availHeight/10;
+           var left =  window.screen.availWidth/10;
 		   element.on('collapse(test)', function(data){
 			   
 		     });
@@ -211,7 +212,7 @@
 				
 					   
 				     var index= layer.open({
-					 area: 'auto',
+					 area: ['750px', '350px'],
 					  title: obj.data.testName,
 					  scrollbar :false,
 					  skin:'layui-layer-lan',	
@@ -255,7 +256,7 @@
     backgroundColor: '#2c343c',
 
     title: {
-        text: '测试类总数: $TOTAL   成功率: $Pass_rate',
+        text: '测试类总数: 25   成功率: 60.00%',
         left: 'center',
         top: 20,
         textStyle: {
@@ -270,8 +271,8 @@
 
     visualMap: {
         show: false,
-        min: ${MIN},
-        max: ${MAX},
+        min: 0,
+        max: 15,
         inRange: {
             colorLightness: [0, 1]
         }
@@ -283,10 +284,10 @@
             radius: '55%',
             center: ['50%', '50%'],
             data: [
-                {value: $SUCCESS, name: 'SUCCESS'},
-                {value: $FAILED, name: 'FAILED'},
-                {value: $ERROR, name: 'ERROR'},
-                {value: $SKIPPED, name: 'SKIPPED'}
+                {value: 15, name: 'SUCCESS'},
+                {value: 10, name: 'FAILED'},
+                {value: 0, name: 'ERROR'},
+                {value: 0, name: 'SKIPPED'}
             ].sort(function (a, b) { return a.value - b.value; }),
             roseType: 'radius',
             label: {
