@@ -188,6 +188,7 @@ public class ReporterListener implements IReporter {
        //请求信息|请求层面异常
        testResult.setOutput(ti.getMsg());
        
+       
        //案例层面异常
        testResult.setThrowable(t.getThrowable());
        long duration = t.getEndMillis() - t.getStartMillis();

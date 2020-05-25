@@ -10,6 +10,14 @@
     <classes>
       <class name="AutoTest.flow.form"/>
        <class name="AutoTest.flow.form2"/>
+       <class name="AutoTest.flow.form3"/>
+       <class name="AutoTest.flow.form4"/>
+       <class name="AutoTest.flow.form5"/>
+       <class name="AutoTest.flow.form6"/>
+       <class name="AutoTest.flow.form7"/>
+       <class name="AutoTest.flow.form8"/>
+        <class name="AutoTest.flow.form9"/>
+       
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

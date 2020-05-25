@@ -3,6 +3,8 @@ package AutoTest.SuitInfo.HttpSuit;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.imageio.IIOException;
+
 import AutoTest.Base.BaseFlow;
 import AutoTest.Base.CaseInfo;
 import AutoTest.Base.CaseResult;
@@ -30,19 +32,21 @@ public class HttpExecAction extends TestExecAction<HttpTestInfo>{
 	public CaseResult send(String type,Map<String,String> header,Map<String,String> cookie,Map<String,String> param,String url) {
 	   Map<String,String> msg=new HashMap<String, String>();
 	   msg.put("url", url);
-	   
 	   CaseResult tr=new CaseResult();
-
 		try {
 		switch (type.toLowerCase()) {
 		   case "post":tr.setReutrnMsg(HttpUtils.post(header, cookie, param, url));
 		   case "get":tr.setReutrnMsg(HttpUtils.get(header, cookie, param, url));
 		}
+		try {
+			String x=null;
+			x=x.substring(2);
+		}catch(Exception e) {
+			tr.setExceptionMsg(e.getMessage());
+		}
 	    }catch(Exception e) {
 	    	tr.setExceptionMsg(e.getMessage());
-	    	
 	    }
-		tr.setExceptionMsg("123≤‚ ‘“Ïsdfqwfasfasfaf≥£≤‚ ‘“Ï≥£≤‚ ‘“Ï≥£≤‚ ‘“Ï≥£≤‚ ‘“Ï≥£≤‚ ‘“Ï≥£≤‚ ‘“Ï≥£");
 		tr.setExtraData(msg);
 		return tr;
 		

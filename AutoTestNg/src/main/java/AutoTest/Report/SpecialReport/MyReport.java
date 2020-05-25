@@ -29,6 +29,7 @@ public class MyReport implements SpecialReport{
 		vcontent.put("DURATION", reportresult.getDURATION());
 		vcontent.put("results", reportresult.getCollections());
 		vcontent.put("resultsjson", toJson(reportresult.getCollections()));
+	
 		
 		vcontent.put("REPORTNAME", "MYREPORT");
 		

@@ -65,7 +65,7 @@ public class HttpUtils {
 			result=content;
 	   
 	    } catch (IOException e) {
-	      e.printStackTrace();
+	      return e.getMessage();
 	    } finally {
 	      try {
 	        if (null != response) response.close();

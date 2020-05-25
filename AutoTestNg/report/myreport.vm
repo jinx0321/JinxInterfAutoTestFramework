@@ -27,8 +27,40 @@
 				<br>
 			</div>
 			<!-- 汇总图表组件 -->
-			<div class="layui-col-md12">
+			<div class="layui-col-md7">
 				<div id="summary" style="width: 600px; height: 400px;"></div>
+			</div>
+
+			<div class="layui-col-md5">
+				<ul class="layui-timeline">
+					<li class="layui-timeline-item"><i
+						class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title">SUCCESS: $SUCCESS</h3>
+						</div></li>
+				</ul>
+				<ul class="layui-timeline">
+					<li class="layui-timeline-item"><i
+						class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title">FAILED: $FAILED</h3>
+						</div></li>
+				</ul>
+				<ul class="layui-timeline">
+					<li class="layui-timeline-item"><i
+						class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title">ERROR: $ERROR</h3>
+						</div></li>
+				</ul>
+				<ul class="layui-timeline">
+					<li class="layui-timeline-item"><i
+						class="layui-icon layui-timeline-axis">&#xe63f;</i>
+						<div class="layui-timeline-content layui-text">
+							<h3 class="layui-timeline-title">SKIPPED: $SKIPPED</h3>
+						</div></li>
+				</ul>
+
 			</div>
 		</div>
 		<hr class="layui-bg-black">
@@ -65,8 +97,9 @@
 			</div>
 		</div>
 
-	
-		<div id="showdetail" class="layui-container" hidden=true style="width:700px">
+
+		<div id="showdetail" class="layui-container" hidden=true
+			style="width: 700px">
 
 			<div class="layui-row">
 				<div class="layui-col-md12">
@@ -92,8 +125,7 @@
 
 		<!-- layui的表格渲染 -->
 		<script type="text/javascript">
-      var rjson=[{"uid":"ca9127c78cf24006b7f13a59727f075d","failedSize":10,"classid":"AutoTest_flow_form","successSize":11,"totalSize":21,"classname":"AutoTest.flow.form","errorSize":0,"resultList":[{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"805"},"duration":"2.140","uid":"789add952a824789bb6b4a972c12d60a","success":false,"className":"AutoTest.flow.form","id":"1","params":"{param3=111222333, param4=4455, param1=11122233312312312.22, param2=111222333}","status":1,"testName":"测试方法1"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"5748"},"duration":"0.011","uid":"b5f84202516f4f27aaebdd5a83eb83cf","success":false,"throwable":"java.lang.AssertionError: expected [2] but found [1]","className":"AutoTest.flow.form","id":"2","params":"{param3=3, param4=4, param1=1, param2=2}","status":2,"testName":"测试方法2"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"3281"},"duration":"0.011","uid":"86ecefea88da44388cd2cf31a3b77696","success":false,"className":"AutoTest.flow.form","id":"3","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法3"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"3801"},"duration":"0.009","uid":"70424dcd6510469586e53f8176fa5b21","success":false,"throwable":"java.lang.AssertionError: expected [2] but found [1]","className":"AutoTest.flow.form","id":"4","params":"{param3=3, param4=4, param1=1, param2=2}","status":2,"testName":"测试方法4"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"9726"},"duration":"0.007","uid":"033e5045f64844d0a80e916e1081f356","success":false,"className":"AutoTest.flow.form","id":"5","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法5"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"1874"},"duration":"0.009","uid":"b12c14a019bd48dd940a1beac3dcb8ab","success":false,"throwable":"java.lang.AssertionError: expected [2] but found [1]","className":"AutoTest.flow.form","id":"6","params":"{param3=3, param4=4, param1=1, param2=2}","status":2,"testName":"测试方法6"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"6661"},"duration":"0.008","uid":"914369d9eb38476a87549fc2549dd00d","success":false,"className":"AutoTest.flow.form","id":"7","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法7"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"5573"},"duration":"0.009","uid":"d4bb82b144ce49e5ab30b70c1cd7c17c","success":false,"throwable":"java.lang.AssertionError: expected [2] but found [1]","className":"AutoTest.flow.form","id":"8","params":"{param3=3, param4=4, param1=1, param2=2}","status":2,"testName":"测试方法8"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"3639"},"duration":"0.010","uid":"91d3d4cd177343b4bb322c894781d779","success":false,"className":"AutoTest.flow.form","id":"9","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法9"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"5396"},"duration":"0.009","uid":"bf375d3666e74b7f9fbb9b8b128e9f80","success":false,"throwable":"java.lang.AssertionError: expected [2] but found [1]","className":"AutoTest.flow.form","id":"10","params":"{param3=3, param4=4, param1=1, param2=2}","status":2,"testName":"测试方法10"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"5048"},"duration":"0.009","uid":"e9f11eee51814fe1819a2972e8773dfd","success":false,"className":"AutoTest.flow.form","id":"11","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法11"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"9810"},"duration":"0.009","uid":"26f4b349f99842088a9d339060572deb","success":false,"throwable":"java.lang.AssertionError: expected [2] but found [1]","className":"AutoTest.flow.form","id":"12","params":"{param3=3, param4=4, param1=1, param2=2}","status":2,"testName":"测试方法12"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"809"},"duration":"0.009","uid":"84aa9665a3284cb78916ef73a2d1825d","success":false,"className":"AutoTest.flow.form","id":"13","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法13"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"9174"},"duration":"0.009","uid":"0e4849435f8741ba9e6f924532df7ad4","success":false,"throwable":"java.lang.AssertionError: expected [2] but found [1]","className":"AutoTest.flow.form","id":"14","params":"{param3=3, param4=4, param1=1, param2=2}","status":2,"testName":"测试方法14"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"5437"},"duration":"0.007","uid":"0e801a1e54654fe88d8c1b34b962cf1b","success":false,"className":"AutoTest.flow.form","id":"15","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法15"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"2218"},"duration":"0.008","uid":"9cfe424377b44377b2ce1a806671eb2e","success":false,"throwable":"java.lang.AssertionError: expected [2] but found [1]","className":"AutoTest.flow.form","id":"16","params":"{param3=3, param4=4, param1=1, param2=2}","status":2,"testName":"测试方法16"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"8222"},"duration":"0.014","uid":"9949321cc86b4eaa84ec18bf926f16f3","success":false,"className":"AutoTest.flow.form","id":"17","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法17"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"5480"},"duration":"0.006","uid":"553b8fe91bf44f999db144eb65c3505e","success":false,"throwable":"java.lang.AssertionError: expected [2] but found [1]","className":"AutoTest.flow.form","id":"18","params":"{param3=3, param4=4, param1=1, param2=2}","status":2,"testName":"测试方法18"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"7292"},"duration":"0.009","uid":"ad63dd50e13f49a4a28a21a07cf8bf3c","success":false,"className":"AutoTest.flow.form","id":"19","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法19"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"1544"},"duration":"0.008","uid":"f35194bfdbdc44fdac2ae9443f1be830","success":false,"throwable":"java.lang.AssertionError: expected [2] but found [1]","className":"AutoTest.flow.form","id":"20","params":"{param3=3, param4=4, param1=1, param2=2}","status":2,"testName":"测试方法20"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"4386"},"duration":"0.009","uid":"96f318e1edbb4be980d27e5ac8c42c6b","success":false,"className":"AutoTest.flow.form","id":"21","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"测试方法21"}],"skippedSize":0},{"uid":"30d94b5e3fbb4ab894575f4a145d1aa8","failedSize":0,"classid":"AutoTest_flow_form2","successSize":4,"totalSize":4,"classname":"AutoTest.flow.form2","errorSize":0,"resultList":[{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"4294"},"duration":"0.013","uid":"b2df6b26378647b6993f69bc209f222f","success":false,"className":"AutoTest.flow.form2","id":"1","params":"{param3=111222333, param4=4455, param1=11122233312312312.22, param2=111222333}","status":1,"testName":"test1"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"583"},"duration":"0.013","uid":"7290f356660f4bf4878e7d3f79772f99","success":false,"className":"AutoTest.flow.form2","id":"2","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"test2"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"5389"},"duration":"0.007","uid":"5977f6b3630542d79191059c68d2e784","success":false,"className":"AutoTest.flow.form2","id":"3","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"test3"},{"output":{"exceptionMsg":"测试异常","extraData":{"url":"http://localhost:9090/json"},"reutrnMsg":"4388"},"duration":"0.008","uid":"15e7bdfb7cd741a5b8ff78e27b82e33b","success":false,"className":"AutoTest.flow.form2","id":"4","params":"{param3=3, param4=4, param1=1, param2=2}","status":1,"testName":"test4"}],"skippedSize":0}];
-      
+      var rjson=$resultsjson;
       layui.use(['layer','table','element','jquery'], function(){
 		   var table = layui.table;
 		   var element = layui.element; 
@@ -133,7 +165,7 @@
 					 "exceptionMsg":d.output.exceptionMsg,
 					 "reutrnMsg":d.output.reutrnMsg,
 					 "url":d.output.extraData.url,
-					 "senddata":d.senddata
+					 "senddata":d.params
 				   }
 				   
 				   
@@ -251,69 +283,45 @@
         // 基于准备好的dom，初始化echarts实例
   var summary = echarts.init(document.getElementById('summary'));
 
-        // 指定图表的配置项和数据
-      var summary_info = {
-    backgroundColor: '#2c343c',
+  // 指定图表的配置项和数据
+	var summary_info = {
+title: {
+  text: '测试情况',
+  left: 'left'
+},
+tooltip: {
+  trigger: 'item',
+  formatter: '{a} <br/>{b} : {c} ({d}%)'
+},
+legend: {
+  type: 'scroll',
+  orient: 'vertical',
+  right: 10,
+  top: 20,
+  bottom: 20,
 
-    title: {
-        text: '测试类总数: 25   成功率: 60.00%',
-        left: 'center',
-        top: 20,
-        textStyle: {
-            color: '#ccc'
-        }
-    },
-
-    tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-    },
-
-    visualMap: {
-        show: false,
-        min: 0,
-        max: 15,
-        inRange: {
-            colorLightness: [0, 1]
-        }
-    },
-    series: [
-        {
-            name: '测试情况',
-            type: 'pie',
-            radius: '55%',
-            center: ['50%', '50%'],
-            data: [
-                {value: 15, name: 'SUCCESS'},
-                {value: 10, name: 'FAILED'},
-                {value: 0, name: 'ERROR'},
-                {value: 0, name: 'SKIPPED'}
-            ].sort(function (a, b) { return a.value - b.value; }),
-            roseType: 'radius',
-            label: {
-                color: 'rgba(255, 255, 255, 0.3)'
-            },
-            labelLine: {
-                lineStyle: {
-                    color: 'rgba(255, 255, 255, 0.3)'
-                },
-                smooth: 0.2,
-                length: 10,
-                length2: 20
-            },
-            itemStyle: {
-                color: '#c23531',
-                shadowBlur: 200,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-            },
-
-            animationType: 'scale',
-            animationEasing: 'elasticOut',
-            animationDelay: function (idx) {
-                return Math.random() * 200;
-            }
-        }
-    ]
+},
+series: [
+  {
+      name: '姓名',
+      type: 'pie',
+      radius: '55%',
+      center: ['40%', '50%'],
+     data: [
+          {value: $SUCCESS, name: 'SUCCESS'},
+          {value: $FAILED, name: 'FAILED'},
+          {value: $ERROR, name: 'ERROR'},
+          {value: $SKIPPED, name: 'SKIPPED'}
+      ].sort(function (a, b) { return a.value - b.value; }),
+      emphasis: {
+          itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+      }
+  }
+]
 };
 
         // 使用刚指定的配置项和数据显示图表。
