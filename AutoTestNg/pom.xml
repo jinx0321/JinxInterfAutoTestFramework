@@ -169,7 +169,8 @@
 					<suiteXmlFiles>
 						<suiteXmlFile>testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
-
+					<!-- 打包跳过-->
+                     <skip>true</skip>
 					<properties>
 						<!-- 案例最大线程池数 
 						<property>

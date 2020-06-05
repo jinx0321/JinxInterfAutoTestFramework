@@ -38,6 +38,7 @@ public abstract class BaseFlow<T extends CaseInfo,K extends TestExecAction<T>>{
 		DataParser dp = DataCache.DataParser;
 		try {
 			String filedir = this.getClass().getResource("").getPath() + this.getClass().getSimpleName() + _tail+ _filetype;
+			filedir = java.net.URLDecoder.decode(filedir, "utf-8");
 			TestInfoList = dp.parser(filedir);
 			if (TestInfoList.size() > 0) {
 				// 初始化第一条

@@ -14,8 +14,12 @@
 	<div class="layui-container">
 		<!-- 标题    -->
 		<div class="layui-row">
-			<div class="layui-col-md12">
+			<div class="layui-col-md11">
 				<h1>MYREPORT</h1>
+			</div>
+			<div class="layui-col-md1">
+			   <br>
+				<i class="layui-icon" id="export">&#xe67d;</i>   
 			</div>
 		</div>
 
@@ -32,6 +36,7 @@
 			</div>
 
 			<div class="layui-col-md5">
+			<br>
 				<ul class="layui-timeline">
 					<li class="layui-timeline-item"><i
 						class="layui-icon layui-timeline-axis">&#xe63f;</i>
@@ -133,10 +138,14 @@
 	       <!--屏幕坐标-->
 	       var top  = window.screen.availHeight/10;
            var left =  window.screen.availWidth/10;
+           
+           var center_height=window.screen.availHeight/2;
+           var center_width=window.screen.availWidth/2 ;
 		   element.on('collapse(test)', function(data){
 			   
 		     });
-		   
+			//导出数据
+	  var exportdata="案例类,案例名,案例编号,状态,运行时间,URL,发送数据,返回数据,案例异常,请求异常\n";
     	  for(var obj of rjson){
     		    var classid=obj.classid; 
 			    var classname=obj.classname;
@@ -177,6 +186,17 @@
 					   "Detail":JSON.stringify(detail)
 				   
 				   }
+				   
+				   var trow=detail.throwable;
+				   var excep=detail.exceptionMsg;
+				   if(trow==null){
+				   trow="";
+				   }
+				   if(excep==null){
+				   excep="";
+				   }
+				   exportdata=exportdata+classname+","+tableobj.testName+","+tableobj.id+","+tableobj.status+","+tableobj.duration+","+detail.url+",\""+detail.senddata.replace(/\"/g,"\"\"")+"\",\""+detail.reutrnMsg.replace(/\"/g,"\"\"")+"\",\""+trow.replace(/\"/g,"\"\"")+"\",\""+excep.replace(/\"/g,"\"\"")+"\"\n";
+                   
                     data.data.push(tableobj);
 
 				}
@@ -272,6 +292,33 @@
                   });
 
 			}
+    	//导出csv	
+  		js_csv = {
+             export_csv: function(data, name) {
+              var uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(data);
+              var downloadLink = document.createElement("a");
+              downloadLink.href = uri;
+              downloadLink.download = (name+".csv")||"temp.csv";
+              document.body.appendChild(downloadLink);
+              downloadLink.click();
+              document.body.removeChild(downloadLink);
+            }
+  		}
+  			
+  	   $("#export").click(function(){
+		   layer.confirm('确认导出?', {  
+		                      offset: [(center_height/2)+'px', (center_width/2)+'px'],
+		                      skin:'layui-layer-lan',	
+                              btn: ['确认', '取消']
+                                  ,btn2: function(index, layero){
+				                  layer.close(index);}
+                                }, function(index, layero){
+                                  //	 console.log(exportdata);
+								   js_csv.export_csv(exportdata, "MyReport");
+								    layer.close(index);
+                                    });
+		   });
+    	  
     	});
   </script>
 		<!-- 工具条 -->

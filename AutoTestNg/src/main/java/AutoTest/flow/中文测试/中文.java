@@ -1,4 +1,4 @@
-package AutoTest.flow;
+package AutoTest.flow.中文测试;
 
 import static org.testng.Assert.assertEquals;
 
@@ -14,7 +14,7 @@ import AutoTest.DataAction.TestExecAction;
 import AutoTest.SuitInfo.HttpSuit.HttpExecAction;
 import AutoTest.SuitInfo.HttpSuit.HttpTestInfo;
 
-public class form9 extends BaseFlow<HttpTestInfo,HttpExecAction>{
+public class 中文 extends BaseFlow<HttpTestInfo,HttpExecAction>{
 	final String url="http://localhost:9090/json";
 	
 	@DataProvider(name="data")
