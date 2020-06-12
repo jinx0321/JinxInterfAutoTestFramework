@@ -9,11 +9,47 @@
 </head>
 <body>
 	<div class="layui-container">
-		<!-- 标题    -->
-		<div class="layui-row">
-			<div id="show" class="layui-col-md12"></div>
-		</div>
 
+		<div class="layui-row">
+			<div class="layui-col-md1">
+				<button id="add" type="button"
+					class="layui-btn layui-btn-lg layui-btn-radius layui-btn-normal">
+					<i class="layui-icon">&#xe608;</i> 添加
+				</button>
+			</div>
+		</div>
+		<br>
+		<div id="adddiv" class="layui-row">
+			<div class="layui-col-md12">
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<label class="layui-form-label">URL</label>
+						<div class="layui-input-block">
+							<input type="text" name="title" required lay-verify="required"
+								placeholder="请输入URL" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">DATA</label>
+						<div class="layui-input-block">
+							<textarea name="" required lay-verify="required" placeholder="请输入数据" class="layui-textarea"></textarea>
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<button class="layui-btn" type="button" id="addsubmit">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<br>
+		<div class="layui-row">
+
+			<div id="show" class="layui-col-md11"></div>
+		</div>
 	</div>
 
 </body>
@@ -33,6 +69,15 @@
         queryurldata();
         uirender();
         bildbutton();
+    	$('#adddiv').hide();
+    	addaction();
+        function addaction(){
+        	$('#add').click(function(){
+        		$('#adddiv').show();
+        		
+        	});
+        	
+        }
        
         <!--获取数据发送类型-->
         function queryurldata(){
@@ -117,6 +162,7 @@
 	             }
 	          }); 
        	 }
+        //删除动作
         function clickdeleteHandler(event){
         	  var i= event.data.index;
         	  var url=actions.data[i].url;
