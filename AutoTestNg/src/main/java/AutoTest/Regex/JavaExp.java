@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -211,6 +212,21 @@ public class JavaExp {
 
 		return var;
 	}
+	//逗号
+	private String comma="6a9f1074916d4fd1b446fe5402111a3e";
+	//双引号
+	private String Dq="40768bb779c248bb9fa6f59823371fc8";
+	/**
+	 * 特殊字符处理,主要是处理变量值中的{},",,
+	 * @param content
+	 */
+	public String SpecialDealBefore(String content){
+		return content.replace(",", comma).replace("\"", Dq);
+	}
+	public String SpecialDealAfter(String content){
+		return content.replace(comma, ",").replace(Dq, "\"");
+	}
+	
 	
 	/**
 	 * java表达式执行
@@ -228,7 +244,7 @@ public class JavaExp {
 		params.forEach(e->{
 			//如果是字符串
 			if(e.startsWith("\"")&&e.endsWith("\"")) {
-				dealparams.add(String.valueOf(e.substring(1, e.length()-1)));
+				dealparams.add(SpecialDealAfter(String.valueOf(e.substring(1, e.length()-1))));
 			}
 			//如果是数字
 			else{
@@ -243,13 +259,18 @@ public class JavaExp {
 		//dealparams.forEach(e->{
 			//System.out.println(e.getClass().getName());
 		//});
-		String method=cm.split("\\.")[cm.split("\\.").length-1];
-		String clazz=cm.replaceAll(method, "").substring(0, cm.replaceAll(method, "").length()-1);
-		
+		String[] cms=cm.split("\\.");
+		String method=cms[cms.length-1];
+		String clazz="";
+		for(int i=0;i<cms.length-1;i++) {
+			clazz=clazz+cms[i]+".";
+		}
+		clazz=clazz.substring(0, clazz.length()-1);
 		Method[] methods=Class.forName(clazz).getMethods();
 		for(int i=0;i<methods.length;i++) {
 			if(methods[i].getName().toLowerCase().equals(method.toLowerCase())) {
 				return (String) methods[i].invoke(Class.forName(clazz).newInstance(), dealparams.toArray());
+			    //return var;
 			}
 		}
 		
@@ -347,8 +368,8 @@ public class JavaExp {
 	
 	@Test
 	public void test() throws Exception {
-		String x="{from Java(name=AutoTest.Base.TestMethod.TestMethod.test(\"111222333\",\"123\",12,123.2))}";
-		System.out.println(JavaExec(x));
+		//String x="{from Java(name=AutoTest.Base.TestMethod.TestMethod.test(\"111222333\",\"123\",12,123.2))}";
+		System.out.println(UUID.randomUUID().toString().replaceAll("-", ""));
 		//System.out.println(nextchar("123 ",2));
 		//System.out.println(prechar(" 1 234",1));
 		////System.out.println(' '=="12 34".charAt(1));

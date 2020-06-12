@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MOCK</title>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/jquery-3.3.1/jquery-3.3.1.js}"></script>
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+	<div class="layui-container">
+		<!-- 标题    -->
+		<div class="layui-row">
+			<div id="show" class="layui-col-md12"></div>
+		</div>
+
+	</div>
+
+</body>
+<script>
+	layui.use([ 'layer', 'form' ,'jquery','code','layedit','element'], function() {
+		<!-- layui初始化-->
+		var layer = layui.layer, form = layui.form;
+		 var element = layui.element; 
+		<!-- 获取布局中的form表单-->
+		var form = layui.form;
+		<!-- 引入jquery-->
+		var $=layui.$;
+       
+        <!-- url数据-->
+        var urldata;
+        var actions={"data":[]};
+        queryurldata();
+        uirender();
+        bildbutton();
+       
+        <!--获取数据发送类型-->
+        function queryurldata(){
+        $.ajax({          
+          	url:"/mock/query_data", 
+            type:"post", 
+            async: false,
+            success:function(data){
+            	urldata=data;
+            }
+         });
+        }
+       
+        <!--界面渲染-->
+        function uirender(json){
+        	var i=0;
+        	 for(var obj of urldata){
+        		
+        		 var urld=obj.url;
+        		 var data=obj.data;
+        		 var divid=urld.replace(/\//g,"_")+'divid_';
+        		 var textareaid=urld.replace(/\//g,"_")+'textarea_';
+        		 var editid=urld.replace(/\//g,"_")+'edit_';
+        		 var updateid=urld.replace(/\//g,"_")+'update_';
+        		 var deleteid=urld.replace(/\//g,"_")+'delete_';
+        		 
+        		  var action={
+        				 "url":urld,
+          	    		"divid":divid,
+          	    		"textareaid":textareaid,
+          	    		"editid":editid,
+          	    		"updateid":updateid,
+          	    		"deleteid":deleteid
+          	     }
+          	     actions.data.push(action);
+        		 
+        		  divid=divid+i;
+        		  textareaid=textareaid+i;
+        		  editid=editid+i;
+        		  updateid=updateid+i;
+        		  deleteid=deleteid+i;
+        		  
+        		 if(isJSON(data)){
+        			 data=JSON.stringify(JSON.parse(data),null,2); 
+        		 }
+        	     $("#show").append('<div id="'+divid+'"><fieldset class="layui-elem-field layui-field-title"style="margin-top: 20px;"><legend>URL:'+urld+'</legend></fieldset><div class="layui-collapse" lay-filter="test"><div class="layui-colla-item"><h2 class="layui-colla-title">'+urld+'</h2><div class="layui-colla-content">	 <button id='+editid+' type="button" class="layui-btn layui-btn-primary layui-bg-green">编辑</button> <button id='+updateid+' type="button" class="layui-btn layui-btn-primary layui-bg-blue">更新</button> <button id='+deleteid+' type="button" class="layui-btn layui-btn-primary layui-bg-black">删除</button><textarea id="'+textareaid+'" required lay-verify="required" placeholder="请输入" class="layui-textarea" style="height:500px" disabled>'+data+'</textarea></div></div><div><div>'); 
+        	     i++;
+        	 }//end for
+        	  element.render();
+        }
+        
+        
+        //这里写起来实在是太生艹了
+        function bildbutton(){
+        	for(var i in actions.data){
+        		 $("#"+actions.data[i].editid+i).bind("click", {index: i}, clickeditHandler);
+        	    $("#"+actions.data[i].updateid+i).bind("click", {index: i}, clickupdateHandler);
+        	    $("#"+actions.data[i].deleteid+i).bind("click", {index: i}, clickdeleteHandler);
+	            }
+        }
+        //编辑动作
+         function clickeditHandler(event) {
+      	    var i= event.data.index;
+      	    $("#"+actions.data[i].textareaid+i).removeAttr("disabled");	
+      	 }
+        //更新动作
+         function clickupdateHandler(event) {
+       	    var i= event.data.index;
+          	 var content=$("#"+actions.data[i].textareaid+i).val();
+          	 var url=actions.data[i].url;
+	    	 $.ajax({          
+	           	url:"/mock/update_data", 
+	             type:"post", 
+	             async: false,
+	             data:{
+	            	 url:url,
+	            	 data:content
+	             },
+	             success:function(data){
+	            	 layer.msg(data.info);
+	               $("#"+actions.data[i].textareaid+i).attr("disabled",'disabled');
+	             }
+	          }); 
+       	 }
+        function clickdeleteHandler(event){
+        	  var i= event.data.index;
+        	  var url=actions.data[i].url;
+ 	    	 $.ajax({          
+ 	           	url:"/mock/delete_data", 
+ 	             type:"post", 
+ 	             async: false,
+ 	             data:{
+ 	            	 url:url
+ 	             },
+ 	             success:function(data){
+ 	            	 layer.msg(data.info);
+ 	            	 $("#"+actions.data[i].divid+i).remove();
+ 	             
+ 	             }
+ 	          }); 
+        	 
+        	
+        }
+        //时候是json字符串
+        function isJSON(str) {
+            if (typeof str == 'string') {
+                try {
+                    var obj=JSON.parse(str);
+                    if(typeof obj == 'object' && obj ){
+                        return true;
+                    }else{
+                        return false;
+                    }
+
+                } catch(e) {
+                    return false;
+                }
+            }
+        }
+      
+        <!-- 折叠板-->
+        element.on('collapse(test)', function(data){});
+        
+
+	});
+</script>
+
+
+</html>

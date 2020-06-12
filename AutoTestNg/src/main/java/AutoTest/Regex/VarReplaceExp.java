@@ -1,16 +1,19 @@
 package AutoTest.Regex;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.junit.Test;
 
 public class VarReplaceExp {
-	  private final String regex="[\\s]*\\$[\\s]*\\{[\\s]*[a-z,A-Z,0-9]+[\\s]*\\}[\\s]*";
+	  private final String regex="[\\s]*\\$[\\s]*\\{[\\s]*[_,a-z,A-Z,0-9]+[\\s]*\\}[\\s]*";
 	  
 	  private Pattern pattern=Pattern.compile(regex);
 	  
@@ -46,11 +49,16 @@ public class VarReplaceExp {
 	     */
 	    public List<String> FindContentRegex(String content){
 	    	Matcher m=pattern.matcher(content);
-	    	List<String> regexs=new LinkedList<String>();
+	    	Set<String> regexs=new HashSet<String>();
 	    	while(m.find()) {
 	    	  regexs.add(m.group());
 	    	}
-	    	return regexs;
+	    	List<String> l=new LinkedList<String>();
+	    	Iterator<String> i=regexs.iterator();
+	    	while(i.hasNext()){
+	    		l.add(i.next());
+	    	}
+	    	return l;
 	    }
 
 

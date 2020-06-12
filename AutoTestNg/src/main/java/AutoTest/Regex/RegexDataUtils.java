@@ -11,6 +11,7 @@ import org.junit.Test;
 
 
 import AutoTest.DataProvider.DataCache;
+import AutoTest.Dict.Regex_Type;
 import AutoTest.Utils.RegexUtils;
 
 /**
@@ -40,11 +41,13 @@ public class RegexDataUtils {
 	 * 表达式预加载
 	 */
 	private void PreRegexLoad(RegexUpdateModel regexupdatemodel) {
-
 		//如果表达式未被预加载
 		if(regexupdatemodel.isIs_pre()==false) {
 			//解析模型表达式
 			regexupdatemodel.setContentexp(RegexInter.ReturnRegexs(regexupdatemodel.getContent()));
+			
+			//解析表达式类型
+			regexupdatemodel.setRegexType(RegexInter.ReturnExpType(regexupdatemodel.getContent()));
 			
 			PreRegexUpdate(regexupdatemodel);
 			//设置表达式预加载标志为true
@@ -75,7 +78,8 @@ public class RegexDataUtils {
         	    	   //对最终表达式进行解析
         	    	   String aftercontent=RegexInter.ExpFilter(value.getContent(), DataCache.casedata);
         	    	   //更新当前节点的content和contentexp
-        	    	   regexupdatemodel.setContent(regexupdatemodel.getContent().replaceAll(RegexUtils.makeQueryStringAllRegExp(key), aftercontent));
+        	    	  // regexupdatemodel.setContent(regexupdatemodel.getContent().replaceAll(RegexUtils.makeQueryStringAllRegExp(key), RegexUtils.makeQueryStringAllRegExp(aftercontent)));
+        	    	   SetRegexContent(regexupdatemodel,key,aftercontent);
         	    	   removelsit.add(key);
         	       }
              }
@@ -94,6 +98,7 @@ public class RegexDataUtils {
 	public void ParserRegex(RegexUpdateModel regexupdatemodel) {
 		//表达式预装载
 		PreRegexLoad(regexupdatemodel);
+		//System.out.println(regexupdatemodel.getContentexp());
 		while(true){
 			if(regexupdatemodel.getContentexp().size()>0) {
 				RegexLoad(regexupdatemodel);
@@ -101,14 +106,24 @@ public class RegexDataUtils {
 				break;
 			}
 		}
-		
 		//表达式后装载
 		AfterRegexLoad(regexupdatemodel);
-			
-
-		
-		
 	}
+	
+	
+	/**
+	 * 设置文本值
+	 * @param regexupdatemodel
+	 */
+	public void SetRegexContent(RegexUpdateModel regexupdatemodel,String var,String content){
+		if(regexupdatemodel.getRegexType().equals(Regex_Type.Java_Regex)) {
+		regexupdatemodel.setContent(regexupdatemodel.getContent().replaceAll(RegexUtils.makeQueryStringAllRegExp(var), RegexUtils.makeQueryStringAllRegExp(RegexInter.JavaExp.SpecialDealBefore(content))));
+		}else {
+			regexupdatemodel.setContent(regexupdatemodel.getContent().replaceAll(RegexUtils.makeQueryStringAllRegExp(var), RegexUtils.makeQueryStringAllRegExp(content)));
+				
+		}
+		}
+		
 	
 
 

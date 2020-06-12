@@ -1,4 +1,4 @@
-package AutoTest.flow.中文测试;
+package AutoTest.flow.test;
 
 import static org.testng.Assert.assertEquals;
 
@@ -14,8 +14,8 @@ import AutoTest.DataAction.TestExecAction;
 import AutoTest.SuitInfo.HttpSuit.HttpExecAction;
 import AutoTest.SuitInfo.HttpSuit.HttpTestInfo;
 
-public class 中文 extends BaseFlow<HttpTestInfo,HttpExecAction>{
-	final String url="http://localhost:9090/json";
+public class addcompany extends BaseFlow<HttpTestInfo,HttpExecAction>{
+	final String url="http://www.wjljtest.5ibazhuayu.com.cn/open_api/v1/register_company";
 	
 	@DataProvider(name="data")
 	public Object[][] returnData(){
@@ -26,13 +26,7 @@ public class 中文 extends BaseFlow<HttpTestInfo,HttpExecAction>{
 	public void test(HttpTestInfo ti) throws Exception {
 		HttpExecAction httpexecaction=new HttpExecAction();
 		CaseExec(ti,httpexecaction,url);
-		CaseResultDeal(ti,httpexecaction);
-		
-		if(Integer.valueOf(ti.getId())%2==0) {
-			
-			assertEquals(1, 2);
-		}
-		
+		CaseResultDeal(ti,httpexecaction);	
 	}
 
 }

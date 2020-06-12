@@ -9,6 +9,8 @@ import java.util.Map;
  *
  */
 public class RegexUpdateModel {
+	//当前表达式类型
+	private String RegexType;
 
 	//是否解析结束
 	private boolean is_over = false;
@@ -54,6 +56,14 @@ public class RegexUpdateModel {
 
 	public void setContentexp(Map<Object, Object> collect) {
 		this.contentexp = (Map)collect;
+	}
+	
+	public String getRegexType() {
+		return RegexType;
+	}
+
+	public void setRegexType(String regexType) {
+		RegexType = regexType;
 	}
 
 	@Override

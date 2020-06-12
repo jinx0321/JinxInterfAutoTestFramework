@@ -48,7 +48,7 @@ public abstract class BaseFlow<T extends CaseInfo,K extends TestExecAction<T>>{
 			System.out.println(this.getClass().getName()+"数据初始化成功");
 			}
 		} catch (Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			System.out.println(this.getClass().getName()+"数据初始化失败");
 		}
 

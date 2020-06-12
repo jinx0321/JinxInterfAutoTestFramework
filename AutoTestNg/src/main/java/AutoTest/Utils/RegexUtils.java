@@ -1,5 +1,9 @@
 package AutoTest.Utils;
 
+import java.util.UUID;
+
+import org.junit.Test;
+
 public class RegexUtils {
 	/**
      * 转义正则特殊字符 （$()*+.[]?\^{}
@@ -7,7 +11,6 @@ public class RegexUtils {
      */
     public static String makeQueryStringAllRegExp(String str) {
      
-
         return str.replace("\\", "\\\\").replace("*", "\\*")
                 .replace("+", "\\+").replace("|", "\\|")
                 .replace("{", "\\{").replace("}", "\\}")
@@ -16,5 +19,10 @@ public class RegexUtils {
                 .replace("[", "\\[").replace("]", "\\]")
                 .replace("?", "\\?").replace(",", "\\,")
                 .replace(".", "\\.").replace("&", "\\&");
+    }
+    
+    @Test
+    public void test() {
+    	System.out.println(UUID.randomUUID().toString().replace("-", ""));
     }
 }
