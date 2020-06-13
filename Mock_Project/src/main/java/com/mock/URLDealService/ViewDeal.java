@@ -66,4 +66,20 @@ public class ViewDeal {
 		return "{\"info\":\"删除成功\"}";
 	}
 
+
+
+	public String AddData(String url, String data) {
+		UrlData ud=new UrlData();
+		ud.setUrl(url);
+		ud.setData(data);
+		CacheData.RootData.getUrldata().add(ud);
+		try {
+			CacheData.XmlUtils.UpdateXml(CacheData.RootData);
+		}catch (Exception e) {
+			return "{\"info\":\""+e.getMessage()+"\"}";
+		}
+		
+		return "{\"info\":\"新增成功\"}";
+	}
+
 }

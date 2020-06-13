@@ -7,3 +7,7 @@
 /TestProject/target
 /TestProject/test-output
 /TestProject/report/report.html
+/Mock_Project/.settings
+/Mock_Project/target
+/Mock_Project/.classpath
+/Mock_Project/.project

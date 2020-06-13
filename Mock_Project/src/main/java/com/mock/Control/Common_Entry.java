@@ -64,6 +64,11 @@ public class Common_Entry {
 	public String delete_data(HttpServletRequest request) {
         return ViewDeal.DeleteData(request.getParameter("url"));
 	}
-	
+	@RequestMapping(value="/mock/add_data",produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String add_data(HttpServletRequest request) {
+		return ViewDeal.AddData(request.getParameter("url"),
+        		request.getParameter("data"));
+	}
 	
 }
