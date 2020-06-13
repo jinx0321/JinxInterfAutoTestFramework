@@ -67,8 +67,7 @@ public class XmlUtils {
 	    }
 
 		public void getdir() {
-			xmldir="E:\\woekspace\\JinxInterfAutoTestFramework\\Mock_Project\\src\\main\\resources\\source\\UrlMapping.xml";
-			//xmldir=System.getProperty("user.dir")+"/data/UrlMapping.xml";
+			xmldir=System.getProperty("user.dir")+"/datasource/UrlMapping.xml";
 			
 		}
 	}

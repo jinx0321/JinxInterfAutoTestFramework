@@ -38,8 +38,9 @@ public class CommonFilter implements Filter {
 	        HttpServletResponseWrapper httpResponse = new HttpServletResponseWrapper((HttpServletResponse) response);
 	        System.out.println(httpRequest.getRequestURI());
 	        String path=httpRequest.getRequestURI();
-	        
-	        if(path.startsWith("/mock")) {
+	        if(path.equals("/mock")) {
+	        	chain.doFilter(request, response);  
+	        } else if(path.startsWith("/mock/")) {
 	        	chain.doFilter(request, response);  
 	        }else if(path.startsWith("/layui/")) {
 	        	chain.doFilter(request, response);  

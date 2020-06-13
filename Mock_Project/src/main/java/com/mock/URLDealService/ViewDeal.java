@@ -2,6 +2,7 @@ package com.mock.URLDealService;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
@@ -12,6 +13,9 @@ import com.mock.Data.UrlData;
 
 @Component
 public class ViewDeal {
+	
+	@Autowired
+	UrlUtils UrlUtils;
 	
 	public String QueryUrlData() {
 		return 	JSON.toJSONString(CacheData.RootData.getUrldata());
@@ -29,16 +33,16 @@ public class ViewDeal {
 				try {
 					CacheData.XmlUtils.UpdateXml(CacheData.RootData);
 				}catch (Exception e) {
-					return "{\"info\":\""+e.getMessage()+"\"}";
+					return "{\"info\":\""+e.getMessage()+"\",\"flag\":\"fail\"}";
 				}
 			    
-				return "{\"info\":\"更新成功\"}";
+				return "{\"info\":\"更新成功\",\"flag\":\"success\"}";
 			}
 			
 		}
 
 		
-		return "{\"info\":\"更新失败,Url找不到\"}";
+		return "{\"info\":\"更新失败,Url找不到\",\"flag\":\"fail\"}";
 		
 	}
 
@@ -58,17 +62,27 @@ public class ViewDeal {
 				CacheData.RootData.getUrldata().remove(ud);
 				CacheData.XmlUtils.UpdateXml(CacheData.RootData);
 			}catch (Exception e) {
-				return "{\"info\":\""+e.getMessage()+"\"}";
+				return "{\"info\":\""+e.getMessage()+"\",\"flag\":\"fail\"}";
 			}
 		}else {
-			return "{\"info\":\"删除失败,Url找不到\"}";
+			return "{\"info\":\"删除失败,Url找不到\",\"flag\":\"fail\"}";
 		}
-		return "{\"info\":\"删除成功\"}";
+		return "{\"info\":\"删除成功\",\"flag\":\"success\"}";
 	}
 
 
 
 	public String AddData(String url, String data) {
+		if(!UrlUtils.is_Url(url)) {
+			return "{\"info\":\"Url不合法,请输入/xxx/xxx/xxx格式\",\"flag\":\"fail\"}";
+		}
+		
+		for(UrlData ud:CacheData.RootData.getUrldata()) {
+			if(ud.getUrl().equals(url)) {
+				return "{\"info\":\"Url已存在\",\"flag\":\"fail\"}";
+			}
+			
+		}
 		UrlData ud=new UrlData();
 		ud.setUrl(url);
 		ud.setData(data);
@@ -76,10 +90,10 @@ public class ViewDeal {
 		try {
 			CacheData.XmlUtils.UpdateXml(CacheData.RootData);
 		}catch (Exception e) {
-			return "{\"info\":\""+e.getMessage()+"\"}";
+			return "{\"info\":\""+e.getMessage()+"\",\"flag\":\"fail\"}";
 		}
 		
-		return "{\"info\":\"新增成功\"}";
+		return "{\"info\":\"新增成功\",\"flag\":\"success\"}";
 	}
 
 }

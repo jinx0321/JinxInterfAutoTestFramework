@@ -14,4 +14,10 @@
         <Data>sasaweqwsadasd1241241241241241</Data>
         <Url>/222/12312</Url>
     </UrlData>
+    
+    <!-- 初始化数据不可更改 -->
+     <UrlData>
+        <Data>initdata_jjj41e90af75ef4173b92a2ab22a99a570</Data>
+        <Url>initurl_jjj41e90af75ef4173b92a2ab22a99a570</Url>
+    </UrlData>
 </ROOT>

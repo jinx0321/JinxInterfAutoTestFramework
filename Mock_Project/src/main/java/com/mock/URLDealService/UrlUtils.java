@@ -1,5 +1,8 @@
 package com.mock.URLDealService;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,13 +26,17 @@ public class UrlUtils{
     public String UrlParserAfter(String Url){
     	return Url.replace(slash,"/").replace(question_mark,"?").replace(equal_mark,"=");
 	}
-	
-	
-	
-	
-	public void GetAllUrl(){
-		
-		
+	public boolean is_Url(String url) {
+		 // URL验证规则
+	    String regEx ="/[^\\s]*";
+	    // 编译正则表达式
+	    Pattern pattern = Pattern.compile(regEx);
+	    // 忽略大小写的写法
+	    // Pattern pat = Pattern.compile(regEx, Pattern.CASE_INSENSITIVE);
+	    Matcher matcher = pattern.matcher(url);
+	    // 字符串是否与正则表达式相匹配
+	    boolean rs = matcher.matches();
+	    return rs;
 	}
 	
 	
