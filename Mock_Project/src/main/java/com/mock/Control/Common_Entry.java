@@ -55,7 +55,7 @@ public class Common_Entry {
 	@ResponseBody
 	public String update_data(HttpServletRequest request) {
         return ViewDeal.UpdateData(request.getParameter("url"),
-        		request.getParameter("data"));
+        		request.getParameter("data"),request.getParameter("is_forward"),request.getParameter("forward_addr"));
 	}
 	
 	
@@ -68,7 +68,7 @@ public class Common_Entry {
 	@ResponseBody
 	public String add_data(HttpServletRequest request) {
 		return ViewDeal.AddData(request.getParameter("url"),
-        		request.getParameter("data"));
+        		request.getParameter("data"),request.getParameter("is_forward"),request.getParameter("forward_addr"));
 	}
 	
 }

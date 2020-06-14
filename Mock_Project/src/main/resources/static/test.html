@@ -6,54 +6,11 @@
         <script src="jquery-3.3.1/jquery.min.js"></script>
         <link rel="stylesheet" href="layui/css/layui.css">
         <script src="layui/layui.js"></script>
-    <style>
-        .site-doc-icon li .layui-anim {
-        width: 150px;
-        height: 150px;
-        line-height: 150px;
-        margin: 0 auto 10px;
-        text-align: center;
-        background-color: #009688;
-        cursor: pointer;
-        color: #fff;
-        border-radius: 50%;
-    }
-    </style>
 </head>
 <body>
-<ul class="site-doc-icon site-doc-anim">
- 
-   <li>
-    <div class="layui-anim" data-anim="layui-anim-scaleSpring">弹簧式放大</div>
-  </li>
-</ul>
+<div><img class="layui-nav-img" src="../layui/doc/2.jpg" /></div>
 
 
 
-<script>
-    layui.use(['jquery'], function () {
-        var $ = layui.jquery;
-        //演示动画开始
-        $('.site-doc-icon .layui-anim').on('click', function(){
-        var othis = $(this), anim = othis.data('anim');
-
-        //停止循环
-        if(othis.hasClass('layui-anim-loop')){
-            return othis.removeClass(anim);
-        }
-        othis.removeClass(anim);
-        setTimeout(function(){
-            othis.addClass(anim);
-        });
-        //恢复渐隐
-        if(anim === 'layui-anim-fadeout'){
-            setTimeout(function(){
-                othis.removeClass(anim);
-            }, 100);
-        }
-        });
-        //演示动画结束
-    })
-</script>
 </body>
 </html>

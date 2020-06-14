@@ -24,12 +24,14 @@ public class ViewDeal {
 
 	
 	
-	public String UpdateData(String url,String data) {
+	public String UpdateData(String url,String data, String is_forward, String forward_addr) {
 		System.out.println(url+"-"+data);
 		List<UrlData> list=	CacheData.RootData.getUrldata();
 		for(int i=0;i<list.size();i++) {
 			if(list.get(i).getUrl().equals(url)) {
 				list.get(i).setData(data);
+				list.get(i).setForward_Addr(forward_addr);
+				list.get(i).setIs_Forward(is_forward);
 				try {
 					CacheData.XmlUtils.UpdateXml(CacheData.RootData);
 				}catch (Exception e) {
@@ -72,7 +74,7 @@ public class ViewDeal {
 
 
 
-	public String AddData(String url, String data) {
+	public String AddData(String url, String data,String is_forward,String forward_addr) {
 		if(!UrlUtils.is_Url(url)) {
 			return "{\"info\":\"Url不合法,请输入/xxx/xxx/xxx格式\",\"flag\":\"fail\"}";
 		}
@@ -86,6 +88,8 @@ public class ViewDeal {
 		UrlData ud=new UrlData();
 		ud.setUrl(url);
 		ud.setData(data);
+		ud.setIs_Forward(is_forward);
+		ud.setForward_Addr(forward_addr);
 		CacheData.RootData.getUrldata().add(ud);
 		try {
 			CacheData.XmlUtils.UpdateXml(CacheData.RootData);

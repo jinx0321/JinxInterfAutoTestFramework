@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ROOT>
-    <UrlData>
-        <Data>{
- dasdasd97sadasdasd80",
-    121212rassdqsdasdaswderStatus": "002"
-      }12
-    ]
-  }
-}sda</Data>
-        <Url>/23112/12312</Url>
-    </UrlData>
-    <UrlData>
-        <Data>sasaweqwsadasd1241241241241241</Data>
-        <Url>/222/12312</Url>
-    </UrlData>
-    
     <!-- 初始化数据不可更改 -->
      <UrlData>
-        <Data>initdata_jjj41e90af75ef4173b92a2ab22a99a570</Data>
         <Url>initurl_jjj41e90af75ef4173b92a2ab22a99a570</Url>
     </UrlData>
 </ROOT>

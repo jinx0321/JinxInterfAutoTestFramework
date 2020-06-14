@@ -6,7 +6,23 @@ public class UrlData {
 	
 	private String Url;
 	private String Data;
+	private String Is_Forward;
+	private String Forward_Addr;
 	
+	@XmlElement(name="Is_Forward")
+	public String getIs_Forward() {
+		return Is_Forward;
+	}
+	public void setIs_Forward(String is_Forward) {
+		Is_Forward = is_Forward;
+	}
+	@XmlElement(name="Forward_Addr")
+	public String getForward_Addr() {
+		return Forward_Addr;
+	}
+	public void setForward_Addr(String forward_Addr) {
+		Forward_Addr = forward_Addr;
+	}
 	@XmlElement(name="Url")
 	public String getUrl() {
 		return Url;
@@ -21,6 +37,8 @@ public class UrlData {
 	public void setData(String data) {
 		Data = data;
 	}
+	
+	
 	@Override
 	public String toString() {
 		return "UrlData [Url=" + Url + ", Data=" + Data + "]";

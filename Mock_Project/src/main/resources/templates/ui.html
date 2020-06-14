@@ -8,6 +8,7 @@
 <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
 <link rel="stylesheet" th:href="@{/layui/outside/css/style.css}"
 	media="all">
+<link rel="stylesheet" th:href="@{/layui/skin/myskin.css}">
 </head>
 <body>
 
@@ -15,7 +16,7 @@
 
 		<div class="layui-row">
 			<div class="layui-col-md14">
-			<!--  -->
+				<!--  -->
 				<div class="sky" style="height: 250px">
 					<div class="clouds_one"></div>
 					<div class="clouds_two"></div>
@@ -23,24 +24,21 @@
 				</div>
 			</div>
 		</div>
-		<br> <br>
-		<br>
+		<br> <br> <br>
 
 		<div class="layui-row">
 			<div class="layui-col-md6">
 				<h2>MOCK_PROJECT</h2>
 			</div>
 		</div>
-		<br> <br>
-		<br>
+		<br> <br> <br>
 
 		<div class="layui-row">
 			<div class="layui-col-md12">
 				<ul class="site-doc-icon site-doc-anim">
 					<button id="add" type="button" data-anim="layui-anim-scaleSpring"
-						class="layui-btn layui-btn-lg layui-btn-radius layui-btn-normal layui-anim">
-						<i class="layui-icon">&#xe608;</i> 添加
-					</button>
+						class="layui-btn layui-btn-lg layui-btn-radius layui-btn-normal layui-anim layui-icon layui-icon-add-circle">
+						添加</button>
 				</ul>
 			</div>
 		</div>
@@ -63,12 +61,26 @@
 								placeholder="请输入数据" class="layui-textarea"></textarea>
 						</div>
 					</div>
-
+					<div class="layui-form-item">
+						<label class="layui-form-label">Url转发</label>
+						<div class="layui-input-block" id="addisforwarddiv">
+							<input type="checkbox" name="switch" lay-skin="switch" id="addisforward">
+						</div>
+					</div>
+					<div class="layui-form-item" id="addforwardurldiv">
+						<label class="layui-form-label">ip地址</label>
+						<div class="layui-input-block">
+							<input id="addforwardurl" type="text" name="title" required
+								lay-verify="required" placeholder="ip加端口" autocomplete="off"
+								class="layui-input" >
+						</div>
+					</div>
 					<div class="layui-form-item">
 						<div class="layui-input-block">
 							<ul class="site-doc-icon site-doc-anim">
-								<button class="layui-btn layui-anim" type="button" id="addsubmit" data-anim="layui-anim-scaleSpring">立即提交</button>
-								<button type="reset" class="layui-btn layui-btn-primary layui-anim" data-anim="layui-anim-scaleSpring">重置</button>
+								<button class="layui-btn layui-anim" type="button"
+									id="addsubmit" data-anim="layui-anim-scaleSpring">立即提交</button>
+								
 							</ul>
 
 						</div>
@@ -81,25 +93,20 @@
 			<div id="show" class="layui-col-md11"></div>
 		</div>
 
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
+		<br> <br> <br> <br> <br> <br> <br>
 		<br>
 		<div class="layui-row">
 			<blockquote class="layui-elem-quote">本工具引用了开源组件,不可用于商业用途</blockquote>
 		</div>
 	</div>
-
 </body>
 <script>
-	layui.use([ 'layer', 'form' ,'jquery','code','layedit','element'], function() {
+	layui.use([ 'layer', 'form' ,'jquery','code','layedit','element','util','carousel'], function() {
 		//<!-- layui初始化-->
 		var layer = layui.layer, form = layui.form;
-		 var element = layui.element; 
+		var element = layui.element; 
+		var util = layui.util;
+		var carousel = layui.carousel;
 		//<!-- 获取布局中的form表单-->
 		var form = layui.form;
 		//<!-- 引入jquery-->
@@ -118,24 +125,49 @@
         anim();
         /*----------------新增页面start---------------------*/
     	$('#adddiv').hide();
+    	$('#addforwardurldiv').hide();
+    	$('#addisforward').attr('ischecked','false');
+    	forwardaction();
     	addaction();
     	submitaction();
+    	
     	var addisshow=false;
     	
     	
     	//增加按钮
         function addaction(){
         	$('#add').click(function(){
+        		$('#addisforward').removeAttr('checked');
         		if(addisshow){
         			$('#adddiv').hide();
+        			$('#add').removeClass('layui-icon-down');
+        			$('#add').addClass('layui-icon-add-circle');
         			addisshow=false;
         		}else{
         			$('#adddiv').show();
+        			$('#add').removeClass('layui-icon-add-circle');
+        			$('#add').addClass('layui-icon-down');
         			addisshow=true;
         		}
         		
         	});
         }
+    	
+    	//转发按钮
+    	function forwardaction(){
+    		$('#addisforwarddiv').click(function(){
+    			var status=$('#addisforward').attr('ischecked');
+    			if(status=='false'){
+    				$('#addforwardurldiv').show();
+    				$('#addisforward').attr('ischecked','true');
+    			}else if(status=='true'){
+    				$('#addforwardurldiv').hide();
+    				$('#addisforward').attr('ischecked','false');
+    			}
+    			
+    		});
+    		
+    	}
     	
         function submitaction(){
         	$('#addsubmit').click(function(){
@@ -152,27 +184,37 @@
      	             async: false,
      	             data:{
      	            	 url:$('#addurl').val(),
-     	            	 data:$('#adddata').val()
+     	            	 data:$('#adddata').val(),
+     	            	 is_forward:$('#addisforward').attr('ischecked'),
+     	            	 forward_addr:$('#addforwardurl').val()
      	             },
      	             success:function(data){
      	            	layer.msg(data.info);
      	            	if(data.flag=='success'){
      	            	$('#adddiv').hide();
      	            	var i=getRandom(0,1000);
-     	            	var obj=addurlui({"url":$('#addurl').val(),"data":$('#adddata').val()},i);
-     	            	bindallaction(obj.editid+i,obj.updateid+i,obj.deleteid+i,obj.textareaid+i,obj.url,obj.divid+i);
+     	            	var obj=addurlui({"url":$('#addurl').val(),"data":$('#adddata').val(),"is_Forward":$('#addisforward').attr('ischecked'),"forward_Addr":$('#addforwardurl').val()},i);
+     	            	bindallaction(obj,i);
      	            	element.render('collapse(test)');}
      	            	$('#addurl').val('');
      	            	$('#adddata').val('');
      	            	if(addisshow){
      	        			$('#adddiv').hide();
      	        			addisshow=false;
+     	        			$('#add').removeClass('layui-icon-down');
+                			$('#add').addClass('layui-icon-add-circle');  
      	        		}else{
      	        			$('#adddiv').show();
+     	        			('#add').removeClass('layui-icon-add-circle');
+     	        			$('#add').addClass('layui-icon-down');
      	        			addisshow=true;
      	        		}
-     	            	
-     	            	
+     	            	$('#addisforward').removeAttr('checked',false);
+     	            	$('#addisforward').attr('ischecked','false');
+     	            	$('#addforwardurl').val('');
+     	            	$('#addforwardurldiv').hide();
+     	            	form.render();
+     	            	   	            	
      	             }
      	          }); }       		
         	});
@@ -197,9 +239,10 @@
         }
         //这里写起来实在是太生艹了
         function bildbutton(i){
-        		 $("#"+actions.data[i].editid+i).bind("click", {index: i}, clickeditHandler);
+        		$("#"+actions.data[i].editid+i).bind("click", {index: i}, clickeditHandler);
         	    $("#"+actions.data[i].updateid+i).bind("click", {index: i}, clickupdateHandler);
         	    $("#"+actions.data[i].deleteid+i).bind("click", {index: i}, clickdeleteHandler);
+        	    $("#"+actions.data[i].isforwarddivid+i).bind("click", {index: i}, clickisforwardHandler);
 	            
         }
         //编辑动作
@@ -213,15 +256,28 @@
        	    var i= event.data.index;
           	 var content=$("#"+actions.data[i].textareaid+i).val();
           	 var url=actions.data[i].url;
+          	 var is_forward=$("#"+actions.data[i].isforwardid+i).attr('ischecked');
+          	 var forward_addr=$("#"+actions.data[i].forwardurlid+i).val();
+          	 var forward_addr_bak=forward_addr;
+          	 if(is_forward=='false'){
+          		forward_addr='';
+          		$("#"+actions.data[i].forwardurlid+i).val('');
+          	 }
 	    	 $.ajax({          
 	           	url:"/mock/update_data", 
 	             type:"post", 
 	             async: false,
 	             data:{
 	            	 url:url,
-	            	 data:content
+	            	 data:content,
+	            	 is_forward:is_forward,
+	            	 forward_addr:forward_addr
 	             },
 	             success:function(data){
+	            	 if(data.flag=='success'){}
+	            	 else{
+	            		 $("#"+actions.data[i].forwardurlid+i).val(forward_addr_bak); 
+	            	 }
 	            	 layer.msg(data.info);
 	               $("#"+actions.data[i].textareaid+i).attr("disabled",'disabled');
 	             }
@@ -250,35 +306,60 @@
         		});
  	    	
         }
+        function clickisforwardHandler(event){
+        	  var i= event.data.index;
+        	  var status=$("#"+actions.data[i].isforwardid+i).attr('ischecked');
+        	  if(status=='false'){
+        		  $("#"+actions.data[i].forwardurldivid+i).show();
+        		  $("#"+actions.data[i].isforwardid+i).attr('ischecked','true');
+        	  }else if(status=='true'){
+        		  $("#"+actions.data[i].forwardurldivid+i).hide();
+        		  $("#"+actions.data[i].isforwardid+i).attr('ischecked','false');
+        	  }
+
+        	  //$("#"+actions.data[i].forwardurlid+i).show();
+        	
+        }
         /*----------------------初始化界面end------------------------------------------*/
         
          /*----------------------公共方法start------------------------------------------*/
          
-         function bindallaction(editid,updateid,deleteid,textareaid,url,divid){
+         function bindallaction(obj,i){
+        	
         	//编辑
-        	 $('#'+editid).click(function(){
-        		  $("#"+textareaid).removeAttr("disabled");	
+        	 $('#'+obj.editid+i).click(function(){
+        		  $("#"+obj.textareaid+i).removeAttr("disabled");	
             	    layer.msg('文本框可编辑');
         	 });
         		//更新
-        	 $('#'+updateid).click(function(){
-        		 var content=$("#"+textareaid).val();
+        	 $('#'+obj.updateid+i).click(function(){
+        		 var url=obj.url;
+        		 var content=$("#"+obj.textareaid+i).val();
+        		 var is_forward=$("#"+obj.isforwardid+i).attr('ischecked');
+              	 var forward_addr=$("#"+obj.forwardurlid+i).val();
+              	 var forward_addr_bak=forward_addr;
+              	 if(is_forward=='false'){
+              		forward_addr='';
+              		$("#"+obj.forwardurlid+i).val('');
+              	 }
     	    	 $.ajax({          
     	           	url:"/mock/update_data", 
     	             type:"post", 
     	             async: false,
     	             data:{
     	            	 url:url,
-    	            	 data:content
+    	            	 data:content,
+    	            	 is_forward:is_forward,
+    	            	 forward_addr:forward_addr
     	             },
     	             success:function(data){
     	            	 layer.msg(data.info);
-    	               $("#"+textareaid).attr("disabled",'disabled');
+    	               $("#"+obj.textareaid+i).attr("disabled",'disabled');
     	             }
     	          }); 
        	     });
         		//删除
-        	 $('#'+deleteid).click(function(){
+        	 $('#'+obj.deleteid+i).click(function(){
         		 
         		 layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
         			 $.ajax({          
@@ -290,15 +371,26 @@
         	  	             },
         	  	             success:function(data){
         	  	            	 layer.msg(data.info);
-        	  	            	 $("#"+divid).remove();
+        	  	            	 $("#"+obj.divid+i).remove();
         	  	             
         	  	             }
         	  	          }); 
         			  
         			  layer.close(index);
         			});
-        	
         	 });
+        		
+            //选择框
+            $('#'+obj.isforwarddivid+i).click(function(){
+            	  var status=$("#"+obj.isforwardid+i).attr('ischecked');
+            	  if(status=='false'){
+            		  $("#"+obj.forwardurldivid+i).show();
+            		  $("#"+obj.isforwardid+i).attr('ischecked','true');
+            	  }else if(status=='true'){
+            		  $("#"+obj.forwardurldivid+i).hide();
+            		  $("#"+obj.isforwardid+i).attr('ischecked','false');
+            	  }
+            });
         }
          
          
@@ -319,18 +411,29 @@
         function addurlui(obj,i){
         	 var urld=obj.url;
     		 var data=obj.data;
+    		 var is_forward=obj.is_Forward;
+    		 var forward_addr=obj.forward_Addr;
     		 var divid=urld.replace(/\//g,"_")+'divid_';
     		 var textareaid=urld.replace(/\//g,"_")+'textarea_';
     		 var editid=urld.replace(/\//g,"_")+'edit_';
     		 var updateid=urld.replace(/\//g,"_")+'update_';
     		 var deleteid=urld.replace(/\//g,"_")+'delete_';
+    		 var isforwardid=urld.replace(/\//g,"_")+'isforward_';
+    		 var isforwarddivid=urld.replace(/\//g,"_")+'isforwarddiv_';
+    		 var forwardurlid=urld.replace(/\//g,"_")+'forwardurl_';
+    		 var forwardurldivid=urld.replace(/\//g,"_")+'forwardurldiv_';
     		 var action={
-    				 "url":urld,
+    				"url":urld,
       	    		"divid":divid,
       	    		"textareaid":textareaid,
       	    		"editid":editid,
       	    		"updateid":updateid,
-      	    		"deleteid":deleteid
+      	    		"deleteid":deleteid,
+      	    		"isforwardid":isforwardid,
+      	    		"isforwarddivid":isforwarddivid,
+      	    		"forwardurlid":forwardurlid,
+      	    		"forwardurldivid":forwardurldivid
+      	    		
       	     }
       	    
     		  divid=divid+i;
@@ -338,21 +441,72 @@
     		  editid=editid+i;
     		  updateid=updateid+i;
     		  deleteid=deleteid+i;
+    		  isforwardid=isforwardid+i;
+    		  isforwarddivid=isforwarddivid+i;
+    		  forwardurlid=forwardurlid+i;
+    		  forwardurldivid=forwardurldivid+i;
+    		  
     		  
     		 if(isJSON(data)){
     			 data=JSON.stringify(JSON.parse(data),null,2); 
     		 }
     		 $("#show").prepend('<div id="'+divid+'"><fieldset class="layui-elem-field layui-field-title"style="margin-top: 20px;">'+
-    		         '<legend>URL:'+urld+'</legend></fieldset><div class="layui-collapse" lay-filter="test">'+
-    		          '<div class="layui-colla-item">'+
-    		          '<h2 class="layui-colla-title">'+urld+'</h2><div class="layui-colla-content">	'+
-    		          '<ul class="site-doc-icon site-doc-anim">'+
-    				 ' <button id='+editid+'  data-anim="layui-anim-scaleSpring" type="button" class="layui-btn layui-btn-primary layui-bg-green layui-anim">编辑</button>'+
-    				  '<button id='+updateid+' data-anim="layui-anim-scaleSpring" type="button" class="layui-btn layui-btn-primary layui-bg-blue layui-anim">更新</button> '+
-    				 ' <button id='+deleteid+' data-anim="layui-anim-scaleSpring" type="button" class="layui-btn layui-btn-primary layui-bg-black layui-anim">删除</button>'+
-    				 ' </ul>'+
-    			      '<textarea id="'+textareaid+'" required lay-verify="required" placeholder="请输入" class="layui-textarea" style="height:500px" disabled>'+data+'</textarea>'+
-    			     ' </div></div><div><div>');             
+    		          ' <legend>URL:'+urld+'</legend></fieldset><div class="layui-collapse" lay-filter="test">'+
+    		          ' <div class="layui-colla-item">'+
+    		          ' <h2 class="layui-colla-title">'+urld+'</h2><div class="layui-colla-content">	'+
+    		          ' <ul class="site-doc-icon site-doc-anim">'+
+    		          ' <div class="layui-container">'+
+				      ' <div class="layui-row">'+
+				      ' <div class="layui-col-md1">'+
+    				  ' <button id='+editid+'  data-anim="layui-anim-scaleSpring" type="button" class="layui-btn layui-btn-primary layui-bg-green layui-anim">编辑</button>'+
+    				  ' </div> '+
+    				  ' <div class="layui-col-md1">'+
+    				  ' <button id='+updateid+' data-anim="layui-anim-scaleSpring" type="button" class="layui-btn layui-btn-primary layui-bg-blue layui-anim">更新</button> '+
+    				  ' </div> '+
+    				  ' <div class="layui-col-md1">'+
+    				  ' <button id='+deleteid+' data-anim="layui-anim-scaleSpring" type="button" class="layui-btn layui-btn-primary layui-bg-black layui-anim">删除</button>'+
+    				  ' </div> '+
+    				  ' <div class="layui-col-md5">&nbsp;'+
+    				  ' </div> '+
+    				  ' <div class="layui-col-md2">'+
+    				  '   <form class="layui-form" action="">'+
+    				  '     <div class="layui-form-item">'+
+    				  '       <label class="layui-form-label">Url转发</label>'+
+    				  '        <div class="layui-input-block" id="'+isforwarddivid+'">'+
+    				  '         <input type="checkbox" name="xxx" lay-skin="switch" id="'+isforwardid+'">'+
+    				  '        </div>'+
+    				  '      </div>'+
+    				  '  </form> '+
+    				  ' </div> <br><br>'+
+    				  ' <div class="layui-row" id="'+forwardurldivid+'">'+
+    				  ' <div class="layui-col-md12">'+
+    				  '   <form class="layui-form" action="">'+
+    				  '     <div class="layui-form-item">'+
+    				  '       <label class="layui-form-label">ip地址</label>'+
+    				  '        <div class="layui-input-block">'+
+    				  '         <input id="'+forwardurlid+'" type="text" name="title" required  lay-verify="required" placeholder="ip加端口" autocomplete="off" class="layui-input">'+
+    				  '        </div>'+
+    				  '      </div>'+
+    				  '  </form> '+
+    				
+    				  ' </div> '+
+    				  ' </div> '+
+    				  ' </div></div><br>'+
+    				  ' </ul>'+
+    			      ' <textarea id="'+textareaid+'" required lay-verify="required" placeholder="请输入" class="layui-textarea" style="height:500px" disabled>'+data+'</textarea>'+
+    			      ' </div></div><div><div>'); 
+    		 if(is_forward=='true'){
+    			 $('#'+isforwardid).attr('ischecked','true');
+    			 $("#"+isforwardid).prop('checked',true);
+        		 $('#'+forwardurlid).width('400px');
+        		 $('#'+forwardurlid).val(forward_addr);
+    		 }else if(is_forward=='false'){
+    			 $('#'+isforwardid).attr('ischecked','false');
+        		 $('#'+forwardurlid).width('400px');
+        	     $('#'+forwardurldivid).hide(); 
+    		 }
+    		
+    		 form.render();
     	     return action;
         }
         //是否是json字符串
@@ -398,8 +552,46 @@
                          }
           });
 	  
-  }
+                }
         /*----------------------公共方法end------------------------------------------*/
+        
+         /*----------------------其他工具集start------------------------------------------*/
+         //说明文档
+           util.fixbar({
+            bar1: '&#xe705;',
+            click: function(type){
+            if(type === 'bar1'){
+            	layer.tab({
+            		  area: ['1200px', '500px'],
+            		
+            		  tab: [{
+            		    title: '第一步:新增url和mock数据', 
+            		    content: '<div class="layui-container">'+
+            				      '<div class="layui-row">'+
+            					  '<div class="layui-col-md12">'+
+            				      '<div><img  src="../layui/doc/1.png" /></div>'+
+            				      '</div></div></div>'
+            		  }, {
+            		    title: '第二步:查看新增结果', 
+            		    content: '<div class="layui-container">'+
+            		               '<div class="layui-row">'+
+            		               '<div class="layui-col-md12">'+
+            		               '<div><img  src="../layui/doc/2.png" /></div>'+
+            		               '</div></div></div>'
+            		  }, {
+            		    title: '第三步:访问配置接口', 
+            		    content: '<div class="layui-container">'+
+            	                   '<div class="layui-row">'+
+            	                   '<div class="layui-col-md12">'+
+            	                   '<div><img  src="../layui/doc/3.png" /></div>'+
+            	                   '</div></div></div>'
+            		      }]
+            		});  
+                  }
+          
+           }
+         });
+          /*----------------------其他工具集end------------------------------------------*/
       
        //  折叠板 
         element.on('collapse(test)', function(data){});

@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ROOT>
     <UrlData>
-        <Data>safasf</Data>
-        <Url>/sdasdas</Url>
+        <Url>initurl_jjj41e90af75ef4173b92a2ab22a99a570</Url>
     </UrlData>
     <UrlData>
-        <Data>2131</Data>
-        <Url>/2132</Url>
+        <Data>sfdsfdfssdfsdf</Data>
+        <Forward_Addr>sdfsdf</Forward_Addr>
+        <Is_Forward>true</Is_Forward>
+        <Url>/fds</Url>
     </UrlData>
     <UrlData>
-        <Data>sdas</Data>
-        <Url>/dqasd</Url>
+        <Data>sadsdasdasadassdsadsa</Data>
+        <Forward_Addr>sada</Forward_Addr>
+        <Is_Forward>true</Is_Forward>
+        <Url>/sadsad</Url>
     </UrlData>
     <UrlData>
-        <Data>12</Data>
-        <Url>/1212</Url>
+        <Data>sadas</Data>
+        <Forward_Addr>adsas</Forward_Addr>
+        <Is_Forward>true</Is_Forward>
+        <Url>/sdas</Url>
     </UrlData>
     <UrlData>
-        <Data></Data>
+        <Data>sdasd</Data>
+        <Forward_Addr></Forward_Addr>
+        <Is_Forward>false</Is_Forward>
         <Url>/sadas</Url>
     </UrlData>
 </ROOT>
