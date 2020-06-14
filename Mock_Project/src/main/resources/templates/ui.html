@@ -466,7 +466,7 @@
     				  ' <div class="layui-col-md1">'+
     				  ' <button id='+deleteid+' data-anim="layui-anim-scaleSpring" type="button" class="layui-btn layui-btn-primary layui-bg-black layui-anim">删除</button>'+
     				  ' </div> '+
-    				  ' <div class="layui-col-md5">&nbsp;'+
+    				  ' <div class="layui-col-md4">&nbsp;'+
     				  ' </div> '+
     				  ' <div class="layui-col-md2">'+
     				  '   <form class="layui-form" action="">'+
@@ -479,7 +479,9 @@
     				  '  </form> '+
     				  ' </div> <br><br>'+
     				  ' <div class="layui-row" id="'+forwardurldivid+'">'+
-    				  ' <div class="layui-col-md12">'+
+    				  ' <div class="layui-col-md7">&nbsp'+
+    				  ' </div>'+
+    				  ' <div class="layui-col-md2">'+
     				  '   <form class="layui-form" action="">'+
     				  '     <div class="layui-form-item">'+
     				  '       <label class="layui-form-label">ip地址</label>'+
@@ -488,7 +490,6 @@
     				  '        </div>'+
     				  '      </div>'+
     				  '  </form> '+
-    				
     				  ' </div> '+
     				  ' </div> '+
     				  ' </div></div><br>'+
@@ -498,11 +499,11 @@
     		 if(is_forward=='true'){
     			 $('#'+isforwardid).attr('ischecked','true');
     			 $("#"+isforwardid).prop('checked',true);
-        		 $('#'+forwardurlid).width('400px');
+        		 $('#'+forwardurlid).width('200px');
         		 $('#'+forwardurlid).val(forward_addr);
     		 }else if(is_forward=='false'){
     			 $('#'+isforwardid).attr('ischecked','false');
-        		 $('#'+forwardurlid).width('400px');
+        		 $('#'+forwardurlid).width('200px');
         	     $('#'+forwardurldivid).hide(); 
     		 }
     		
