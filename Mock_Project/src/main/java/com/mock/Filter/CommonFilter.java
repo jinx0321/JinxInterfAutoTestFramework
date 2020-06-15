@@ -26,32 +26,30 @@ public class CommonFilter implements Filter {
 	@Autowired
 	UrlUtils UrlUtils;
 	
+	@Autowired
+	LocalFilter LocalFilter;
+	
+	@Autowired
+	JumpService JumpService;
+	
+	
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		System.out.println("过滤器启动");
 	}
  
-	 @Override
-	    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
-		 HttpServletRequest httpRequest = (HttpServletRequest)request;
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		    HttpServletRequest httpRequest = (HttpServletRequest)request;
 	        HttpServletResponseWrapper httpResponse = new HttpServletResponseWrapper((HttpServletResponse) response);
 	        System.out.println(httpRequest.getRequestURI());
 	        String path=httpRequest.getRequestURI();
-	        if(path.equals("/mock")) {
-	        	chain.doFilter(request, response);  
-	        } else if(path.startsWith("/mock/")) {
-	        	chain.doFilter(request, response);  
-	        }else if(path.startsWith("/layui/")) {
-	        	chain.doFilter(request, response);  
-	        }else if(path.startsWith("/jquery-3.3.1/")){
-	        	chain.doFilter(request, response);  
-	        }
-	        else{
-	          httpRequest.getRequestDispatcher("/common?data="+UrlUtils.UrlParserBefore(path)).forward(request,response);
-	        }
-	
-            //chain.doFilter(request,response);	        
+	        LocalFilter.commonfilter(httpRequest);
+	        if(LocalFilter.localurifilter(path)) {
+	        	JumpService.release(request, response, chain); 
+	        }else {
+	        	JumpService.forward(httpRequest, httpRequest, httpResponse);
+	        }      
 	        return;
 	    }
 	

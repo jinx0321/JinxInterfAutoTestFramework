@@ -9,6 +9,7 @@ public class UrlData {
 	private String Is_Forward;
 	private String Forward_Addr;
 	
+	
 	@XmlElement(name="Is_Forward")
 	public String getIs_Forward() {
 		return Is_Forward;
