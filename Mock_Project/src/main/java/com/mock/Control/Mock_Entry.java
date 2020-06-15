@@ -24,14 +24,14 @@ import com.mock.Utils.XmlUtils.XmlUtils;
  *
  */
 @Controller
-public class Common_Entry {
+public class Mock_Entry {
 	
 	@Autowired
 	UrlDeal UrlDeal;
 	@Autowired
 	UrlUtils UrlUtils;
 	
-	@RequestMapping(value="/common",produces = "application/json;charset=UTF-8")
+	@RequestMapping(value="/mock/data",produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String common(HttpServletRequest request) {
 		return UrlDeal.GetUrlData(UrlUtils.UrlParserAfter(request.getParameter("data")));

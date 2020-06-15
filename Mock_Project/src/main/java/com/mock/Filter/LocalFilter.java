@@ -25,8 +25,11 @@ public class LocalFilter {
 		//最先判断本地url
 	    if(localurifilter(uri)) {
 	    	return release;
+	    }else {
+	    	return forward;
 	    }
 		
+	    /*
 	    String method=request.getMethod();
 	    Enumeration<String> headerenum=request.getHeaderNames();
 	    Map<String,String> headers=new HashMap<String,String>();
@@ -40,12 +43,17 @@ public class LocalFilter {
 	    	String name=paramenum.nextElement();
 	    	params.put(name, request.getParameter(name));
 	    }
-	 
+	 */
 	   
-	    return release;
+	
 		
 	}
 	
+	/**
+	 * 本地资源过滤
+	 * @param path
+	 * @return
+	 */
 	public boolean localurifilter(String path){
 		 if(path.equals("/mock")) {
 	        	return true; 
@@ -60,5 +68,9 @@ public class LocalFilter {
 	        	return false; 
 	        }
 	}
+	
+
+	
+
 
 }
