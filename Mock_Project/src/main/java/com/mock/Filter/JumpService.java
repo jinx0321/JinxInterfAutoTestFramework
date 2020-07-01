@@ -36,13 +36,13 @@ public class JumpService {
 	}
 	
 	/**
-	 * 跳转到本地url
+	 * 跳转到本地url去获取mock数据
 	 * @param httpRequest
 	 * @param httpResponse
 	 */
 	public void forward(HttpServletRequest httpRequest, ServletRequest request, ServletResponse response) {
 		 try {
-			httpRequest.getRequestDispatcher("/common?data="+UrlUtils.UrlParserBefore(httpRequest.getRequestURI())).forward(request,response);
+			httpRequest.getRequestDispatcher("/mock/data?data="+UrlUtils.UrlParserBefore(httpRequest.getRequestURI())).forward(request,response);
 		} catch (ServletException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,6 +60,7 @@ public class JumpService {
 	 * @param chain
 	 */
 	public void release(ServletRequest httpRequest, ServletResponse httpResponse,FilterChain chain) {
+		
 		try {
 			chain.doFilter(httpRequest, httpResponse);
 		} catch (IOException e) {

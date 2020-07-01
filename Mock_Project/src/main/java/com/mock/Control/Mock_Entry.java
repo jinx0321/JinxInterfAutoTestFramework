@@ -26,7 +26,7 @@ import com.mock.Service.URLDealService.ViewDeal;
  *
  */
 @Controller
-public class Common_Entry {
+public class Mock_Entry {
 	
 	@Autowired
 	UrlDeal UrlDeal;
@@ -36,7 +36,7 @@ public class Common_Entry {
 	ViewDeal ViewDeal;
 	
 	
-	@RequestMapping(value="/common",produces = "application/json;charset=UTF-8")
+	@RequestMapping(value="/mock/data",produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String common(HttpServletRequest request) {
 		return UrlDeal.GetUrlData(UrlUtils.UrlParserAfter(request.getParameter("data")));

@@ -42,14 +42,15 @@ public class CommonFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		    HttpServletRequest httpRequest = (HttpServletRequest)request;
 	        HttpServletResponseWrapper httpResponse = new HttpServletResponseWrapper((HttpServletResponse) response);
-	        System.out.println(httpRequest.getRequestURI());
-	        String path=httpRequest.getRequestURI();
-	        LocalFilter.commonfilter(httpRequest);
-	        if(LocalFilter.localurifilter(path)) {
-	        	JumpService.release(request, response, chain); 
-	        }else {
-	        	JumpService.forward(httpRequest, httpRequest, httpResponse);
-	        }      
+	        String status=LocalFilter.commonfilter(httpRequest) ;
+	       
+	        if(status.equals(LocalFilter.release)) {
+	    	   JumpService.release(request, response, chain);
+	        }else if(status.equals(LocalFilter.forward)){
+	    	   JumpService.forward(httpRequest, httpRequest, httpResponse);
+	         }
+	        
+	          
 	        return;
 	    }
 	
