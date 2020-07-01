@@ -1,8 +1,8 @@
-package com.mock.URLDealService;
+package com.mock.Service.URLDealService;
 
 import org.springframework.stereotype.Service;
 
-import com.mock.Data.CacheData;
+import com.mock.Bean.Data.CacheData;
 
 @Service
 public class UrlDeal {

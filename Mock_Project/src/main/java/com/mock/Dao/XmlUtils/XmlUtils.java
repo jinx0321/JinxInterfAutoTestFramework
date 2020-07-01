@@ -1,13 +1,14 @@
-package com.mock.Utils.XmlUtils;
+package com.mock.Dao.XmlUtils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.mock.Data.CacheData;
-import com.mock.Data.RootData;
-import com.mock.Data.UrlData;
+import com.mock.Bean.Data.CacheData;
+import com.mock.Bean.Data.RootData;
+import com.mock.Bean.Data.UrlData;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

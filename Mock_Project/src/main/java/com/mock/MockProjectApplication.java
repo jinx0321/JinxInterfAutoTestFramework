@@ -3,8 +3,8 @@ package com.mock;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.mock.Data.CacheData;
-import com.mock.Utils.XmlUtils.XmlUtils;
+import com.mock.Bean.Data.CacheData;
+import com.mock.Dao.XmlUtils.XmlUtils;
 
 @SpringBootApplication
 public class MockProjectApplication {

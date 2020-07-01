@@ -1,4 +1,4 @@
-package com.mock.Data;
+package com.mock.Bean.Data;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package com.mock.Data;
+package com.mock.Bean.Data;
 
-import com.mock.Utils.XmlUtils.XmlUtils;
+import com.mock.Dao.XmlUtils.XmlUtils;
 
 public class CacheData {
 	

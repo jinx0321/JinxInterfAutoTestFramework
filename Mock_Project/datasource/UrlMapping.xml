@@ -4,33 +4,27 @@
         <Url>initurl_jjj41e90af75ef4173b92a2ab22a99a570</Url>
     </UrlData>
     <UrlData>
-        <Data>sfdsfdfssdfsdf</Data>
-        <Forward_Addr>sdfsdf</Forward_Addr>
-        <Is_Forward>true</Is_Forward>
-        <Url>/fds</Url>
-    </UrlData>
-    <UrlData>
-        <Data>sadsdasdasadassdsadsa</Data>
-        <Forward_Addr>sada</Forward_Addr>
-        <Is_Forward>true</Is_Forward>
-        <Url>/sadsad</Url>
-    </UrlData>
-    <UrlData>
-        <Data>sadas</Data>
-        <Forward_Addr>adsas</Forward_Addr>
-        <Is_Forward>true</Is_Forward>
-        <Url>/sdas</Url>
-    </UrlData>
-    <UrlData>
-        <Data>sdasd</Data>
+        <Data>{
+  "data": "{\n\t\"data\": \"adqwrqw\",\n\t\"forward_Addr\": \"\",\n\t\"is_Forward\": \"false\",\n\t\"url\": \"/sdasd\"\n}",
+  "forward_Addr": "123",
+  "is_Forward": "true",
+  "requestData": [
+    {
+      "data": "{\"test\":\"test\"}",
+      "is_Forward": "false",
+      "param": "{\"param\":\"param\"}"
+    }
+  ],
+  "url": "/testparam"
+}</Data>
         <Forward_Addr></Forward_Addr>
         <Is_Forward>false</Is_Forward>
-        <Url>/sadas</Url>
-    </UrlData>
-    <UrlData>
-        <Data>awedqwe</Data>
-        <Forward_Addr></Forward_Addr>
-        <Is_Forward>false</Is_Forward>
-        <Url>/saedq</Url>
+        <Request_Data>
+            <Data>{"test":"test312ss31"}</Data>
+            <Is_Forward>true</Is_Forward>
+            <Param>param=616263</Param>
+            <ParamId>940835260</ParamId>
+        </Request_Data>
+        <Url>/aszczxv</Url>
     </UrlData>
 </ROOT>

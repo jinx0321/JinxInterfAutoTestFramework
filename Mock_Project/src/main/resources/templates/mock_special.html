@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MOCK</title>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/jquery-3.3.1/jquery-3.3.1.js}"></script>
+<script type="text/javascript" th:src="@{/layui/uifunc/common.js}"></script>
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+<link rel="stylesheet" th:href="@{/layui/outside/css/style.css}"
+	media="all">
+<link rel="stylesheet" th:href="@{/layui/skin/myskin.css}">
+</head>
+
+<body>
+
+	<div class="layui-container">
+		<div class="layui-row">
+			<br>
+		</div>
+		<div class="layui-row">
+			<div class="layui-col-md8">
+			<div class="site-demo-button" style="margin-bottom: 0;">
+				<button id="addtab" data-anim="layui-anim-scaleSpring" type="button"
+					class="layui-btn layui-btn-primary layui-bg-black layui-anim tabAdd"  data-type="tabAdd">新增数据tab页</button>
+					</div>
+			</div>
+
+		</div>
+
+		<div class="layui-row">
+			<div class="layui-col-md12">
+				<div class="layui-tab" lay-filter="datatab" lay-allowclose="true">
+					<ul class="layui-tab-title" id="tabtitle"></ul>
+					<div class="layui-tab-content"  id="tabcontent"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+
+<script th:inline="javascript">
+	layui.use([ 'layer', 'form', 'jquery', 'code', 'layedit', 'element',
+			'util', 'carousel' ], function() {
+		//<!-- layui初始化-->
+		var layer = layui.layer, form = layui.form;
+		var element = layui.element;
+		var util = layui.util;
+		var carousel = layui.carousel;
+		//<!-- 获取布局中的form表单-->
+		var form = layui.form;
+		//<!-- 引入jquery-->
+		var $ = layui.$;
+		//tab页过滤器名
+		var filtername='datatab';
+		//url数据
+		var urldata=[[${urldata}]];
+		var urljson=JSON.parse(urldata);
+		//动画
+		anim();
+	
+		
+		
+	    var active = {
+			tabAdd : function(tabdata,requestdata,type) {
+
+				 element.tabAdd(filtername, {
+				        title: tabdata.title 
+				        ,content: tabdata.content
+				        ,id: requestdata.paramId 
+				     })
+				 tabcontentaction(urljson.url,requestdata,type,form);
+			},
+			tabDelete : function(othis) {
+				//删除指定Tab项
+				element.tabDelete(filtername, '44');
+
+				othis.addClass('layui-btn-disabled');
+			},
+			tabChange : function() {
+				//切换到指定Tab项
+				element.tabChange(filtername, '22'); 
+			}
+		};
+
+		/*新增tab页*/
+		$('#addtab').on('click', function() {
+			//初始tabobject  
+			 var initrequestData={
+					   "data":'',
+						"is_Forward":'',
+						"param":'',
+						"paramId":''
+			 }
+			 initrequestData.paramId=new Date().getTime();
+			 active.tabAdd(tabcontent(initrequestData,urljson.url),initrequestData,'add');
+		});
+
+		/*初始渲染*/
+		function init(){
+			var requestdata=urljson.requestData;
+			for(var rd of requestdata){
+			    var tabdata=tabcontent(rd,urljson.url);
+			    active.tabAdd(tabdata,rd,'mod');
+			}
+		}
+		init();
+		
+		element.on('tab', function(data) {
+		});
+	});
+</script>
+
+</html>

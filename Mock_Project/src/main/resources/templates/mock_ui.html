@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MOCK</title>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/jquery-3.3.1/jquery-3.3.1.js}"></script>
+<script type="text/javascript" th:src="@{/layui/uifunc/common.js}"></script>
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+<link rel="stylesheet" th:href="@{/layui/outside/css/style.css}" media="all">
+<link rel="stylesheet" th:href="@{/layui/skin/myskin.css}">
+</head>
+<body>
+
+	<div class="layui-container">
+
+		<div class="layui-row">
+			<div class="layui-col-md14">
+				<!--  -->
+				<div class="sky" style="height: 250px">
+					<div class="clouds_one"></div>
+					<div class="clouds_two"></div>
+					<div class="clouds_three"></div>
+				</div>
+			</div>
+		</div>
+		<br> <br> <br>
+
+		<div class="layui-row">
+			<div class="layui-col-md6">
+				<h2>MOCK_PROJECT</h2>
+			</div>
+		</div>
+		<br> <br> <br>
+
+		<div class="layui-row">
+			<div class="layui-col-md12">
+				<ul class="site-doc-icon site-doc-anim">
+					<button id="add" type="button" data-anim="layui-anim-scaleSpring"
+						class="layui-btn layui-btn-lg layui-btn-radius layui-btn-normal layui-anim layui-icon layui-icon-add-circle">
+						添加</button>
+				</ul>
+			</div>
+		</div>
+		<br>
+		<div id="adddiv" class="layui-row">
+			<div class="layui-col-md12">
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<label class="layui-form-label">URL</label>
+						<div class="layui-input-block">
+							<input id="addurl" type="text" name="title" required
+								lay-verify="required" placeholder="请输入URL" autocomplete="off"
+								class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">DATA</label>
+						<div class="layui-input-block">
+							<textarea id="adddata" name="" required lay-verify="required"
+								placeholder="请输入数据" class="layui-textarea"></textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">Url转发</label>
+						<div class="layui-input-block" id="addisforwarddiv">
+							<input type="checkbox" name="switch" lay-skin="switch" id="addisforward">
+						</div>
+					</div>
+					<div class="layui-form-item" id="addforwardurldiv">
+						<label class="layui-form-label">ip地址</label>
+						<div class="layui-input-block">
+							<input id="addforwardurl" type="text" name="title" required
+								lay-verify="required" placeholder="ip加端口" autocomplete="off"
+								class="layui-input" >
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<ul class="site-doc-icon site-doc-anim">
+								<button class="layui-btn layui-anim" type="button"
+									id="addsubmit" data-anim="layui-anim-scaleSpring">立即提交</button>
+								
+							</ul>
+
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<br>
+		<div class="layui-row">
+			<div id="show" class="layui-col-md11"></div>
+		</div>
+
+		<br> <br> <br> <br> <br> <br> <br>
+		<br>
+		<div class="layui-row">
+			<blockquote class="layui-elem-quote">本工具引用了开源组件,不可用于商业用途</blockquote>
+		</div>
+	</div>
+</body>
+<script>
+	layui.use([ 'layer', 'form' ,'jquery','code','layedit','element','util','carousel'], function() {
+		//<!-- layui初始化-->
+		var layer = layui.layer, form = layui.form;
+		var element = layui.element; 
+		var util = layui.util;
+		var carousel = layui.carousel;
+		//<!-- 获取布局中的form表单-->
+		var form = layui.form;
+		//<!-- 引入jquery-->
+		var $=layui.$;
+        //初始化url
+        var orgin_url='initurl_jjj41e90af75ef4173b92a2ab22a99a570';
+        // <!-- 初始化查询url数据-->
+        var urldata;
+        //初始化动作数据
+        var actions={"data":[]};
+        //初始化查询方法
+        queryurldata();
+        //初始化ui渲染
+        uirender();
+        //初始化按钮动画
+        anim();
+        /*----------------新增页面start---------------------*/
+    	$('#adddiv').hide();
+    	$('#addforwardurldiv').hide();
+    	$('#addisforward').attr('ischecked','false');
+    	forwardaction();
+    	addaction();
+    	submitaction();
+    	var addisshow=false;
+    	
+    	
+    	//增加按钮
+        function addaction(){
+        	$('#add').click(function(){
+        		$('#addisforward').removeAttr('checked');
+        		if(addisshow){
+        			$('#adddiv').hide();
+        			$('#add').removeClass('layui-icon-down');
+        			$('#add').addClass('layui-icon-add-circle');
+        			addisshow=false;
+        		}else{
+        			$('#adddiv').show();
+        			$('#add').removeClass('layui-icon-add-circle');
+        			$('#add').addClass('layui-icon-down');
+        			addisshow=true;
+        		}
+        		
+        	});
+        }
+    	
+    	//转发按钮
+    	function forwardaction(){
+    		$('#addisforwarddiv').click(function(){
+    			var status=$('#addisforward').attr('ischecked');
+    			if(status=='false'){
+    				$('#addforwardurldiv').show();
+    				$('#addisforward').attr('ischecked','true');
+    			}else if(status=='true'){
+    				$('#addforwardurldiv').hide();
+    				$('#addisforward').attr('ischecked','false');
+    			}
+    			
+    		});
+    		
+    	}
+    	
+        function submitaction(){
+        	$('#addsubmit').click(function(){
+        		
+        		if($('#addurl').val()==null||$('#addurl').val()==''){
+            		layer.msg('请输入url');
+            	}
+            	else if($('#adddata').val()==null||$('#adddata').val()==''){
+            		layer.msg('请输入返回数据');
+            	}else {
+        		 $.ajax({          
+     	           	url:"/mock/add_data", 
+     	             type:"post", 
+     	             async: false,
+     	             data:{
+     	            	 url:$('#addurl').val(),
+     	            	 data:$('#adddata').val(),
+     	            	 is_forward:$('#addisforward').attr('ischecked'),
+     	            	 forward_addr:$('#addforwardurl').val()
+     	             },
+     	             success:function(data){
+     	            	layer.msg(data.info);
+     	            	if(data.flag=='success'){
+     	            	$('#adddiv').hide();
+     	            	var i=getRandom(10000,20000);
+     	            	var obj=addurlui({"url":$('#addurl').val(),"data":$('#adddata').val(),"is_Forward":$('#addisforward').attr('ischecked'),"forward_Addr":$('#addforwardurl').val()},i,form);
+     	            	bildbutton(i,obj);
+     	            	element.render('collapse(test)');}
+     	            	$('#addurl').val('');
+     	            	$('#adddata').val('');
+     	            	if(addisshow){
+     	        			$('#adddiv').hide();
+     	        			addisshow=false;
+     	        			$('#add').removeClass('layui-icon-down');
+                			$('#add').addClass('layui-icon-add-circle');  
+     	        		}else{
+     	        			$('#adddiv').show();
+     	        			('#add').removeClass('layui-icon-add-circle');
+     	        			$('#add').addClass('layui-icon-down');
+     	        			addisshow=true;
+     	        		}
+     	            	$('#addisforward').removeAttr('checked',false);
+     	            	$('#addisforward').attr('ischecked','false');
+     	            	$('#addforwardurl').val('');
+     	            	$('#addforwardurldiv').hide();
+     	            	form.render();
+     	            	   	            	
+     	             }
+     	          }); }       		
+        	});
+        	
+        }
+       
+        /*----------------新增页面end---------------------*/
+     
+        
+        /*----------------------初始化界面start------------------------------------------*/
+        //<!--界面渲染-->
+        function uirender(json){
+        	var i=0;
+        	 for(var obj of urldata){
+        		 if(obj.url==orgin_url){}else{
+        		 var deal_obj=addurlui(obj,i,form);
+        		 actions.data.push(deal_obj);
+        		 bildbutton(i,deal_obj);
+        		 i++;
+        		 }
+        	 }//end for
+        	  element.render();
+        }
+      
+        /*----------------------初始化界面end------------------------------------------*/
+        
+         /*----------------------公共方法start------------------------------------------*/
+         
+        // <!--获取数据发送类型-->
+        function queryurldata(){
+        $.ajax({          
+          	url:"/mock/query_data", 
+            type:"post", 
+            async: false,
+            success:function(data){
+            	urldata=data;
+            }
+         });
+        }
+        /*----------------------公共方法end------------------------------------------*/
+        
+         /*----------------------其他工具集start------------------------------------------*/
+         //说明文档
+           util.fixbar({
+            bar1: '&#xe705;',
+            click: function(type){
+            if(type === 'bar1'){
+            	layer.tab({
+            		  area: ['1200px', '500px'],
+            		
+            		  tab: [{
+            		    title: '第一步:新增url和mock数据', 
+            		    content: '<div class="layui-container">'+
+            				      '<div class="layui-row">'+
+            					  '<div class="layui-col-md12">'+
+            				      '<div><img  src="../layui/doc/1.png" /></div>'+
+            				      '</div></div></div>'
+            		  }, {
+            		    title: '第二步:查看新增结果', 
+            		    content: '<div class="layui-container">'+
+            		               '<div class="layui-row">'+
+            		               '<div class="layui-col-md12">'+
+            		               '<div><img  src="../layui/doc/2.png" /></div>'+
+            		               '</div></div></div>'
+            		  }, {
+            		    title: '第三步:访问配置接口', 
+            		    content: '<div class="layui-container">'+
+            	                   '<div class="layui-row">'+
+            	                   '<div class="layui-col-md12">'+
+            	                   '<div><img  src="../layui/doc/3.png" /></div>'+
+            	                   '</div></div></div>'
+            		      }]
+            		});  
+                  }
+          
+           }
+         });
+          /*----------------------其他工具集end------------------------------------------*/
+      
+       //  折叠板 
+        element.on('collapse(test)', function(data){});
+        
+
+	});
+</script>
+
+
+</html>

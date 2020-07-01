@@ -6,18 +6,20 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import com.mock.URLDealService.UrlDeal;
-import com.mock.URLDealService.UrlUtils;
-import com.mock.URLDealService.ViewDeal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.mock.Data.CacheData;
-import com.mock.Data.RootData;
-import com.mock.Data.UrlData;
-import com.mock.Utils.XmlUtils.XmlUtils;
+
+import com.mock.Bean.Data.CacheData;
+import com.mock.Bean.Data.RootData;
+import com.mock.Bean.Data.UrlData;
+import com.mock.Dao.XmlUtils.XmlUtils;
+import com.mock.Service.URLDealService.UrlDeal;
+import com.mock.Service.URLDealService.UrlUtils;
+import com.mock.Service.URLDealService.ViewDeal;
 /**
  * 公共入口
  * @author jinxh29224
@@ -30,6 +32,9 @@ public class Common_Entry {
 	UrlDeal UrlDeal;
 	@Autowired
 	UrlUtils UrlUtils;
+	@Autowired
+	ViewDeal ViewDeal;
+	
 	
 	@RequestMapping(value="/common",produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -37,12 +42,18 @@ public class Common_Entry {
 		return UrlDeal.GetUrlData(UrlUtils.UrlParserAfter(request.getParameter("data")));
 	}
 	
-	@Autowired
-	ViewDeal ViewDeal;
 	
 	@RequestMapping("/mock")
-	public String ui(Model model) {
-		return "ui";
+	public String ui() {
+			  return "mock_ui";
+		  
+	}
+	@RequestMapping("/mock_special")
+	public String mock_special(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("urldata",ViewDeal.GetUrlDataJson(UrlUtils.UrlParserAfter(request.getParameter("data"))));
+		 return "mock_special";
+		  
 	}
 	
 	@RequestMapping(value="/mock/query_data",produces = "application/json;charset=UTF-8")
@@ -64,6 +75,7 @@ public class Common_Entry {
 	public String delete_data(HttpServletRequest request) {
         return ViewDeal.DeleteData(request.getParameter("url"));
 	}
+	
 	@RequestMapping(value="/mock/add_data",produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String add_data(HttpServletRequest request) {

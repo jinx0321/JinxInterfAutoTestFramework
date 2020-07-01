@@ -1,4 +1,7 @@
-	package com.mock.Data;
+	package com.mock.Bean.Data;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -8,7 +11,7 @@ public class UrlData {
 	private String Data;
 	private String Is_Forward;
 	private String Forward_Addr;
-	
+	private List<RequestData> RequestData=new LinkedList<RequestData>();
 	
 	@XmlElement(name="Is_Forward")
 	public String getIs_Forward() {
@@ -39,7 +42,14 @@ public class UrlData {
 		Data = data;
 	}
 	
+	@XmlElement(name="Request_Data")
+	public List<RequestData> getRequestData() {
+		return RequestData;
+	}
 	
+	public void setRequestData(List<RequestData> requestData) {
+		RequestData = requestData;
+	}
 	@Override
 	public String toString() {
 		return "UrlData [Url=" + Url + ", Data=" + Data + "]";

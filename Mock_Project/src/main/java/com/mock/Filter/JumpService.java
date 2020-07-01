@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mock.URLDealService.UrlUtils;
+import com.mock.Service.URLDealService.UrlUtils;
 
 /**
  * 跳转服务,来判断时重定向还是跳转

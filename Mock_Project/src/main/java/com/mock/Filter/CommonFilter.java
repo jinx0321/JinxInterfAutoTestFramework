@@ -16,9 +16,9 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.mock.Data.CacheData;
-import com.mock.URLDealService.UrlUtils;
-import com.mock.Utils.XmlUtils.XmlUtils;
+import com.mock.Bean.Data.CacheData;
+import com.mock.Dao.XmlUtils.XmlUtils;
+import com.mock.Service.URLDealService.UrlUtils;
  
 @Component
 @WebFilter(urlPatterns = "/*", filterName = "common")
