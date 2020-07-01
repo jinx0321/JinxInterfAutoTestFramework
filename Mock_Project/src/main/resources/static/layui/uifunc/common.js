@@ -245,7 +245,7 @@ function clickspecialHandler(event){
 	layer.open({
 		  type: 2, 
 		  content: [url,'no'] ,
-		  area: ['700px', '530px'],
+		  area: ['700px', '630px'],
 	        fix: false,
 	        scrollbar: true,
 	        success:function(){	        	
@@ -338,7 +338,7 @@ function tabcontent(rd,url){
 	  '     <div class="layui-form-item">'+
 	  '       <label class="layui-form-label">映射参数</label>'+
 	  '        <div class="layui-input-block">'+
-	  '         <input name="param" type="text" value="'+rd.param+'" required  lay-verify="required" placeholder="映射参数" autocomplete="off" class="layui-input">'+
+	  '         <input id="mapdata'+rd.paramId+'" name="param" type="text" value="'+rd.param+'" required  lay-verify="required" placeholder="映射参数" autocomplete="off" class="layui-input">'+
 	  '        </div>'+
 	  '        </div><br>'+
 	  '     <div class="layui-form-item">'+
@@ -377,7 +377,7 @@ function tabcontentaction(url,rd,type,form){
 	   if(type=='mod'){
 		   requrl="/mock/mod_requestdata";
 	   }else if(type=='add'){
-		   requrl="/mock/add_requestdata";
+		   requrl="/mock/mod_requestdata";
 	}
 	 
 	  form.render();

@@ -26,13 +26,16 @@
 					</div>
 					
 			</div>
-			<div class="layui-col-md4">
-		         <label class="layui-form-label">当前id:</label>
+				<div class="layui-row">
+			<div class="layui-col-md12">
+		         <label class="layui-form-label" id="curr_id">当前id:</label>
 			</div>
-			<div class="layui-col-md4">
-			   <label class="layui-form-label">当前param:</label>
 			</div>
-
+			<div class="layui-row">
+			<div class="layui-col-md12">
+			   <label class="layui-form-label" id="curr_param">当前param:</label>
+			</div>
+</div>
 		</div>
 
 		<div class="layui-row">
@@ -114,9 +117,18 @@
 			}
 		}
 		init();
+	
+		/*tab页监听*/
+		function element_tab(){
+			element.on('tab(datatab)', function(data) {
+				var layid=this.getAttribute('lay-id');
+				$('#curr_id').text('当前id:Data'+layid);
+				$('#curr_param').text('当前param:'+$('#mapdata'+layid).val());
+				console.log($('#mapdata'+layid).val());
+			});
+		}
+		element_tab();
 		
-		element.on('tab', function(data) {
-		});
 	});
 </script>
 
