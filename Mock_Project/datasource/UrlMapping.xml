@@ -20,10 +20,16 @@
         <Forward_Addr></Forward_Addr>
         <Is_Forward>false</Is_Forward>
         <Request_Data>
-            <Data>{"test":"test312ss31"}</Data>
+            <Data>23124124121</Data>
             <Is_Forward>true</Is_Forward>
-            <Param>param=616263</Param>
-            <ParamId>940835260</ParamId>
+            <Param>111111</Param>
+            <ParamId>1593652005119</ParamId>
+        </Request_Data>
+        <Request_Data>
+            <Data>1241</Data>
+            <Is_Forward>true</Is_Forward>
+            <Param>214</Param>
+            <ParamId>1593652096912</ParamId>
         </Request_Data>
         <Url>/aszczxv</Url>
     </UrlData>

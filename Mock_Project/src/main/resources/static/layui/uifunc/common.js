@@ -312,7 +312,8 @@ function tabcontent(rd,url){
 	var is_select_true='';
 	var is_select_false='';
     //请求按钮名称
-    var btname='更新';
+    var btname1='更新';
+    var btname2='删除';
 	if(rd.is_Forward=='true'){
 		is_select_true='selected';
 	}else if(rd.is_Forward=='false'){
@@ -325,11 +326,11 @@ function tabcontent(rd,url){
 	'<div class="layui-container">'+
 	'<div class="layui-row">'+
 	  ' <div class="layui-col-md2">'+
-	  '   <form class="layui-form" action="">'+
+	  '   <form class="layui-form" action="" lay-filter="form'+rd.paramId+'">'+
 	  '     <div class="layui-form-item" >'+
 	  '      <label class="layui-form-label">是否转发</label>'+
 	  '       <div class="layui-input-block">'+
-	  '        <select name="Is_Forward" >'+
+	  '        <select name="Is_Forward" id="select'+rd.paramId+'">'+
 	  '           <option value="true" '+is_select_true+'>是</option>'+
 	  '           <option value="false" '+is_select_false+'>否</option>'+
       '         </select>'+
@@ -338,17 +339,18 @@ function tabcontent(rd,url){
 	  '     <div class="layui-form-item">'+
 	  '       <label class="layui-form-label">映射参数</label>'+
 	  '        <div class="layui-input-block">'+
-	  '         <input id="mapdata'+rd.paramId+'" name="param" type="text" value="'+rd.param+'" required  lay-verify="required" placeholder="映射参数" autocomplete="off" class="layui-input">'+
+	  '         <input id="mapparam'+rd.paramId+'" name="param" type="text" value="'+rd.param+'" required  lay-verify="required" placeholder="映射参数" autocomplete="off" class="layui-input">'+
 	  '        </div>'+
 	  '        </div><br>'+
 	  '     <div class="layui-form-item">'+
 	  '       <label class="layui-form-label">返回数据</label>'+
 	  '        <div class="layui-input-block">'+
-	  '        <textarea name="data" required lay-verify="required" placeholder="请输入" class="layui-textarea" style="height:150px" >'+rd.data+'</textarea>'+
+	  '        <textarea name="data" id="mapdata'+rd.paramId+'" required lay-verify="required" placeholder="请输入" class="layui-textarea" style="height:150px" >'+rd.data+'</textarea>'+
 	  '        </div>'+
 	  '      </div><br>'+
 	  '     <div class="layui-form-item">'+
-	  '       <button class="layui-btn" lay-submit="" lay-filter="'+rd.paramId+'">'+btname+'</button>'+
+	  '       <button class="layui-btn layui-btn-sm layui-btn-primary" lay-submit="" lay-filter="mod'+rd.paramId+'">'+btname1+'</button>'+
+	  '       <button class="layui-btn layui-btn-sm layui-btn-primary" lay-submit="" lay-filter="del'+rd.paramId+'">'+btname2+'</button>'+
 	  '      </div>'+
 	  '  </form> '+
 	'</div>'+
@@ -370,18 +372,20 @@ function addtab(filter,rd,url,form,type,element){
 
 	
 }
-function tabcontentaction(url,rd,type,form){
+function tabcontentaction(url,rd,type,form,cachedata,element,filter){
 	//请求url
-    var requrl="";
-
+    var requrl_mod="";
+    var requrl_del="/mock/del_requestdata";
 	   if(type=='mod'){
-		   requrl="/mock/mod_requestdata";
+		   requrl_mod="/mock/mod_requestdata";
 	   }else if(type=='add'){
-		   requrl="/mock/mod_requestdata";
-	}
-	 
+		   requrl_mod="/mock/mod_requestdata";
+	   }
+	  
+	   
 	  form.render();
-	  form.on('submit('+rd.paramId+')', function(data){
+	  //更新按钮动作
+	  form.on('submit(mod'+rd.paramId+')', function(data){
 		   var urldata={
 				"url":url
 		   }    
@@ -391,19 +395,67 @@ function tabcontentaction(url,rd,type,form){
 					"param":data.field.param,
 					"paramId":rd.paramId
 			}
+		  
 		   urldata.requestData=requestData;	 
 		   $.ajax({          
-	           	url:requrl,
+	           	url:requrl_mod,
 	             type:"post", 
 	             async: false,
 	             data:{
 	            	 content:JSON.stringify(urldata)
 	             },
 	             success:function(data){
+	            	  //新增或是修改入库,都是修改数据
+	      		      cachedata.moddata(requestData);
 	            	  layer.msg(data.info);
+	             },
+	             error:function(xhr,state,errorThrown){
+	            	 layer.msg('更新失败,失败原因:'+xhr.responseText);
 	             }
 		   }
 		   );  
 		    return false;
 	   });
+	  
+	  //删除按钮动作
+	  form.on('submit(del'+rd.paramId+')', function(data){
+		   var urldata={
+				"url":url
+		   }    
+		   var requestData={
+				   "data":data.field.data,
+					"is_Forward":data.field.Is_Forward,
+					"param":data.field.param,
+					"paramId":rd.paramId
+			}
+		  
+		   urldata.requestData=requestData;	 
+		   $.ajax({          
+	           	url:requrl_del,
+	             type:"post", 
+	             async: false,
+	             data:{
+	            	 content:JSON.stringify(urldata)
+	             },
+	             success:function(data){
+	            	 if(data.flag=='success'){
+	            	   //新增或是修改入库,都是修改数据
+	      		       cachedata.deldata(requestData.paramId);
+	            	   layer.msg(data.info);
+	            	   element.tabDelete(filter, requestData.paramId);
+	            	 }else {
+	            		 layer.msg(data.info);
+	            	 }
+	             },
+	             error:function(xhr,state,errorThrown){
+	            	 layer.msg('删除失败,失败原因:'+xhr.responseText );
+	             }
+		   }
+		   );  
+		    return false;
+	   });
+	  
+	  return 0;
 }
+
+

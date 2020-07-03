@@ -6,6 +6,7 @@
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
 <script type="text/javascript" th:src="@{/jquery-3.3.1/jquery-3.3.1.js}"></script>
 <script type="text/javascript" th:src="@{/layui/uifunc/common.js}"></script>
+<script type="text/javascript" th:src="@{/layui/uifunc/cache.js}"></script>
 <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
 <link rel="stylesheet" th:href="@{/layui/outside/css/style.css}"
 	media="all">
@@ -35,12 +36,12 @@
 			<div class="layui-col-md12">
 			   <label class="layui-form-label" style="width:200px" id="curr_param" ></label>
 			</div>
-</div>
+       </div>
 		</div>
 
 		<div class="layui-row">
 			<div class="layui-col-md12">
-				<div class="layui-tab" lay-filter="datatab" lay-allowclose="true">
+				<div class="layui-tab" lay-filter="datatab" >
 					<ul class="layui-tab-title" id="tabtitle"></ul>
 					<div class="layui-tab-content"  id="tabcontent"></div>
 				</div>
@@ -49,7 +50,9 @@
 	</div>
 
 </body>
+<script>
 
+</script>
 
 <script th:inline="javascript">
 	layui.use([ 'layer', 'form', 'jquery', 'code', 'layedit', 'element',
@@ -68,20 +71,19 @@
 		//url数据
 		var urldata=[[${urldata}]];
 		var urljson=JSON.parse(urldata);
-		//动画
-		anim();
+		//缓存数据
+		var cachedata=new CacheData('paramId');
 	
-		
-		
+	  
 	    var active = {
 			tabAdd : function(tabdata,requestdata,type) {
-
 				 element.tabAdd(filtername, {
 				        title: tabdata.title 
 				        ,content: tabdata.content
 				        ,id: requestdata.paramId 
 				     })
-				 tabcontentaction(urljson.url,requestdata,type,form);
+				 cachedata.adddata(requestdata);
+				 tabcontentaction(urljson.url,requestdata,type,form,cachedata,element,'datatab');
 			},
 			tabDelete : function(othis) {
 				//删除指定Tab项
@@ -96,6 +98,7 @@
 		};
 
 		/*新增tab页*/
+		function addTabAction(){
 		$('#addtab').on('click', function() {
 			//初始tabobject  
 			 var initrequestData={
@@ -104,31 +107,46 @@
 						"param":'',
 						"paramId":''
 			 }
+			 cachedata.adddata(initrequestData);
 			 initrequestData.paramId=new Date().getTime();
 			 active.tabAdd(tabcontent(initrequestData,urljson.url),initrequestData,'add');
-		});
+		   });
+		}
+		addTabAction();
+		
+	
 
 		/*初始渲染*/
 		function init(){
 			var requestdata=urljson.requestData;
 			for(var rd of requestdata){
 			    var tabdata=tabcontent(rd,urljson.url);
-			    active.tabAdd(tabdata,rd,'mod');
+			    active.tabAdd(tabdata,rd,'add');
 			}
 		}
 		init();
 	
 		/*tab页监听*/
 		function element_tab(){
+			//tab页切换
 			element.on('tab(datatab)', function(data) {
+				console.log(this);
 				var layid=this.getAttribute('lay-id');
+				var rd=cachedata.getobj(layid);
+				form.val("form"+layid, { 
+					  "param": rd.param,
+					  "data": rd.data,
+					  "Is_Forward":rd.is_Forward
+				});
+				
 				$('#curr_id').text('当前id:  Data'+layid);
-				$('#curr_param').text('当前param:  '+$('#mapdata'+layid).val());
-				console.log($('#mapdata'+layid).val());
-			});
+				$('#curr_param').text('当前param:  '+rd.param);
+			
+			});	
 		}
 		element_tab();
-		
+		//动画
+		anim();
 	});
 </script>
 

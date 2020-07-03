@@ -35,5 +35,13 @@ public class Special_Entry {
 
 
 	}
+	@RequestMapping(value="/mock/del_requestdata",produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String Delete_Request_Data(HttpServletRequest request) throws IOException, IOException {
+		
+		return ViewDeal.DelRequestData(JSONObject.parseObject(request.getParameter("content")));
+
+
+	}
 
 }

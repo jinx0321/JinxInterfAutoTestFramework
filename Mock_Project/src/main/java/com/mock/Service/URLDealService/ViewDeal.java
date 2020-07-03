@@ -35,7 +35,7 @@ public class ViewDeal {
 	 * @param forward_addr
 	 * @return
 	 */
-	public String UpdateData(String url,String data, String is_forward, String forward_addr) {
+	public synchronized String UpdateData(String url,String data, String is_forward, String forward_addr) {
 		System.out.println(url+"-"+data);
 		List<UrlData> list=	CacheData.RootData.getUrldata();
 		for(int i=0;i<list.size();i++) {
@@ -66,7 +66,7 @@ public class ViewDeal {
 	 * @param url
 	 * @return
 	 */
-	public String DeleteData(String url) {
+	public synchronized String DeleteData(String url) {
 		UrlData ud = null;
 		System.out.println(url);
 		List<UrlData> list=	CacheData.RootData.getUrldata();
@@ -98,7 +98,7 @@ public class ViewDeal {
 	 * @param forward_addr
 	 * @return
 	 */
-	public String AddData(String url, String data,String is_forward,String forward_addr) {
+	public synchronized String AddData(String url, String data,String is_forward,String forward_addr) {
 		if(!UrlUtils.is_Url(url)) {
 			return "{\"info\":\"Url不合法,请输入/xxx/xxx/xxx格式\",\"flag\":\"fail\"}";
 		}
@@ -118,11 +118,6 @@ public class ViewDeal {
 		rd.setData("{\"test\":\"test\"}");
         rd.setIs_Forward("false");
         rd.setParam("{\"param\":\"param\"}");
-//        byte[] bytes=rd.getParam().getBytes();
-//        String id="";
-//        for(int i=0;i<bytes.length;i++) {
-//        	id=id+String.valueOf(Byte.valueOf(bytes[i]).intValue());
-//        }
         rd.setParamId(String.valueOf(rd.getParam().hashCode()));
         ud.getRequestData().add(rd);
 		CacheData.RootData.getUrldata().add(ud);
@@ -137,8 +132,10 @@ public class ViewDeal {
 	
 	
 	
-	public String ModRequestData(JSONObject requestdata) {
+	public synchronized String ModRequestData(JSONObject requestdata) {
 		
+		//默认不存在
+		boolean is_flag=false;
 		RequestData rd =requestdata.getJSONObject("requestData").toJavaObject(RequestData.class);
 		
 		for(UrlData ud:CacheData.RootData.getUrldata()) {
@@ -149,15 +146,46 @@ public class ViewDeal {
 						rdata.setData(rd.getData());
 						rdata.setIs_Forward(rd.getIs_Forward());
 						rdata.setParam(rd.getParam());
-						updateutil.modreqdata(CacheData.RootData);
-						return "{\"info\":\"更新完成\",\"flag\":\"success\"}";
+						is_flag=true;
 					}
 				}
-				return "{\"info\":\"paramid不存在\",\"flag\":\"fail\"}";
+				if(!is_flag) {
+				ud.getRequestData().add(rd);
+				}
+				updateutil.modreqdata(CacheData.RootData);
+				return "{\"info\":\"更新完成\",\"flag\":\"success\"}";
 			}
 		}
-		
-		
+		return "{\"info\":\"Url不存在\",\"flag\":\"fail\"}";
+	}
+	
+	
+	
+	public synchronized String DelRequestData(JSONObject requestdata) {
+	
+		//是否找到参数
+		boolean is_find_param=false;
+		RequestData rd =requestdata.getJSONObject("requestData").toJavaObject(RequestData.class);
+		RequestData rddel = null;
+		for(UrlData ud:CacheData.RootData.getUrldata()) {
+			if(ud.getUrl().equals(requestdata.get("url"))) {
+			    List<RequestData> rdl=ud.getRequestData();
+			      for(RequestData rdata:rdl) {
+				     if(rdata.getParamId().equals(rd.getParamId())) {
+					     is_find_param=true;
+					    rddel=rdata;
+				      }
+			    }
+			  	if(is_find_param) {
+			  		rdl.remove(rddel);
+			  		updateutil.delreqdata(CacheData.RootData);
+			  		return "{\"info\":\"删除成功\",\"flag\":\"success\"}";	
+				}else {
+					return "{\"info\":\"参数不存在\",\"flag\":\"fail\"}";	
+				}
+			      
+			}
+		}
 		return "{\"info\":\"Url不存在\",\"flag\":\"fail\"}";
 	}
 	
@@ -175,4 +203,7 @@ public class ViewDeal {
     public String GetUrlDataJson(String Url) {
     	return JSON.toJSONString(GetUrlDataObject(Url));
     }
+
+
+	
 }
