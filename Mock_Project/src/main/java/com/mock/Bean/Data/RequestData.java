@@ -7,7 +7,15 @@ public class RequestData {
 	private String Is_Forward;
 	private String Data;
 	private String ParamId;
+	private String Is_Disable;
 	
+	@XmlElement(name="Is_Disable")
+	public String getIs_Disable() {
+		return Is_Disable;
+	}
+	public void setIs_Disable(String is_Disable) {
+		Is_Disable = is_Disable;
+	}
 	@XmlElement(name="Param")
 	public String getParam() {
 		return Param;

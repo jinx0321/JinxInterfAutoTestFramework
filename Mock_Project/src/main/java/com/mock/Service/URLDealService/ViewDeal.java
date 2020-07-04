@@ -114,12 +114,6 @@ public class ViewDeal {
 		ud.setData(data);
 		ud.setIs_Forward(is_forward);
 		ud.setForward_Addr(forward_addr);
-		RequestData rd=new RequestData();
-		rd.setData("{\"test\":\"test\"}");
-        rd.setIs_Forward("false");
-        rd.setParam("{\"param\":\"param\"}");
-        rd.setParamId(String.valueOf(rd.getParam().hashCode()));
-        ud.getRequestData().add(rd);
 		CacheData.RootData.getUrldata().add(ud);
 		try {
 			updateutil.addUrldata(CacheData.RootData);
