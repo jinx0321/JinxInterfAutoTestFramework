@@ -329,17 +329,23 @@ function tabcontent(rd,url){
 	  '   <form class="layui-form" action="" lay-filter="form'+rd.paramId+'">'+
 	  '     <div class="layui-form-item" >'+
 	  '      <label class="layui-form-label">是否转发</label>'+
-	  '       <div class="layui-input-block">'+
-	  '        <select name="Is_Forward" id="select'+rd.paramId+'">'+
+	  '       <div class="layui-input-block" style="width:100px">'+
+	  '        <select name="Is_Forward" required lay-verify="required" id="select'+rd.paramId+'" >'+
 	  '           <option value="true" '+is_select_true+'>是</option>'+
 	  '           <option value="false" '+is_select_false+'>否</option>'+
       '         </select>'+
 	  '        </div>'+
 	  '     </div>'+
+	  '     <div class="layui-form-item " >'+
+	  '      <label class="layui-form-label">是否禁用</label>'+
+	  '       <div class="layui-input-block" style="width:100px">'+
+	  '       <input type="checkbox" name="like['+rd.paramId+'disable]"  title="禁用" checked="">'+
+	  '        </div>'+
+	  '     </div>'+
 	  '     <div class="layui-form-item">'+
 	  '       <label class="layui-form-label">映射参数</label>'+
 	  '        <div class="layui-input-block">'+
-	  '         <input id="mapparam'+rd.paramId+'" name="param" type="text" value="'+rd.param+'" required  lay-verify="required" placeholder="映射参数" autocomplete="off" class="layui-input">'+
+	  '         <input  id="mapparam'+rd.paramId+'" name="param" type="text" value="'+rd.param+'" required  lay-verify="required" placeholder="映射参数" autocomplete="off" class="layui-input">'+
 	  '        </div>'+
 	  '        </div><br>'+
 	  '     <div class="layui-form-item">'+
@@ -349,8 +355,8 @@ function tabcontent(rd,url){
 	  '        </div>'+
 	  '      </div><br>'+
 	  '     <div class="layui-form-item">'+
-	  '       <button class="layui-btn layui-btn-sm layui-btn-primary" lay-submit="" lay-filter="mod'+rd.paramId+'">'+btname1+'</button>'+
-	  '       <button class="layui-btn layui-btn-sm layui-btn-primary" lay-submit="" lay-filter="del'+rd.paramId+'">'+btname2+'</button>'+
+	  '       <button class="layui-btn layui-btn-sm layui-btn-primary layui-btn-radius" lay-submit="" lay-filter="mod'+rd.paramId+'"><i class="layui-icon">&#xe669;</i></button>'+
+	  '       <button class="layui-btn layui-btn-sm layui-btn-primary layui-btn-radius" lay-submit="" lay-filter="del'+rd.paramId+'"><i class="layui-icon">&#xe640;</i></button>'+
 	  '      </div>'+
 	  '  </form> '+
 	'</div>'+
@@ -383,6 +389,12 @@ function tabcontentaction(url,rd,type,form,cachedata,element,filter){
 	   }
 	  
 	   
+	   form.val("form"+rd.paramId, { 
+
+		   "check[disable]": true
+	
+		 });
+	   
 	  form.render();
 	  //更新按钮动作
 	  form.on('submit(mod'+rd.paramId+')', function(data){
@@ -395,6 +407,7 @@ function tabcontentaction(url,rd,type,form,cachedata,element,filter){
 					"param":data.field.param,
 					"paramId":rd.paramId
 			}
+		   console.log(data.field.disable);
 		  
 		   urldata.requestData=requestData;	 
 		   $.ajax({          
@@ -430,28 +443,36 @@ function tabcontentaction(url,rd,type,form,cachedata,element,filter){
 			}
 		  
 		   urldata.requestData=requestData;	 
-		   $.ajax({          
-	           	url:requrl_del,
-	             type:"post", 
-	             async: false,
-	             data:{
-	            	 content:JSON.stringify(urldata)
-	             },
-	             success:function(data){
-	            	 if(data.flag=='success'){
-	            	   //新增或是修改入库,都是修改数据
-	      		       cachedata.deldata(requestData.paramId);
-	            	   layer.msg(data.info);
-	            	   element.tabDelete(filter, requestData.paramId);
-	            	 }else {
-	            		 layer.msg(data.info);
-	            	 }
-	             },
-	             error:function(xhr,state,errorThrown){
-	            	 layer.msg('删除失败,失败原因:'+xhr.responseText );
-	             }
-		   }
-		   );  
+		   layer.confirm('确定删除吗?', {
+				icon : 3,
+				title : '提示'
+			}, function(index) {
+				  $.ajax({          
+			           	url:requrl_del,
+			             type:"post", 
+			             async: false,
+			             data:{
+			            	 content:JSON.stringify(urldata)
+			             },
+			             success:function(data){
+			            	 if(data.flag=='success'){
+			            	   //新增或是修改入库,都是修改数据
+			      		       cachedata.deldata(requestData.paramId);
+			            	   layer.msg(data.info);
+			            	   element.tabDelete(filter, requestData.paramId);
+			            	 }else {
+			            		 layer.msg(data.info);
+			            	 }
+			             },
+			             error:function(xhr,state,errorThrown){
+			            	 layer.msg('删除失败,失败原因:'+xhr.responseText );
+			             }
+				   }
+				   );  
+
+				layer.close(index);
+			});
+		 
 		    return false;
 	   });
 	  

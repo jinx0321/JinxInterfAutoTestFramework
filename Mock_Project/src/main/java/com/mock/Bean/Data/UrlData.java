@@ -11,8 +11,16 @@ public class UrlData {
 	private String Data;
 	private String Is_Forward;
 	private String Forward_Addr;
+    private String Is_Disable;
 	private List<RequestData> RequestData=new LinkedList<RequestData>();
 	
+	@XmlElement(name="Is_Disable")
+	public String getIs_Disable() {
+		return Is_Disable;
+	}
+	public void setIs_Disable(String is_Disable) {
+		Is_Disable = is_Disable;
+	}
 	@XmlElement(name="Is_Forward")
 	public String getIs_Forward() {
 		return Is_Forward;
