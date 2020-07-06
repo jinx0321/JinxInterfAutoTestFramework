@@ -45,10 +45,9 @@ public class RequestData {
 	public void setParamId(String paramId) {
 		ParamId = paramId;
 	}
-	
-	
-	
-	
-
-	
+	@Override
+	public String toString() {
+		return "RequestData [Param=" + Param + ", Is_Forward=" + Is_Forward + ", Data=" + Data + ", ParamId=" + ParamId
+				+ ", Is_Disable=" + Is_Disable + "]";
+	}	
 }

@@ -412,11 +412,10 @@ function tabcontentaction(url,rd,type,form,cachedata,element,filter){
 		   urldata.requestData=requestData;	 
 		   $.ajax({          
 	           	url:requrl_mod,
+	            contentType: "application/json;charset=utf-8",
 	             type:"post", 
 	             async: false,
-	             data:{
-	            	 content:JSON.stringify(urldata)
-	             },
+	             data:JSON.stringify(urldata),
 	             success:function(data){
 	            	  //新增或是修改入库,都是修改数据
 	      		      cachedata.moddata(requestData);
@@ -447,19 +446,23 @@ function tabcontentaction(url,rd,type,form,cachedata,element,filter){
 				icon : 3,
 				title : '提示'
 			}, function(index) {
+				console.log(requestData.paramId);
 				  $.ajax({          
 			           	url:requrl_del,
+			            contentType: "application/json;charset=utf-8",
 			             type:"post", 
 			             async: false,
-			             data:{
-			            	 content:JSON.stringify(urldata)
-			             },
+			             data:JSON.stringify(urldata),
 			             success:function(data){
 			            	 if(data.flag=='success'){
 			            	   //新增或是修改入库,都是修改数据
 			      		       cachedata.deldata(requestData.paramId);
 			            	   layer.msg(data.info);
+			            	   console.log('requestData.paramId='+requestData.paramId);
 			            	   element.tabDelete(filter, requestData.paramId);
+			            	   element.render('tab('+filter+')'); 
+			            		$('#curr_id').text('');
+			    				$('#curr_param').text('');
 			            	 }else {
 			            		 layer.msg(data.info);
 			            	 }

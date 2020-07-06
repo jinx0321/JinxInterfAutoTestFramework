@@ -1,7 +1,10 @@
 package com.mock.Bean.Log;
 
+import org.springframework.stereotype.Component;
+
 import com.alibaba.fastjson.JSONObject;
 
+@Component
 public class Info {
 	private String info="";
 	private String flag="";

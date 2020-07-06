@@ -1,5 +1,7 @@
 package com.mock.Service.URLDealService;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
 
 import com.mock.Bean.Data.CacheData;
@@ -24,4 +26,11 @@ public class UrlDeal {
 	};
 	
 
+	/**
+	 * 匹配请求参数
+	 */
+	public void regexReqParam(String param,HttpServletRequest request) {
+		
+	}
+	
 }

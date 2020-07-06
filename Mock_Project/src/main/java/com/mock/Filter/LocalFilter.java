@@ -1,12 +1,17 @@
 package com.mock.Filter;
 
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.mock.Utils.ControlUtils.*;
 
 /**
  * 本地url过滤,对前端资源url过滤
@@ -16,25 +21,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class LocalFilter {
 	public String forward="forward";
-	public String redict="redict";
+	public String redirect="redirect";
 	public String release="release";
+	
+	@Autowired
+	RequestUtils RequestUtils;
+	
 	
 	public String commonfilter(HttpServletRequest request) {
 		
-		 String method=request.getMethod();
-		    Enumeration<String> headerenum=request.getHeaderNames();
-		    Map<String,String> headers=new HashMap<String,String>();
-		    while(headerenum.hasMoreElements()){
-		    	String name=headerenum.nextElement();
-		    	headers.put(name, request.getHeader(name));
-		    }
-		    Enumeration<String> paramenum=request.getParameterNames();
-		    Map<String,String> params=new HashMap<String,String>();
-		    while(paramenum.hasMoreElements()){
-		    	String name=paramenum.nextElement();
-		    	params.put(name, request.getParameter(name));
-		    }
-		    System.out.println(headers);
 		
 		String uri=request.getRequestURI();
 		
@@ -45,21 +40,6 @@ public class LocalFilter {
 	    	return forward;
 	    }
 		
-	    
-	   
-	   
-	   
-	
-		
-	}
-	
-	private boolean forward_or_redict(String url){
-		
-		
-		
-		
-		
-		return false;
 	}
 	
 	

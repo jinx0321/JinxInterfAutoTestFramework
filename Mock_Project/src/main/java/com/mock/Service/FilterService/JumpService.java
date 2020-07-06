@@ -1,4 +1,4 @@
-package com.mock.Filter;
+package com.mock.Service.FilterService;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mock.Service.URLDealService.UrlUtils;
+import com.mock.Utils.ControlUtils.UrlUtils;
 
 /**
  * 跳转服务,来判断时重定向还是跳转

@@ -1,31 +1,41 @@
-package com.mock.Service.URLDealService;
+package com.mock.Service.ViewService;
 
 import java.util.List;
-
+import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
-
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.mock.Bean.Data.CacheData;
 import com.mock.Bean.Data.RequestData;
+import com.mock.Bean.Data.RootData;
 import com.mock.Bean.Data.UrlData;
-import com.mock.Service.URLDealService.CommonInter.DataUpdateImp;
+import com.mock.Service.URLDealService.CommonInter.CacheOpImpl_Xml;
+import com.mock.Service.URLDealService.CommonInter.CacheOp;
+import com.mock.Utils.ControlUtils.UrlUtils;
 import com.mock.Bean.Log.Info;
 
-@Component
+@Service
 public class ViewDeal {
+	
 	
 	@Autowired
 	UrlUtils UrlUtils;
+	
 	@Autowired
-	DataUpdateImp updateutil;
+	@Qualifier("CacheOpImpl")
+	CacheOp<RootData> CacheOp;
+	
 	@Autowired
 	Info Info;
 	
 	public String QueryUrlData() {
-		return 	JSON.toJSONString(CacheData.RootData.getUrldata());
+		return 	JSON.toJSONString(CacheOp.GetCache().getUrldata());
 		
 	}
 
@@ -40,14 +50,14 @@ public class ViewDeal {
 	 */
 	public synchronized String UpdateData(JSONObject json) {
 		System.out.println(json.getString("url")+"-"+json.getString("data"));
-		List<UrlData> list=	CacheData.RootData.getUrldata();
+		List<UrlData> list=	CacheOp.GetCache().getUrldata();
 		for(int i=0;i<list.size();i++) {
 			if(list.get(i).getUrl().equals(json.getString("url"))) {
 				list.get(i).setData(json.getString("data"));
 				list.get(i).setForward_Addr(json.getString("forward_addr"));
 				list.get(i).setIs_Forward(json.getString("is_forward"));
 				try {
-					updateutil.modUrldata(CacheData.RootData);
+					CacheOp.modUrldata(CacheOp.GetCache());
 				}catch (Exception e) {
 					return Info.toJson(e.getMessage(), "fail");
 				}
@@ -71,7 +81,7 @@ public class ViewDeal {
 	public synchronized String DeleteData(String url) {
 		UrlData ud = null;
 		System.out.println(url);
-		List<UrlData> list=	CacheData.RootData.getUrldata();
+		List<UrlData> list=	CacheOp.GetCache().getUrldata();
 		for(int i=0;i<list.size();i++) {
 			if(list.get(i).getUrl().equals(url)) {
 				ud=list.get(i);
@@ -79,8 +89,8 @@ public class ViewDeal {
 		}
 		if(ud!=null) {
 			try {
-				CacheData.RootData.getUrldata().remove(ud);
-				updateutil.delUrldata(CacheData.RootData);
+				CacheOp.GetCache().getUrldata().remove(ud);
+				CacheOp.delUrldata(CacheOp.GetCache());
 			}catch (Exception e) {
 				return Info.toJson(e.getMessage(), "fail");
 			}
@@ -100,30 +110,31 @@ public class ViewDeal {
 	 * @param forward_addr
 	 * @return
 	 */
-	public synchronized String AddData(String url, String data,String is_forward,String forward_addr) {
-		if(!UrlUtils.is_Url(url)) {
+	public synchronized String AddData(JSONObject json/*String url, String data,String is_forward,String forward_addr*/) {
+		System.out.println(json.toJSONString());
+		if(!UrlUtils.is_Url(json.getString("url"))) {
 			return Info.toJson("Url不合法,请输入/xxx/xxx/xxx格式", "fail");
 		}
 		
-		for(UrlData ud:CacheData.RootData.getUrldata()) {
-			if(ud.getUrl().equals(url)) {
+		for(UrlData ud:CacheOp.GetCache().getUrldata()) {
+			if(ud.getUrl().equals(json.getString("url"))) {
 				return Info.toJson("Url已存在", "fail");
 			}
 			
 		}
 		UrlData ud=new UrlData();
-		ud.setUrl(url);
-		ud.setData(data);
-		ud.setIs_Forward(is_forward);
-		ud.setForward_Addr(forward_addr);
-		CacheData.RootData.getUrldata().add(ud);
+		ud.setUrl(json.getString("url"));
+		ud.setData(json.getString("data"));
+		ud.setIs_Forward(json.getString("is_forward"));
+		ud.setForward_Addr(json.getString("forward_addr"));
+		CacheOp.GetCache().getUrldata().add(ud);
 		try {
-			updateutil.addUrldata(CacheData.RootData);
+			CacheOp.addUrldata(CacheOp.GetCache());
 		}catch (Exception e) {
-			return "{\"info\":\""+e.getMessage()+"\",\"flag\":\"fail\"}";
+			return Info.toJson(e.getMessage(), "fail");
+
 		}
-		
-		return "{\"info\":\"新增成功\",\"flag\":\"success\"}";
+		return Info.toJson("新增成功", "success");
 	}
 	
 	
@@ -134,7 +145,7 @@ public class ViewDeal {
 		boolean is_flag=false;
 		RequestData rd =requestdata.getJSONObject("requestData").toJavaObject(RequestData.class);
 		
-		for(UrlData ud:CacheData.RootData.getUrldata()) {
+		for(UrlData ud:CacheOp.GetCache().getUrldata()) {
 			if(ud.getUrl().equals(requestdata.get("url"))) {
 				List<RequestData> rdl=ud.getRequestData();
 				for(RequestData rdata:rdl) {
@@ -148,22 +159,22 @@ public class ViewDeal {
 				if(!is_flag) {
 				ud.getRequestData().add(rd);
 				}
-				updateutil.modreqdata(CacheData.RootData);
-				return "{\"info\":\"更新完成\",\"flag\":\"success\"}";
+				CacheOp.modreqdata(CacheOp.GetCache());
+				return Info.toJson("更新完成", "success");
 			}
 		}
-		return "{\"info\":\"Url不存在\",\"flag\":\"fail\"}";
+		return Info.toJson("Url不存在", "fail");
 	}
 	
 	
 	
 	public synchronized String DelRequestData(JSONObject requestdata) {
-	
 		//是否找到参数
 		boolean is_find_param=false;
 		RequestData rd =requestdata.getJSONObject("requestData").toJavaObject(RequestData.class);
+		System.out.println(rd);
 		RequestData rddel = null;
-		for(UrlData ud:CacheData.RootData.getUrldata()) {
+		for(UrlData ud:CacheOp.GetCache().getUrldata()) {
 			if(ud.getUrl().equals(requestdata.get("url"))) {
 			    List<RequestData> rdl=ud.getRequestData();
 			      for(RequestData rdata:rdl) {
@@ -174,20 +185,20 @@ public class ViewDeal {
 			    }
 			  	if(is_find_param) {
 			  		rdl.remove(rddel);
-			  		updateutil.delreqdata(CacheData.RootData);
-			  		return "{\"info\":\"删除成功\",\"flag\":\"success\"}";	
+			  		CacheOp.delreqdata(CacheOp.GetCache());
+			  		return Info.toJson("删除成功", "success");
 				}else {
-					return "{\"info\":\"参数不存在\",\"flag\":\"fail\"}";	
+					return Info.toJson("参数不存在", "fail");
 				}
 			      
 			}
 		}
-		return "{\"info\":\"Url不存在\",\"flag\":\"fail\"}";
+		return Info.toJson("Url不存在", "fail"); 
 	}
 	
 
     public UrlData GetUrlDataObject(String Url) {
-    	for(UrlData ud:CacheData.RootData.getUrldata()) {
+    	for(UrlData ud:CacheOp.GetCache().getUrldata()) {
     		if(ud.getUrl().equals(Url)) {
     			return ud;
     		}

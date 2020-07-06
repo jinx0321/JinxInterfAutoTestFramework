@@ -1,4 +1,4 @@
-package com.mock.Control;
+package com.mock.Control.ViewControl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mock.Service.URLDealService.UrlDeal;
-import com.mock.Service.URLDealService.UrlUtils;
-import com.mock.Service.URLDealService.ViewDeal;
+import com.mock.Service.ViewService.ViewDeal;
+import com.mock.Utils.ControlUtils.RequestUtils;
+import com.mock.Utils.ControlUtils.UrlUtils;
 
 @Controller
 public class Special_Entry {
@@ -26,22 +27,23 @@ public class Special_Entry {
 	UrlUtils UrlUtils;
 	@Autowired
 	ViewDeal ViewDeal;
+	@Autowired
+	RequestUtils RequestUtils;
 	
 	@RequestMapping(value="/mock/mod_requestdata",produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String Modify_Request_Data(HttpServletRequest request) throws IOException, IOException {
 		
-		return ViewDeal.ModRequestData(JSONObject.parseObject(request.getParameter("content")));
+		return ViewDeal.ModRequestData(RequestUtils.toJsonObject(request));
 
 
 	}
 	@RequestMapping(value="/mock/del_requestdata",produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String Delete_Request_Data(HttpServletRequest request) throws IOException, IOException {
-		
-		return ViewDeal.DelRequestData(JSONObject.parseObject(request.getParameter("content")));
-
-
+		return ViewDeal.DelRequestData(RequestUtils.toJsonObject(request));
 	}
+	
+
 
 }

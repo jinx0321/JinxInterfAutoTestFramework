@@ -130,9 +130,10 @@
 		function element_tab(){
 			//tab页切换
 			element.on('tab(datatab)', function(data) {
-				console.log(this);
+			
 				var layid=this.getAttribute('lay-id');
 				var rd=cachedata.getobj(layid);
+				console.log(rd);
 				form.val("form"+layid, { 
 					  "param": rd.param,
 					  "data": rd.data,

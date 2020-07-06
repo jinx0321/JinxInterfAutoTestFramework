@@ -18,7 +18,8 @@ import org.springframework.stereotype.Component;
 
 import com.mock.Bean.Data.CacheData;
 import com.mock.Dao.XmlUtils.XmlUtils;
-import com.mock.Service.URLDealService.UrlUtils;
+import com.mock.Service.FilterService.JumpService;
+import com.mock.Utils.ControlUtils.UrlUtils;
  
 @Component
 @WebFilter(urlPatterns = "/*", filterName = "common")
@@ -49,8 +50,6 @@ public class CommonFilter implements Filter {
 	        }else if(status.equals(LocalFilter.forward)){
 	    	   JumpService.forward(httpRequest, httpRequest, httpResponse);
 	         }
-	        
-	          
 	        return;
 	    }
 	
