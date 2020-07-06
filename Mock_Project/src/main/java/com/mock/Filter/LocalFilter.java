@@ -20,6 +20,22 @@ public class LocalFilter {
 	public String release="release";
 	
 	public String commonfilter(HttpServletRequest request) {
+		
+		 String method=request.getMethod();
+		    Enumeration<String> headerenum=request.getHeaderNames();
+		    Map<String,String> headers=new HashMap<String,String>();
+		    while(headerenum.hasMoreElements()){
+		    	String name=headerenum.nextElement();
+		    	headers.put(name, request.getHeader(name));
+		    }
+		    Enumeration<String> paramenum=request.getParameterNames();
+		    Map<String,String> params=new HashMap<String,String>();
+		    while(paramenum.hasMoreElements()){
+		    	String name=paramenum.nextElement();
+		    	params.put(name, request.getParameter(name));
+		    }
+		    System.out.println(headers);
+		
 		String uri=request.getRequestURI();
 		
 		//最先判断本地url
@@ -29,32 +45,31 @@ public class LocalFilter {
 	    	return forward;
 	    }
 		
-	    /*
-	    String method=request.getMethod();
-	    Enumeration<String> headerenum=request.getHeaderNames();
-	    Map<String,String> headers=new HashMap<String,String>();
-	    while(headerenum.hasMoreElements()){
-	    	String name=headerenum.nextElement();
-	    	headers.put(name, request.getHeader(name));
-	    }
-	    Enumeration<String> paramenum=request.getParameterNames();
-	    Map<String,String> params=new HashMap<String,String>();
-	    while(paramenum.hasMoreElements()){
-	    	String name=paramenum.nextElement();
-	    	params.put(name, request.getParameter(name));
-	    }
-	 */
+	    
+	   
+	   
 	   
 	
 		
 	}
 	
+	private boolean forward_or_redict(String url){
+		
+		
+		
+		
+		
+		return false;
+	}
+	
+	
+	
 	/**
-	 * 本地资源过滤
+	 * 判断是否是本地资源过滤
 	 * @param path
 	 * @return
 	 */
-	public boolean localurifilter(String path){
+	private boolean localurifilter(String path){
 		 if(path.equals("/mock")) {
 	        	return true; 
 	        } else if(path.startsWith("/mock/")) {

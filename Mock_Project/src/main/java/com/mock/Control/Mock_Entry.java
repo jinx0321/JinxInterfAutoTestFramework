@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.mock.Bean.Data.CacheData;
 import com.mock.Bean.Data.RootData;
 import com.mock.Bean.Data.UrlData;
@@ -20,6 +17,7 @@ import com.mock.Dao.XmlUtils.XmlUtils;
 import com.mock.Service.URLDealService.UrlDeal;
 import com.mock.Service.URLDealService.UrlUtils;
 import com.mock.Service.URLDealService.ViewDeal;
+import com.mock.Utils.ControlUtils.*;
 /**
  * 公共入口
  * @author jinxh29224
@@ -34,6 +32,8 @@ public class Mock_Entry {
 	UrlUtils UrlUtils;
 	@Autowired
 	ViewDeal ViewDeal;
+	@Autowired
+	RequestUtils RequestUtils;
 	
 	
 	@RequestMapping(value="/mock/data",produces = "application/json;charset=UTF-8")
@@ -48,10 +48,11 @@ public class Mock_Entry {
 			  return "mock_ui";
 		  
 	}
+	
+	//跳转到子页面
 	@RequestMapping("/mock_special")
 	public String mock_special(HttpServletRequest request,Model model) {
-		
-		model.addAttribute("urldata",ViewDeal.GetUrlDataJson(UrlUtils.UrlParserAfter(request.getParameter("data"))));
+	     model.addAttribute("urldata",ViewDeal.GetUrlDataJson(UrlUtils.UrlParserAfter(request.getParameter("data"))));
 		 return "mock_special";
 		  
 	}
@@ -65,8 +66,7 @@ public class Mock_Entry {
 	@RequestMapping(value="/mock/update_data",produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String update_data(HttpServletRequest request) {
-        return ViewDeal.UpdateData(request.getParameter("url"),
-        		request.getParameter("data"),request.getParameter("is_forward"),request.getParameter("forward_addr"));
+        return ViewDeal.UpdateData(RequestUtils.toJsonObject(request));
 	}
 	
 	

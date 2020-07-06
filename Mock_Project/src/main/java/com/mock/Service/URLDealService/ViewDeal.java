@@ -12,6 +12,7 @@ import com.mock.Bean.Data.CacheData;
 import com.mock.Bean.Data.RequestData;
 import com.mock.Bean.Data.UrlData;
 import com.mock.Service.URLDealService.CommonInter.DataUpdateImp;
+import com.mock.Bean.Log.Info;
 
 @Component
 public class ViewDeal {
@@ -20,6 +21,8 @@ public class ViewDeal {
 	UrlUtils UrlUtils;
 	@Autowired
 	DataUpdateImp updateutil;
+	@Autowired
+	Info Info;
 	
 	public String QueryUrlData() {
 		return 	JSON.toJSONString(CacheData.RootData.getUrldata());
@@ -35,28 +38,27 @@ public class ViewDeal {
 	 * @param forward_addr
 	 * @return
 	 */
-	public synchronized String UpdateData(String url,String data, String is_forward, String forward_addr) {
-		System.out.println(url+"-"+data);
+	public synchronized String UpdateData(JSONObject json) {
+		System.out.println(json.getString("url")+"-"+json.getString("data"));
 		List<UrlData> list=	CacheData.RootData.getUrldata();
 		for(int i=0;i<list.size();i++) {
-			if(list.get(i).getUrl().equals(url)) {
-				list.get(i).setData(data);
-				list.get(i).setForward_Addr(forward_addr);
-				list.get(i).setIs_Forward(is_forward);
+			if(list.get(i).getUrl().equals(json.getString("url"))) {
+				list.get(i).setData(json.getString("data"));
+				list.get(i).setForward_Addr(json.getString("forward_addr"));
+				list.get(i).setIs_Forward(json.getString("is_forward"));
 				try {
 					updateutil.modUrldata(CacheData.RootData);
 				}catch (Exception e) {
-					return "{\"info\":\""+e.getMessage()+"\",\"flag\":\"fail\"}";
+					return Info.toJson(e.getMessage(), "fail");
 				}
 			    
-				return "{\"info\":\"更新成功\",\"flag\":\"success\"}";
+				return Info.toJson("更新成功", "success");
 			}
 			
 		}
 
-		
-		return "{\"info\":\"更新失败,Url找不到\",\"flag\":\"fail\"}";
-		
+		return Info.toJson("更新失败,Url找不到", "fail");
+	
 	}
 
 
@@ -80,12 +82,12 @@ public class ViewDeal {
 				CacheData.RootData.getUrldata().remove(ud);
 				updateutil.delUrldata(CacheData.RootData);
 			}catch (Exception e) {
-				return "{\"info\":\""+e.getMessage()+"\",\"flag\":\"fail\"}";
+				return Info.toJson(e.getMessage(), "fail");
 			}
 		}else {
-			return "{\"info\":\"删除失败,Url找不到\",\"flag\":\"fail\"}";
+			return Info.toJson("删除失败,Url找不到", "fail");
 		}
-		return "{\"info\":\"删除成功\",\"flag\":\"success\"}";
+		return Info.toJson("删除成功", "success");
 	}
 
 
@@ -100,12 +102,12 @@ public class ViewDeal {
 	 */
 	public synchronized String AddData(String url, String data,String is_forward,String forward_addr) {
 		if(!UrlUtils.is_Url(url)) {
-			return "{\"info\":\"Url不合法,请输入/xxx/xxx/xxx格式\",\"flag\":\"fail\"}";
+			return Info.toJson("Url不合法,请输入/xxx/xxx/xxx格式", "fail");
 		}
 		
 		for(UrlData ud:CacheData.RootData.getUrldata()) {
 			if(ud.getUrl().equals(url)) {
-				return "{\"info\":\"Url已存在\",\"flag\":\"fail\"}";
+				return Info.toJson("Url已存在", "fail");
 			}
 			
 		}
@@ -114,12 +116,6 @@ public class ViewDeal {
 		ud.setData(data);
 		ud.setIs_Forward(is_forward);
 		ud.setForward_Addr(forward_addr);
-		RequestData rd=new RequestData();
-		rd.setData("{\"test\":\"test\"}");
-        rd.setIs_Forward("false");
-        rd.setParam("{\"param\":\"param\"}");
-        rd.setParamId(String.valueOf(rd.getParam().hashCode()));
-        ud.getRequestData().add(rd);
 		CacheData.RootData.getUrldata().add(ud);
 		try {
 			updateutil.addUrldata(CacheData.RootData);
@@ -203,6 +199,9 @@ public class ViewDeal {
     public String GetUrlDataJson(String Url) {
     	return JSON.toJSONString(GetUrlDataObject(Url));
     }
+
+
+
 
 
 	
