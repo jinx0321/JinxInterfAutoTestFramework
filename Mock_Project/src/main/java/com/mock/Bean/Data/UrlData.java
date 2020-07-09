@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import com.mock.Bean.Proxy.Proxy;
+
 public class UrlData {
 	
 	private String Url;
@@ -12,8 +14,17 @@ public class UrlData {
 	private String Is_Forward;
 	private String Forward_Addr;
     private String Is_Disable;
+    private Proxy Proxy;
 	private List<RequestData> RequestData=new LinkedList<RequestData>();
+    private String id;
 	
+	@XmlElement(name="id")
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	@XmlElement(name="Is_Disable")
 	public String getIs_Disable() {
 		return Is_Disable;
@@ -57,6 +68,14 @@ public class UrlData {
 	
 	public void setRequestData(List<RequestData> requestData) {
 		RequestData = requestData;
+	}
+	
+	@XmlElement(name="Proxy")
+	public Proxy getProxy() {
+		return Proxy;
+	}
+	public void setProxy(Proxy proxy) {
+		Proxy = proxy;
 	}
 	@Override
 	public String toString() {

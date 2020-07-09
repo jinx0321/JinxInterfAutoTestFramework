@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MOCK</title>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/jquery-3.3.1/jquery-3.3.1.js}"></script>
+<script type="text/javascript" th:src="@{/layui/uifunc/common.js}"></script>
+<script type="text/javascript" th:src="@{/layui/uifunc/cache.js}"></script>
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+<link rel="stylesheet" th:href="@{/layui/outside/css/style.css}"
+	media="all">
+<link rel="stylesheet" th:href="@{/layui/skin/myskin.css}">
+</head>
+
+<body>
+
+	<div class="layui-container">
+
+		<div class="layui-row">
+			<div  class="layui-col-md12">
+			    <div id="global" hidden><table id="globalshow" lay-filter="globalshow"></table></div>
+			    <div id="local" hidden></div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+<script th:inline="javascript">
+	layui.use([ 'layer', 'form', 'jquery', 'code', 'layedit', 'element',
+			'util', 'carousel','table','laytpl'], function() {
+		//<!-- layui初始化-->
+		var layer = layui.layer, form = layui.form;
+		var element = layui.element;
+		var util = layui.util;
+		var carousel = layui.carousel;
+		var table=layui.table;
+		var laytpl = layui.laytpl;
+		//<!-- 获取布局中的form表单-->
+		var form = layui.form;
+		//<!-- 引入jquery-->
+		var $ = layui.$;
+		//缓存
+		//缓存数据
+		var cachedata=new CacheData('id');
+		//proxy数据
+		var proxydata=[[${proxydata}]];
+		var proxyjson=JSON.parse(proxydata);
+		//global,local
+		var model='';
+		function querymodel(){
+	        if(proxyjson.url!=null&&proxyjson.url!=''){
+	        	model='local';
+	        }else{
+	        	model='global';
+	        }
+			$('#'+model).show();
+		}
+		console.log(proxyjson);
+		//确认模式
+		querymodel();
+		function rendermodel(){
+			if(model=='global'){
+				  table.render({
+					    elem: '#globalshow'
+					    ,height: 312
+					    ,toolbar: '#headtool'
+					    ,data:proxyjson.data
+					    ,page: true //开启分页
+					    ,cols: [[ //表头
+					    	 {field: 'id', title: 'id', width:10, sort: true,hide:true,},
+					      {field: 'ip', title: 'IP', width:110, sort: true , edit: 'text'}
+					      ,{field: 'port', title: '端口', width:70, edit: 'text'}
+					      ,{field: 'dns', title: '域名', width:180, sort: true, edit: 'text'}
+					      ,{field: 'is_proxy', title: '是否代理', width:120,templet: '#proxybar', unresize: true} 
+					      ,{fixed: 'right', title: '操作', width:178, align:'center', toolbar: '#opbar'} 
+					    ]]
+					  });
+					  
+			}
+			
+			for(var obj of proxyjson.data){
+				cachedata.adddata(obj);
+			}
+		}
+		//渲染数据
+		rendermodel();
+		
+		
+		function toolbarbind(){
+			table.on('tool(globalshow)', function(obj){
+			    var data = obj.data;
+			    if(obj.event === 'upd'){
+			        var upddata={
+			        	"id":data.id,
+			        	"url":proxyjson.url,
+			        	"reqid":proxyjson.reqid,
+			        	"ip":data.ip,
+			        	"port":data.port,
+			        	"dns":data.dns,
+			        	"is_proxy":$('#proxys'+obj.data.id).val()
+			        }
+			        $.ajax({          
+			            url:"/mock/upd_proxy",
+			            contentType: "application/json;charset=utf-8",
+			            type:"post", 
+			            async: false,
+			            data:JSON.stringify(upddata),
+			            success:function(data){
+			            	if(data.flag=='success'){
+			            		cachedata.moddata(upddata);
+			            	}
+			         	  layer.msg(data.info);
+			            },
+			            error:function(xhr,state,errorThrown){
+			            	layer.msg(xhr);
+			            }
+			 	   });
+			    	
+			    } else if(obj.event === 'del'){
+			      layer.confirm('真的删除行么', function(index){
+			        
+			    	  
+			    	  
+			        layer.close(index);
+			      });
+			    } 
+			  });
+			
+			form.on('checkbox(is_proxy_lock)', function(obj){
+				  if(this.value=='false'){
+					  this.value='true';
+				  }
+				  else if(this.value=='true'){
+					  this.value='false';
+				  }
+
+		});
+		}
+		//工具条绑定
+		toolbarbind();
+		
+		
+	});
+</script>
+
+<!-- 工具条 -->
+<script type="text/html" id="proxybar">
+ 
+ {{#  if(d.is_proxy =='false'){ }}
+   <input id="proxys{{d.id}}" type="checkbox"  name="is_proxy_lock" value="{{d.is_proxy}}" title="代理" lay-filter="is_proxy_lock">
+  {{#  } }}
+ {{#  if(d.is_proxy =='true'){ }}
+   <input id="proxys{{d.id}}" type="checkbox"  checked name="is_proxy_lock" value="{{d.is_proxy}}" title="代理" lay-filter="is_proxy_lock">
+  {{#  } }}
+</script>
+<script type="text/html" id="opbar">
+  <a class="layui-btn layui-btn-xs" lay-event="upd">更新</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+            
+<script type="text/html" id="headtool">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal" lay-event="getCheckData"><i class="layui-icon">&#xe608;</i></button>
+  </div>
+</script>       
+     
+              
+</html>

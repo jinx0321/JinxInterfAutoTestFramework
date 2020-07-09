@@ -27,8 +27,15 @@
 		<br> <br> <br>
 
 		<div class="layui-row">
-			<div class="layui-col-md6">
+			<div class="layui-col-md11">
 				<h2>MOCK_PROJECT</h2>
+			</div>
+			<div class="layui-col-md1">
+				<ul class="site-doc-icon site-doc-anim">
+					<button id="setenv" type="button" data-anim="layui-anim-scaleSpring" 
+						class="layui-btn layui-btn-sm layui-btn-radius layui-btn-small layui-anim layui-icon layui-icon-set-fill layui-bg-cyan">
+						全局代理</button>
+				</ul>
 			</div>
 		</div>
 		<br> <br> <br>
@@ -227,6 +234,9 @@
         //<!--界面渲染-->
         function uirender(json){
         	var i=0;
+        	if(urldata==null){
+        		urldata=[];
+        	}
         	 for(var obj of urldata){
         		 if(obj.url==orgin_url){}else{
         		 var deal_obj=addurlui(obj,i,form);
@@ -253,6 +263,15 @@
             }
          });
         }
+        
+        //全局代理
+        function envproxy(){
+        	$('#setenv').click(function(){
+        		envproxyui(layer,'','');
+        	});
+
+        }
+        envproxy();
         /*----------------------公共方法end------------------------------------------*/
         
          /*----------------------其他工具集start------------------------------------------*/

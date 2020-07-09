@@ -23,6 +23,7 @@ public class RequestUtils {
        Map<String,String[]> backupparam=backupParam(request);
 		try {
 			String content=getRequestPostStr(request);
+			
 			if(JSON.isValid(content)) {
 				return JSONObject.parseObject(content);
 			}else{

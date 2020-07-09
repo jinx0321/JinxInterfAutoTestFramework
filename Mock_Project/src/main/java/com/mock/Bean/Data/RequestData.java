@@ -2,13 +2,25 @@ package com.mock.Bean.Data;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import com.mock.Bean.Proxy.Proxy;
+
 public class RequestData {
+
 	private String Param;
 	private String Is_Forward;
 	private String Data;
 	private String ParamId;
 	private String Is_Disable;
+	private Proxy Proxy;
+	private String id;
 	
+	@XmlElement(name="id")
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	@XmlElement(name="Is_Disable")
 	public String getIs_Disable() {
 		return Is_Disable;
@@ -44,6 +56,14 @@ public class RequestData {
 	}
 	public void setParamId(String paramId) {
 		ParamId = paramId;
+	}
+	
+	@XmlElement(name="Proxy")
+	public Proxy getProxy() {
+		return Proxy;
+	}
+	public void setProxy(Proxy proxy) {
+		Proxy = proxy;
 	}
 	@Override
 	public String toString() {

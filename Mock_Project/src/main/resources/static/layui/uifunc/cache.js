@@ -11,9 +11,8 @@ function CacheData(id_name) {
     //修改缓存数据
     this.moddata = function(obj) {
         for (var i = 0; i < this.cahce_list.length; i++) {
-            if (Reflect.get(obj, this.id_name) === Reflect.get(
-                    this.cahce_list[i], this.id_name)) {
-                      this.cahce_list[i]=obj;
+            if (Reflect.get(obj, this.id_name) === Reflect.get(this.cahce_list[i], this.id_name)) {    
+            	this.cahce_list[i]=obj;
             }
         }
     }

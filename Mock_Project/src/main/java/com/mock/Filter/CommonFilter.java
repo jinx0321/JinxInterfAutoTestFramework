@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.mock.Bean.Data.CacheData;
+import com.mock.Cache.CacheData;
 import com.mock.Dao.XmlUtils.XmlUtils;
 import com.mock.Service.FilterService.JumpService;
 import com.mock.Utils.ControlUtils.UrlUtils;

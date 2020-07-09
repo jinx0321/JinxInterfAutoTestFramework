@@ -10,9 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.mock.Bean.Data.CacheData;
+
 import com.mock.Bean.Data.RootData;
 import com.mock.Bean.Data.UrlData;
+import com.mock.Cache.CacheData;
 import com.mock.Dao.XmlUtils.XmlUtils;
 import com.mock.Service.URLDealService.UrlDeal;
 import com.mock.Service.ViewService.ViewDeal;
@@ -39,6 +40,12 @@ public class Mock_Entry {
 	@ResponseBody
 	public String common(HttpServletRequest request) {
 		return UrlDeal.GetUrlData(UrlUtils.UrlParserAfter(request.getParameter("data")));
+	}
+	
+	@RequestMapping(value="/mock/getproxy",produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String getProxy(HttpServletRequest request) {
+		return ViewDeal.GetProxy(request.getParameter("url"),request.getParameter("reqid"));
 	}
 
 }

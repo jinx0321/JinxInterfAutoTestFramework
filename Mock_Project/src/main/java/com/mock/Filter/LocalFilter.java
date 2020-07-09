@@ -56,6 +56,8 @@ public class LocalFilter {
 	        	return true; 
 	        }else if(path.startsWith("/mock_special")) {
 	        	return true; 
+	        }else if(path.startsWith("/mock_proxy")) {
+	        	return true; 
 	        }else if(path.startsWith("/layui/")) {
 	        	return true; 
 	        }else if(path.startsWith("/jquery-3.3.1/")){

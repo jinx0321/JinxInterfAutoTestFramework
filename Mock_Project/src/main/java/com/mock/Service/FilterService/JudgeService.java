@@ -14,7 +14,7 @@ import com.mock.Bean.Data.RootData;
 import com.mock.Bean.Data.UrlData;
 import com.mock.Filter.*;
 import com.mock.Service.URLDealService.CommonInter.CacheOp;
-import com.mock.Service.URLDealService.CommonInter.CacheOpImpl_Xml;
+import com.mock.Service.URLDealService.CommonInter.CacheOpImpl_RootData;
 
 /**
  * 判断当前url是什么服务

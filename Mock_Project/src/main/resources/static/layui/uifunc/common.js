@@ -1,10 +1,56 @@
 /**
  * 公共方法区
-
  * @param i
  * @param obj
  * @returns
  */
+/*全局代理*/
+//获取当前url的代理
+function getproxy( url, reqid){
+	  var env={};
+	  if(url==null){
+		  url='';
+		  env=[];
+	  }
+	  if(reqid=null){
+		  reqid=='';
+	  }
+	
+	  $.ajax({          
+           url:"/mock/getproxy",
+           type:"post", 
+           async: false,
+           data:{
+        	   url:url,
+        	   reqid:reqid
+           },
+           success:function(data){
+        	   env= data;
+           },
+           error:function(xhr,state,errorThrown){
+             
+           }
+	   });
+	  return env;
+}
+
+//代理ui层
+function envproxyui(layer,url,reqid){
+	var url_='/mock_proxy?pagetype=proxy&&url='+url+'&&reqid='+reqid;
+	layer.open({
+		  type: 2, 
+		  content: [url_,'no'] ,
+		  area: ['700px', '400px'],
+	        fix: false,
+	        scrollbar: true,
+	        success:function(){	        	
+	        	
+	        }
+		}); 
+	
+}
+
+
 var  slash='f41e90af75ef4173b92a2ab22a99a570';
 
 //界面增加一条url

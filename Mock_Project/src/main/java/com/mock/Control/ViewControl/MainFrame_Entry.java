@@ -1,7 +1,6 @@
 package com.mock.Control.ViewControl;
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,8 @@ import com.mock.Service.URLDealService.UrlDeal;
 import com.mock.Service.ViewService.ViewDeal;
 import com.mock.Utils.ControlUtils.RequestUtils;
 import com.mock.Utils.ControlUtils.UrlUtils;
-
+import com.mock.Bean.Data.EnvVar;
+import com.mock.Control.Mock_Entry;
 @Controller
 public class MainFrame_Entry {
 	
@@ -24,6 +24,8 @@ public class MainFrame_Entry {
 	ViewDeal ViewDeal;
 	@Autowired
 	RequestUtils RequestUtils;
+	@Autowired
+	Mock_Entry Mock_Entry;
 	
 	@RequestMapping("/mock")
 	public String ui() {
@@ -35,8 +37,14 @@ public class MainFrame_Entry {
 	@RequestMapping("/mock_special")
 	public String mock_special(HttpServletRequest request,Model model) {
 	     model.addAttribute("urldata",ViewDeal.GetUrlDataJson(UrlUtils.UrlParserAfter(request.getParameter("data"))));
-		 return "mock_special";
-		  
+		 return "mock_special";  
+	}
+	
+	//跳转到子页面
+	@RequestMapping("/mock_proxy")
+	public String mock_proxy(HttpServletRequest request,Model model) {
+	     model.addAttribute("proxydata",Mock_Entry.getProxy(request));
+		 return "mock_proxy";  
 	}
 	
 	@RequestMapping(value="/mock/query_data",produces = "application/json;charset=UTF-8")

@@ -4,21 +4,24 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Env;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.mock.Bean.Data.CacheData;
+import com.mock.Bean.Data.EnvVar;
 import com.mock.Bean.Data.RequestData;
 import com.mock.Bean.Data.RootData;
 import com.mock.Bean.Data.UrlData;
-import com.mock.Service.URLDealService.CommonInter.CacheOpImpl_Xml;
+import com.mock.Service.URLDealService.CommonInter.CacheOpImpl_RootData;
 import com.mock.Service.URLDealService.CommonInter.CacheOp;
 import com.mock.Utils.ControlUtils.UrlUtils;
 import com.mock.Bean.Log.Info;
+import com.mock.Cache.CacheData;
 
 @Service
 public class ViewDeal {
@@ -32,7 +35,14 @@ public class ViewDeal {
 	CacheOp<RootData> CacheOp;
 	
 	@Autowired
+	@Qualifier("CacheOpImpl_Env")
+	CacheOp<EnvVar> CacheOp_Env;
+	
+	
+	@Autowired
 	Info Info;
+	
+
 	
 	public String QueryUrlData() {
 		return 	JSON.toJSONString(CacheOp.GetCache().getUrldata());
@@ -57,7 +67,7 @@ public class ViewDeal {
 				list.get(i).setForward_Addr(json.getString("forward_addr"));
 				list.get(i).setIs_Forward(json.getString("is_forward"));
 				try {
-					CacheOp.modUrldata(CacheOp.GetCache());
+					CacheOp.DataDao();
 				}catch (Exception e) {
 					return Info.toJson(e.getMessage(), "fail");
 				}
@@ -90,7 +100,7 @@ public class ViewDeal {
 		if(ud!=null) {
 			try {
 				CacheOp.GetCache().getUrldata().remove(ud);
-				CacheOp.delUrldata(CacheOp.GetCache());
+				CacheOp.DataDao();
 			}catch (Exception e) {
 				return Info.toJson(e.getMessage(), "fail");
 			}
@@ -115,12 +125,13 @@ public class ViewDeal {
 		if(!UrlUtils.is_Url(json.getString("url"))) {
 			return Info.toJson("Url不合法,请输入/xxx/xxx/xxx格式", "fail");
 		}
-		
+		if(CacheOp.GetCache().getUrldata()!=null||CacheOp.GetCache().getUrldata().size()!=0) {
 		for(UrlData ud:CacheOp.GetCache().getUrldata()) {
 			if(ud.getUrl().equals(json.getString("url"))) {
 				return Info.toJson("Url已存在", "fail");
 			}
 			
+		}
 		}
 		UrlData ud=new UrlData();
 		ud.setUrl(json.getString("url"));
@@ -129,7 +140,7 @@ public class ViewDeal {
 		ud.setForward_Addr(json.getString("forward_addr"));
 		CacheOp.GetCache().getUrldata().add(ud);
 		try {
-			CacheOp.addUrldata(CacheOp.GetCache());
+			CacheOp.DataDao();
 		}catch (Exception e) {
 			return Info.toJson(e.getMessage(), "fail");
 
@@ -159,7 +170,7 @@ public class ViewDeal {
 				if(!is_flag) {
 				ud.getRequestData().add(rd);
 				}
-				CacheOp.modreqdata(CacheOp.GetCache());
+				CacheOp.DataDao();
 				return Info.toJson("更新完成", "success");
 			}
 		}
@@ -185,7 +196,7 @@ public class ViewDeal {
 			    }
 			  	if(is_find_param) {
 			  		rdl.remove(rddel);
-			  		CacheOp.delreqdata(CacheOp.GetCache());
+			  		CacheOp.DataDao();
 			  		return Info.toJson("删除成功", "success");
 				}else {
 					return Info.toJson("参数不存在", "fail");
@@ -196,6 +207,39 @@ public class ViewDeal {
 		return Info.toJson("Url不存在", "fail"); 
 	}
 	
+	
+	public String  GetProxy(String url,String reqid) {
+		JSONObject result=new JSONObject();
+		result.put("url", url);
+		result.put("reqid", reqid);
+		JSONArray ja=new JSONArray();
+		if(url==null||url.equals("")) {
+			CacheOp_Env.GetCache().getProxylist().forEach(v->{
+				ja.add(v);
+			});
+		}else {
+			if(reqid==null||reqid.equals("")) {
+				for(UrlData ud:CacheOp.GetCache().getUrldata()) {
+					 if(ud.getUrl().equals(url)) {
+						ja.add(ud.getProxy());
+					}
+				}
+			}else{
+				for(UrlData ud:CacheOp.GetCache().getUrldata()) {
+					 if(ud.getUrl().equals(url)) {
+							for(RequestData rd:ud.getRequestData()) {
+								if(rd.getParamId().equals(reqid)) {
+									 ja.add(rd.getProxy());
+								}
+							}
+					}
+				}
+				
+			}
+		}
+		result.put("data", ja);
+		return result.toJSONString();
+	}
 
     public UrlData GetUrlDataObject(String Url) {
     	for(UrlData ud:CacheOp.GetCache().getUrldata()) {
