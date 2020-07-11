@@ -47,6 +47,7 @@
 		//proxy数据
 		var proxydata=[[${proxydata}]];
 		var proxyjson=JSON.parse(proxydata);
+
 		//global,local
 		var model='';
 		function querymodel(){
@@ -57,7 +58,7 @@
 	        }
 			$('#'+model).show();
 		}
-		console.log(proxyjson);
+	
 		//确认模式
 		querymodel();
 		function rendermodel(){
@@ -88,45 +89,65 @@
 		rendermodel();
 		
 		
+		
+		
 		function toolbarbind(){
+			//字段工具栏
 			table.on('tool(globalshow)', function(obj){
 			    var data = obj.data;
 			    if(obj.event === 'upd'){
-			        var upddata={
-			        	"id":data.id,
-			        	"url":proxyjson.url,
-			        	"reqid":proxyjson.reqid,
-			        	"ip":data.ip,
-			        	"port":data.port,
-			        	"dns":data.dns,
-			        	"is_proxy":$('#proxys'+obj.data.id).val()
-			        }
-			        $.ajax({          
-			            url:"/mock/upd_proxy",
-			            contentType: "application/json;charset=utf-8",
-			            type:"post", 
-			            async: false,
-			            data:JSON.stringify(upddata),
-			            success:function(data){
-			            	if(data.flag=='success'){
-			            		cachedata.moddata(upddata);
-			            	}
-			         	  layer.msg(data.info);
-			            },
-			            error:function(xhr,state,errorThrown){
-			            	layer.msg(xhr);
-			            }
-			 	   });
+			    	var upddata=gettablerow(data);
 			    	
+			        var check=updcheck(upddata);
+			        if(check.flag){
+			        	console.log('修改的数据='+upddata.id);
+			        	add_mod(upddata);
+			        }else{
+			        	layer.msg(check.tip);
+			        }
 			    } else if(obj.event === 'del'){
-			      layer.confirm('真的删除行么', function(index){
-			        
-			    	  
-			    	  
-			        layer.close(index);
-			      });
-			    } 
+			      layer.confirm('真的删除行么？', {
+			    	  btn: ['确认', '取消'] //可以无限个按钮
+			    	  ,
+			    	}, function(index, layero){
+			    		var upddata=gettablerow(data);
+			    		var result=del(upddata);
+			    		if(result.flag){
+			    			console.log('删除的数据='+upddata.id);
+			    			 cachedata.deldata(upddata.id);
+			    			 tablerefresh();
+			    		}
+			    		layer.close(index);
+			    	}, function(index){
+			    		layer.close(index);
+			    	});
+			    	 
+			      
+			    }
+			  
 			  });
+			
+			
+			 table.on('toolbar(globalshow)', function(obj){
+				    var checkStatus = table.checkStatus(obj.config.id);
+				    switch(obj.event){
+				      case 'add':
+				    	  var upddata={
+					        	"id":uuid(),
+					        	"url":"",
+					        	"reqid":"",
+					        	"ip":"",
+					        	"port":"",
+					        	"dns":"",
+					        	"is_proxy":"false"
+					        }
+				    	  cachedata.adddata(upddata);
+				    	  tablerefresh();
+				    
+				    		 
+				      break;
+				      
+				    }; });
 			
 			form.on('checkbox(is_proxy_lock)', function(obj){
 				  if(this.value=='false'){
@@ -141,6 +162,103 @@
 		//工具条绑定
 		toolbarbind();
 		
+		
+		//缓存转表数据
+		function tablecache(){
+			var data=[];
+			for(var i of cachedata.cahce_list){
+				if(i!=cachedata.nullobj){
+				data.push(i);
+				}
+			}
+		
+			return data;
+		}
+		//表格刷新
+		function tablerefresh(){
+			  table.reload('globalshow', {
+	    		  data: tablecache()
+	    		});
+		}
+		//更新操作字段校验
+		function updcheck(upddata){
+			var result={
+					"flag":true,
+					"tip":""
+			}
+			if(upddata.ip==""){
+				result.flag=false;
+				result.tip="IP不能为空"
+				return result;
+			}
+			if(upddata.port==""){
+				result.flag=false;
+				result.tip="端口不能为空"
+				return result;
+			}
+			return result;
+		}
+		
+		//获得表格行对象
+		function gettablerow(data){
+			var upddata={
+		        	"id":data.id,
+		        	"url":proxyjson.url,
+		        	"reqid":proxyjson.reqid,
+		        	"ip":data.ip,
+		        	"port":data.port,
+		        	"dns":data.dns,
+		        	"is_proxy":$('#proxys'+data.id).val()
+		        }
+			return upddata;
+		}
+		//新增修改接口
+		function add_mod(upddata){
+			  $.ajax({          
+		            url:"/mock/upd_proxy",
+		            contentType: "application/json;charset=utf-8",
+		            type:"post", 
+		            async: false,
+		            data:JSON.stringify(upddata),
+		            success:function(data){
+		            	if(data.flag=='success'){
+		            		cachedata.moddata(upddata);
+		            	}
+		         	  layer.msg(data.info);
+		            },
+		            error:function(xhr,state,errorThrown){
+		            	layer.msg(errorThrown);
+		            }
+		 	   });
+		}
+		
+		//删除接口
+		function del(upddata){
+			var result={
+					"flag":true,
+					"tip":""
+			}
+			$.ajax({          
+	            url:"/mock/del_proxy",
+	            contentType: "application/json;charset=utf-8",
+	            type:"post", 
+	            async: false,
+	            data:JSON.stringify(upddata),
+	            success:function(data){
+	            	if(data.flag=='success'){
+	            		result.flag=true;
+	            	}else{
+	            		result.flag=false;
+	            	}
+	         	  layer.msg(data.info);
+	            },
+	            error:function(xhr,state,errorThrown){
+	            	result.flag=false;
+	            	layer.msg(state);
+	            }
+	 	   });
+			return result;
+		}
 		
 	});
 </script>
@@ -163,9 +281,9 @@
             
 <script type="text/html" id="headtool">
   <div class="layui-btn-container">
-    <button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal" lay-event="getCheckData"><i class="layui-icon">&#xe608;</i></button>
+    <a class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal" lay-event="add"><i class="layui-icon">&#xe608;</i></a>
   </div>
 </script>       
-     
+
               
 </html>

@@ -16,7 +16,7 @@ import com.mock.Bean.Data.UrlData;
 import com.mock.Cache.CacheData;
 import com.mock.Dao.XmlUtils.XmlUtils;
 import com.mock.Service.URLDealService.UrlDeal;
-import com.mock.Service.ViewService.ViewDeal;
+import com.mock.Service.ViewService.ViewService;
 import com.mock.Utils.ControlUtils.*;
 /**
  * 公共入口
@@ -31,7 +31,7 @@ public class Mock_Entry {
 	@Autowired
 	UrlUtils UrlUtils;
 	@Autowired
-	ViewDeal ViewDeal;
+	ViewService ViewDeal;
 	@Autowired
 	RequestUtils RequestUtils;
 	

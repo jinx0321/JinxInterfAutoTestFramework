@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mock.Service.URLDealService.UrlDeal;
-import com.mock.Service.ViewService.ViewDeal;
+import com.mock.Service.ViewService.ViewService;
 import com.mock.Utils.ControlUtils.RequestUtils;
 import com.mock.Utils.ControlUtils.UrlUtils;
 import com.mock.Bean.Data.EnvVar;
@@ -21,7 +21,7 @@ public class MainFrame_Entry {
 	@Autowired
 	UrlUtils UrlUtils;
 	@Autowired
-	ViewDeal ViewDeal;
+	ViewService ViewDeal;
 	@Autowired
 	RequestUtils RequestUtils;
 	@Autowired

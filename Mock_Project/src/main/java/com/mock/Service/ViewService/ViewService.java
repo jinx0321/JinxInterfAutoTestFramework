@@ -24,7 +24,7 @@ import com.mock.Bean.Log.Info;
 import com.mock.Cache.CacheData;
 
 @Service
-public class ViewDeal {
+public class ViewService {
 	
 	
 	@Autowired

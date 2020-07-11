@@ -29,11 +29,54 @@ public class ProxyViewService {
 	
 	
 	public String del_Proxy(JSONObject proxy) {
-		
-		return "";
+		System.out.println("proxy删除"+proxy.toJSONString());
+		String url=proxy.getString("url");
+		String reqid=proxy.getString("reqid");
+		//如果url为空
+		if(isNull(url)) {
+			return EnvProxyDel(proxy);
+		}else {
+			if(isNull(reqid)) {
+				return UrlProxyDel(proxy);
+			}else{
+				return ReqProxyDel(proxy);
+			}	
+		}
 	}
 	
+	private String EnvProxyDel(JSONObject proxy) {
+		boolean is_exist=false;
+	      Proxy pro = null;
+		for(Proxy pr:CacheOp_Env.GetCache().getProxylist()) {
+			if(pr.getId().equals(proxy.get("id"))) {
+				pro=pr;
+				is_exist=true;
+			}
+		}
+		if(is_exist) {
+			CacheOp_Env.GetCache().getProxylist().remove(pro);
+			return Info.toJson("删除成功", "success");
+		}else {
+			return Info.toJson("Proxy不存在", "fail");
+			
+		}
+	}
+	
+	private String UrlProxyDel(JSONObject proxy) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String ReqProxyDel(JSONObject proxy) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	
+
 	public String upd_Proxy(JSONObject proxy) {
+		System.out.println("proxy新增修改"+proxy.toJSONString());
 		String url=proxy.getString("url");
 		String reqid=proxy.getString("reqid");
 		//如果url为空
@@ -48,9 +91,9 @@ public class ProxyViewService {
 		}
 	}
 	
-	//全局代理
+	//全局代理新增
 	private String EnvProxyUpd(JSONObject proxy) {
-		boolean is_exist=false;;
+		boolean is_exist=false;
 		for(Proxy pr:CacheOp_Env.GetCache().getProxylist()) {
 			if(pr.getId().equals(proxy.get("id"))) {
 				pr.setIp(proxy.getString("ip"));
@@ -69,12 +112,13 @@ public class ProxyViewService {
 			pr.setPort(proxy.getString("port"));
 			pr.setIs_proxy(proxy.getString("is_proxy"));
 			pr.setDns(proxy.getString("dns"));
+			CacheOp_Env.GetCache().getProxylist().add(pr);
 			return Info.toJson("新增成功", "success");
 		}
 		
 		return Info.toJson("更新失败", "fail");
 	}
-	//url代理
+	//url代理新增
     private String UrlProxyUpd(JSONObject proxy) {
 		for(UrlData ud:CacheOp.GetCache().getUrldata()) {
 			if(ud.getUrl().equals(proxy.get("url"))) {
@@ -105,7 +149,7 @@ public class ProxyViewService {
 		}
           return Info.toJson("url找不到", "fail");
 	}
-    //请求参数代理
+    //请求参数代理新增
     private String ReqProxyUpd(JSONObject proxy) {
     	
     	for(UrlData ud:CacheOp.GetCache().getUrldata()) {

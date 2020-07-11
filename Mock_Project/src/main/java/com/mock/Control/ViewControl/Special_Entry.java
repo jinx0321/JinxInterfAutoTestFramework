@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mock.Service.URLDealService.UrlDeal;
-import com.mock.Service.ViewService.ViewDeal;
+import com.mock.Service.ViewService.ViewService;
 import com.mock.Utils.ControlUtils.RequestUtils;
 import com.mock.Utils.ControlUtils.UrlUtils;
 
@@ -26,7 +26,7 @@ public class Special_Entry {
 	@Autowired
 	UrlUtils UrlUtils;
 	@Autowired
-	ViewDeal ViewDeal;
+	ViewService ViewDeal;
 	@Autowired
 	RequestUtils RequestUtils;
 	
