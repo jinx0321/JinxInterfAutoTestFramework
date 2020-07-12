@@ -35,12 +35,21 @@ function getproxy( url, reqid){
 }
 
 //代理ui层
-function envproxyui(layer,url,reqid){
+function proxyui(layer,url,reqid){
 	var url_='/mock_proxy?pagetype=proxy&&url='+url+'&&reqid='+reqid;
+	var width;
+	var height;
+	if(url==''&&reqid==''){
+		width='700px';
+		height='400px';
+	}else{
+		width='400px';
+		height='350px';
+	}
 	layer.open({
 		  type: 2, 
 		  content: [url_,'no'] ,
-		  area: ['700px', '400px'],
+		  area: [width, height],
 	        fix: false,
 	        scrollbar: true,
 	        success:function(){	        	
@@ -71,6 +80,7 @@ function addurlui(obj,i,form){
 	 var forwardurlid=urld.replace(/\//g,"_")+'forwardurl_';
 	 var forwardurldivid=urld.replace(/\//g,"_")+'forwardurldiv_';
 	 var specialid=urld.replace(/\//g,"_")+'specialid_';
+	 var proxyid=urld.replace(/\//g,"_")+'proxyid_';
 	 var action={
 			"url":urld,
 	    		"divid":divid,
@@ -83,7 +93,8 @@ function addurlui(obj,i,form){
 	    		"forwardurlid":forwardurlid,
 	    		"forwardurldivid":forwardurldivid,
 	    		"specialid":specialid,
-	    		"urldata":urldata
+	    		"urldata":urldata,
+	    		"proxyid":proxyid
 	     }
 	    
 	  divid=divid+i;
@@ -96,6 +107,7 @@ function addurlui(obj,i,form){
 	  forwardurlid=forwardurlid+i;
 	  forwardurldivid=forwardurldivid+i;
 	  specialid=specialid+i;
+	  proxyid=proxyid+i;
 	  
 	  
 	 if(isJSON(data)){
@@ -120,32 +132,42 @@ function addurlui(obj,i,form){
 			  ' <div class="layui-col-md1">'+
 			  ' <button id='+specialid+' data-anim="layui-anim-scaleSpring" type="button" class="layui-btn layui-btn-primary layui-bg-orange layui-anim">请求数据过滤</button>'+
 			  ' </div> '+
-			  ' <div class="layui-col-md3">&nbsp;'+
+			  ' <div class="layui-col-md5">&nbsp;'+
 			  ' </div> '+
-			  ' <div class="layui-col-md2">'+
-			  '   <form class="layui-form" action="">'+
-			  '     <div class="layui-form-item">'+
-			  '       <label class="layui-form-label">Url转发</label>'+
-			  '        <div class="layui-input-block" id="'+isforwarddivid+'">'+
-			  '         <input type="checkbox" name="xxx" lay-skin="switch" id="'+isforwardid+'">'+
-			  '        </div>'+
-			  '      </div>'+
-			  '  </form> '+
-			  ' </div> <br><br>'+
-			  ' <div class="layui-row" id="'+forwardurldivid+'">'+
-			  ' <div class="layui-col-md7">&nbsp'+
-			  ' </div>'+
-			  ' <div class="layui-col-md2">'+
-			  '   <form class="layui-form" action="">'+
-			  '     <div class="layui-form-item">'+
-			  '       <label class="layui-form-label">ip地址</label>'+
-			  '        <div class="layui-input-block">'+
-			  '         <input id="'+forwardurlid+'" type="text" name="title" required  lay-verify="required" placeholder="ip加端口" autocomplete="off" class="layui-input">'+
-			  '        </div>'+
-			  '      </div>'+
-			  '  </form> '+
-			  ' </div> '+
-			  ' </div> '+
+			 // ' <div class="layui-col-md2">'+
+			 // '   <form class="layui-form" action="">'+
+			  //'     <div class="layui-form-item">'+
+			 // '       <label class="layui-form-label">Url转发</label>'+
+			//  '        <div class="layui-input-block" id="'+isforwarddivid+'">'+
+			//  '         <input type="checkbox" name="xxx" lay-skin="switch" id="'+isforwardid+'">'+
+			//  '        </div>'+
+			//  '      </div>'+
+			//  '  </form> '+
+			//  ' </div> <br><br>'+
+			   ' <div class="layui-col-md1">'+
+				  '   <form class="layui-form" action="">'+
+				  '     <div class="layui-form-item">'+
+				  '        <div class="layui-button-block" >'+
+				  '         <button id="'+proxyid+'" type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-small layui-anim layui-icon layui-icon-set-fill layui-bg-cyan" >'+
+				  '        url代理</button>'+
+				  '        </div>'+
+				  '      </div>'+
+				  '  </form> '+
+				  ' </div> <br><br>'+
+			 // ' <div class="layui-row" id="'+forwardurldivid+'">'+
+			 // ' <div class="layui-col-md7">&nbsp'+
+			  //' </div>'+
+			  //' <div class="layui-col-md2">'+
+			 // '   <form class="layui-form" action="">'+
+			  //'     <div class="layui-form-item">'+
+			 // '       <label class="layui-form-label">ip地址</label>'+
+			  //'        <div class="layui-input-block">'+
+			 // '         <input id="'+forwardurlid+'" type="text" name="title" required  lay-verify="required" placeholder="ip加端口" autocomplete="off" class="layui-input">'+
+			 // '        </div>'+
+			//  '      </div>'+
+			 // '  </form> '+
+			 // ' </div> '+
+			//  ' </div> '+
 			  ' </div></div><br>'+
 			  ' </ul>'+
 		      ' <textarea id="'+textareaid+'" required lay-verify="required" placeholder="请输入" class="layui-textarea" style="height:500px" disabled>'+data+'</textarea>'+
@@ -195,6 +217,12 @@ function bildbutton(i, obj) {
 		index : i,
 		obj : obj
 	}, clickspecialHandler);
+	
+	//Url代理
+	$("#" + obj.proxyid + i).bind("click", {
+		index : i,
+		obj : obj
+	}, clickproxyHandler);
 
 }
 //编辑动作
@@ -299,7 +327,15 @@ function clickspecialHandler(event){
 	        }
 		}); 
 }
-
+//Url代理
+function clickproxyHandler(event){
+	var i = event.data.index;
+	var obj = event.data.obj;
+	var urldata=event.data.obj.urldata;
+	var url=event.data.obj.url;
+	proxyui(layer,url,'');
+	
+}
 //是否是json字符串
 function isJSON(str) {
     if (typeof str == 'string') {

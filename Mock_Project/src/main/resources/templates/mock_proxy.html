@@ -18,9 +18,49 @@
 	<div class="layui-container">
 
 		<div class="layui-row">
-			<div  class="layui-col-md12">
-			    <div id="global" hidden><table id="globalshow" lay-filter="globalshow"></table></div>
-			    <div id="local" hidden></div>
+			<div class="layui-col-md12">
+				<div id="global" hidden>
+					<table id="globalshow" lay-filter="globalshow"></table>
+				</div>
+				<div id="local" hidden>
+				<br>
+					<form class="layui-form" lay-filter="localform" action="">
+						<div class="layui-form-item">
+							<label class="layui-form-label">IP</label>
+							<div class="layui-input-block">
+								<input type="text" name="ip" required lay-verify="required"
+									placeholder="请输入Ip" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">端口</label>
+							<div class="layui-input-inline">
+								<input type="text" name="port" required
+									lay-verify="required" placeholder="请输入端口" autocomplete="off"
+									class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">域名</label>
+							<div class="layui-input-inline">
+								<input type="text" name="dns" required
+									lay-verify="required" placeholder="请输入域名" autocomplete="off"
+									class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">是否代理</label>
+							<div class="layui-input-block">
+								<input type="checkbox" name="like[is_porxy]" title="代理">
+							</div>
+							<div class="layui-form-item">
+								<div class="layui-input-block">
+									<button class="layui-btn" lay-submit lay-filter="update">更新</button>
+									<button class="layui-btn" lay-submit lay-filter="delete">删除</button>
+								</div>
+							</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -61,7 +101,10 @@
 	
 		//确认模式
 		querymodel();
-		function rendermodel(){
+		
+		
+		
+		function rendermodelenv(){
 			if(model=='global'){
 				  table.render({
 					    elem: '#globalshow'
@@ -86,8 +129,33 @@
 			}
 		}
 		//渲染数据
-		rendermodel();
+		rendermodelenv();
 		
+
+		function rendermodellocal(){
+			if(model=='local'){
+				if(proxyjson.data==null||proxyjson.data.length==0){
+					console.log('找不到数据');
+				}
+				  console.log(proxyjson.data);
+				  console.log(proxyjson.data.length);
+					  
+			}
+		}
+		rendermodellocal();
+		
+		/*url和req监听*/
+		function localdeal(){
+			 form.on('submit(update)', function(data){
+				    layer.msg('update');
+				    return false;
+				  });
+			 form.on('submit(delete)', function(data){
+				    layer.msg('delete');
+				    return false;
+				  });
+		}
+		localdeal();
 		
 		
 		
@@ -107,7 +175,7 @@
 			        }
 			    } else if(obj.event === 'del'){
 			      layer.confirm('真的删除行么？', {
-			    	  btn: ['确认', '取消'] //可以无限个按钮
+			    	  btn: ['确认', '取消'] 
 			    	  ,
 			    	}, function(index, layero){
 			    		var upddata=gettablerow(data);
@@ -261,6 +329,9 @@
 		}
 		
 	});
+	
+	
+
 </script>
 
 <!-- 工具条 -->
@@ -278,12 +349,12 @@
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-            
+
 <script type="text/html" id="headtool">
   <div class="layui-btn-container">
     <a class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal" lay-event="add"><i class="layui-icon">&#xe608;</i></a>
   </div>
-</script>       
+</script>
 
-              
+
 </html>

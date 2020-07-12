@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mock.Bean.Data.EnvVar;
 import com.mock.Bean.Data.RequestData;
@@ -188,6 +189,50 @@ public class ProxyViewService {
 	}
 	
 	
+    public String  GetProxy(String url,String reqid) {
+		JSONObject result=new JSONObject();
+		result.put("url", url);
+		result.put("reqid", reqid);
+		JSONArray ja=new JSONArray();
+		//全局代理
+		if(url==null||url.equals("")) {
+			CacheOp_Env.GetCache().getProxylist().forEach(v->{
+				ja.add(v);
+			});
+		}else {
+			//Url代理
+			if(reqid==null||reqid.equals("")) {
+				for(UrlData ud:CacheOp.GetCache().getUrldata()) {
+					 if(ud.getUrl().equals(url)) {
+						 if(ud.getProxy()!=null) {
+							 ja.add(ud.getProxy());
+						 }
+						
+					}
+				}
+			}
+			//reqparams代理
+			else{
+				for(UrlData ud:CacheOp.GetCache().getUrldata()) {
+					 if(ud.getUrl().equals(url)) {
+							for(RequestData rd:ud.getRequestData()) {
+								if(rd.getParamId().equals(reqid)) {
+									if(rd.getProxy()!=null) {
+										 ja.add(rd.getProxy());
+									 }
+									
+								}
+							}
+					}
+				}
+				
+			}
+		}
+		result.put("data", ja);
+		System.out.println("查询到proxy数据="+result.toJSONString());
+		return result.toJSONString();
+	}
+    
 	private boolean isNull(String data) {
 		if(data!=null&&!data.equals("")) {
 			return false;

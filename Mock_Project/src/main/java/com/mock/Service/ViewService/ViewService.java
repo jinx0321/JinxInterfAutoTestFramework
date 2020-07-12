@@ -208,38 +208,7 @@ public class ViewService {
 	}
 	
 	
-	public String  GetProxy(String url,String reqid) {
-		JSONObject result=new JSONObject();
-		result.put("url", url);
-		result.put("reqid", reqid);
-		JSONArray ja=new JSONArray();
-		if(url==null||url.equals("")) {
-			CacheOp_Env.GetCache().getProxylist().forEach(v->{
-				ja.add(v);
-			});
-		}else {
-			if(reqid==null||reqid.equals("")) {
-				for(UrlData ud:CacheOp.GetCache().getUrldata()) {
-					 if(ud.getUrl().equals(url)) {
-						ja.add(ud.getProxy());
-					}
-				}
-			}else{
-				for(UrlData ud:CacheOp.GetCache().getUrldata()) {
-					 if(ud.getUrl().equals(url)) {
-							for(RequestData rd:ud.getRequestData()) {
-								if(rd.getParamId().equals(reqid)) {
-									 ja.add(rd.getProxy());
-								}
-							}
-					}
-				}
-				
-			}
-		}
-		result.put("data", ja);
-		return result.toJSONString();
-	}
+	
 
     public UrlData GetUrlDataObject(String Url) {
     	for(UrlData ud:CacheOp.GetCache().getUrldata()) {

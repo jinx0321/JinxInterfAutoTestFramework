@@ -25,7 +25,7 @@ public class MainFrame_Entry {
 	@Autowired
 	RequestUtils RequestUtils;
 	@Autowired
-	Mock_Entry Mock_Entry;
+	Proxy_Entry Proxy_Entry;
 	
 	@RequestMapping("/mock")
 	public String ui() {
@@ -43,7 +43,7 @@ public class MainFrame_Entry {
 	//跳转到子页面
 	@RequestMapping("/mock_proxy")
 	public String mock_proxy(HttpServletRequest request,Model model) {
-	     model.addAttribute("proxydata",Mock_Entry.getProxy(request));
+	     model.addAttribute("proxydata",Proxy_Entry.getProxy(request));
 		 return "mock_proxy";  
 	}
 	

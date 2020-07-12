@@ -42,10 +42,6 @@ public class Mock_Entry {
 		return UrlDeal.GetUrlData(UrlUtils.UrlParserAfter(request.getParameter("data")));
 	}
 	
-	@RequestMapping(value="/mock/getproxy",produces = "application/json;charset=UTF-8")
-	@ResponseBody
-	public String getProxy(HttpServletRequest request) {
-		return ViewDeal.GetProxy(request.getParameter("url"),request.getParameter("reqid"));
-	}
+
 
 }
