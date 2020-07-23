@@ -12,7 +12,7 @@ public interface CacheOp<T> {
 	public void addreqdata(T data);
 	public void delreqdata(T data);
 	public void CreateSource();
-	public void DataDao();
+	public void UpdateDataDao();
 
 	
 

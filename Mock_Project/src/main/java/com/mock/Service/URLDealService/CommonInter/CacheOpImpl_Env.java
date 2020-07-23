@@ -87,7 +87,7 @@ public class CacheOpImpl_Env implements CacheOp<EnvVar> {
 
 
 	@Override
-	public void DataDao() {
+	public void UpdateDataDao() {
 		XmlUtils.UpdateXml(CacheData.EnvVar,source,typefile,EnvVar.class);
 		
 	}

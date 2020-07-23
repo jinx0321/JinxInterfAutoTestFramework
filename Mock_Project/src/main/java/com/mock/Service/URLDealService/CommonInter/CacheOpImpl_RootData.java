@@ -84,7 +84,7 @@ public class CacheOpImpl_RootData implements CacheOp<RootData> {
 	}
 
 	@Override
-	public void DataDao() {
+	public void UpdateDataDao() {
 		XmlUtils.UpdateXml(CacheData.RootData,source,typefile,RootData.class);
 		
 	}

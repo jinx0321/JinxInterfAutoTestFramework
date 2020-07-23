@@ -34,6 +34,7 @@ public class ProxyViewService {
 		String url=proxy.getString("url");
 		String reqid=proxy.getString("reqid");
 		//如果url为空
+		try {
 		if(isNull(url)) {
 			return EnvProxyDel(proxy);
 		}else {
@@ -42,7 +43,14 @@ public class ProxyViewService {
 			}else{
 				return ReqProxyDel(proxy);
 			}	
+		}}catch (Exception e) {
+			return Info.toJson("未知异常", "fail");
 		}
+		finally {
+			CacheOp.UpdateDataDao();
+			CacheOp_Env.UpdateDataDao();
+		}
+		
 	}
 	
 	private String EnvProxyDel(JSONObject proxy) {
@@ -56,6 +64,7 @@ public class ProxyViewService {
 		}
 		if(is_exist) {
 			CacheOp_Env.GetCache().getProxylist().remove(pro);
+
 			return Info.toJson("删除成功", "success");
 		}else {
 			return Info.toJson("Proxy不存在", "fail");
@@ -64,15 +73,43 @@ public class ProxyViewService {
 	}
 	
 	private String UrlProxyDel(JSONObject proxy) {
-		// TODO Auto-generated method stub
-		return null;
+		for(UrlData ud:CacheOp.GetCache().getUrldata()) {
+			if(ud.getUrl().equals(proxy.get("url"))) {
+				if(ud.getProxy()!=null) {
+					  if(ud.getProxy().getId().equals(proxy.get("id"))) {
+						  ud.setProxy(null);
+						  return Info.toJson("删除成功", "success");
+					  }else {
+						  return Info.toJson("proxyid找不到", "fail");
+					  }
+				}else {
+					 return Info.toJson("proxy找不到", "fail");
+				}
+			}else {
+				return Info.toJson("url找不到,删除失败", "fail");
+			}
+			
+		}
+		return Info.toJson("url找不到,删除失败", "fail");
 	}
 
 	private String ReqProxyDel(JSONObject proxy) {
-		// TODO Auto-generated method stub
-		return null;
+		for (UrlData ud : CacheOp.GetCache().getUrldata()) {
+			if (ud.getUrl().equals(proxy.get("url"))) {
+				for (RequestData rd : ud.getRequestData()) {
+					if (rd.getParamId().equals(proxy.get("reqid"))) {
+						rd.setProxy(null);
+						return Info.toJson("删除成功", "success");
+					} else {
+						return Info.toJson("proxyid找不到", "fail");
+					}
+				}
+			} else {
+				return Info.toJson("url找不到", "fail");
+			}
+		}
+		return Info.toJson("url找不到", "fail");
 	}
-
 
 	
 
@@ -80,6 +117,8 @@ public class ProxyViewService {
 		System.out.println("proxy新增修改"+proxy.toJSONString());
 		String url=proxy.getString("url");
 		String reqid=proxy.getString("reqid");
+		
+		try {
 		//如果url为空
 		if(isNull(url)) {
 			return EnvProxyUpd(proxy);
@@ -90,6 +129,15 @@ public class ProxyViewService {
 				return ReqProxyUpd(proxy);
 			}	
 		}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return Info.toJson("未知异常", "fail");
+		}finally {
+			CacheOp.UpdateDataDao();
+			CacheOp_Env.UpdateDataDao();
+		}
+		
+		
 	}
 	
 	//全局代理新增
@@ -156,7 +204,7 @@ public class ProxyViewService {
     	for(UrlData ud:CacheOp.GetCache().getUrldata()) {
 			if(ud.getUrl().equals(proxy.get("url"))) {
 			    for(RequestData rd:ud.getRequestData()) {
-			    	if(rd.getId().equals(proxy.get("reqid"))) {
+			    	if(rd.getParamId().equals(proxy.get("reqid"))) {
 			    		//如果是空,则是新增
 						if(rd.getProxy()==null) {
 							Proxy pr=new Proxy();

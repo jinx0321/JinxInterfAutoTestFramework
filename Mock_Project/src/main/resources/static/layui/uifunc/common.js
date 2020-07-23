@@ -409,15 +409,14 @@ function tabcontent(rd,url){
 	'<div class="layui-row">'+
 	  ' <div class="layui-col-md2">'+
 	  '   <form class="layui-form" action="" lay-filter="form'+rd.paramId+'">'+
-	  '     <div class="layui-form-item" >'+
-	  '      <label class="layui-form-label">是否转发</label>'+
-	  '       <div class="layui-input-block" style="width:100px">'+
-	  '        <select name="Is_Forward" required lay-verify="required" id="select'+rd.paramId+'" >'+
-	  '           <option value="true" '+is_select_true+'>是</option>'+
-	  '           <option value="false" '+is_select_false+'>否</option>'+
-      '         </select>'+
+
+	  '     <div class="layui-form-item">'+
+	  '        <div class="layui-button-block" >'+
+	  '         <button lay-submit="" lay-filter="proxy'+rd.paramId+'"  type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-small layui-anim layui-icon layui-icon-set-fill layui-bg-cyan" >'+
+	  '        param代理</button>'+
 	  '        </div>'+
-	  '     </div>'+
+	  '      </div>'+
+	  
 	  '     <div class="layui-form-item " >'+
 	  '      <label class="layui-form-label">是否禁用</label>'+
 	  '       <div class="layui-input-block" style="width:100px">'+
@@ -561,6 +560,9 @@ function tabcontentaction(url,rd,type,form,cachedata,element,filter){
 		    return false;
 	   });
 	  
+	  form.on('submit(proxy'+rd.paramId+')', function(data){
+		  proxyui(layer,url,rd.paramId);
+	  });
 	  return 0;
 }
 

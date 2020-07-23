@@ -67,7 +67,7 @@ public class ViewService {
 				list.get(i).setForward_Addr(json.getString("forward_addr"));
 				list.get(i).setIs_Forward(json.getString("is_forward"));
 				try {
-					CacheOp.DataDao();
+					CacheOp.UpdateDataDao();
 				}catch (Exception e) {
 					return Info.toJson(e.getMessage(), "fail");
 				}
@@ -100,7 +100,7 @@ public class ViewService {
 		if(ud!=null) {
 			try {
 				CacheOp.GetCache().getUrldata().remove(ud);
-				CacheOp.DataDao();
+				CacheOp.UpdateDataDao();
 			}catch (Exception e) {
 				return Info.toJson(e.getMessage(), "fail");
 			}
@@ -140,7 +140,7 @@ public class ViewService {
 		ud.setForward_Addr(json.getString("forward_addr"));
 		CacheOp.GetCache().getUrldata().add(ud);
 		try {
-			CacheOp.DataDao();
+			CacheOp.UpdateDataDao();
 		}catch (Exception e) {
 			return Info.toJson(e.getMessage(), "fail");
 
@@ -170,7 +170,7 @@ public class ViewService {
 				if(!is_flag) {
 				ud.getRequestData().add(rd);
 				}
-				CacheOp.DataDao();
+				CacheOp.UpdateDataDao();
 				return Info.toJson("更新完成", "success");
 			}
 		}
@@ -196,7 +196,7 @@ public class ViewService {
 			    }
 			  	if(is_find_param) {
 			  		rdl.remove(rddel);
-			  		CacheOp.DataDao();
+			  		CacheOp.UpdateDataDao();
 			  		return Info.toJson("删除成功", "success");
 				}else {
 					return Info.toJson("参数不存在", "fail");

@@ -51,12 +51,14 @@
 						<div class="layui-form-item">
 							<label class="layui-form-label">是否代理</label>
 							<div class="layui-input-block">
-								<input type="checkbox" name="like[is_porxy]" title="代理">
+								<input type="checkbox" name="is_proxy" title="代理">
 							</div>
 							<div class="layui-form-item">
 								<div class="layui-input-block">
-									<button class="layui-btn" lay-submit lay-filter="update">更新</button>
-									<button class="layui-btn" lay-submit lay-filter="delete">删除</button>
+									<div class="layui-input-inline">
+								         <button class="layui-btn layui-btn-sm layui-btn-primary layui-btn-radius" lay-submit lay-filter="update"><i class="layui-icon">&#xe669;</i></button>
+	                                     <button class="layui-btn layui-btn-sm layui-btn-primary layui-btn-radius" lay-submit lay-filter="delete"><i class="layui-icon">&#xe640;</i></button>
+								</div>
 								</div>
 							</div>
 					</form>
@@ -88,6 +90,7 @@
 		var proxydata=[[${proxydata}]];
 		var proxyjson=JSON.parse(proxydata);
 
+		 console.log(proxyjson);
 		//global,local
 		var model='';
 		function querymodel(){
@@ -135,11 +138,21 @@
 		function rendermodellocal(){
 			if(model=='local'){
 				if(proxyjson.data==null||proxyjson.data.length==0){
-					console.log('找不到数据');
-				}
-				  console.log(proxyjson.data);
-				  console.log(proxyjson.data.length);
-					  
+					form.val("localform", {
+						  "ip": ""
+						  ,"port": ""
+						  ,"dns": ""
+						  ,"is_proxy": false
+
+						});
+				}else{
+					form.val("localform", {
+						  "ip": proxyjson.data[0].ip
+						  ,"port": proxyjson.data[0].port
+						  ,"dns": proxyjson.data[0].dns
+						  ,"is_proxy": proxyjson.data[0].is_proxy=="true"?true:false
+						});
+				}	  
 			}
 		}
 		rendermodellocal();
@@ -147,16 +160,85 @@
 		/*url和req监听*/
 		function localdeal(){
 			 form.on('submit(update)', function(data){
-				    layer.msg('update');
+				    var id;
+				    if(proxyjson.data.length==0){
+				    	id=uuid();
+				    }else{
+				    	id=proxyjson.data[0].id;
+				    }
+				    console.log('is_proxy='+data.field.is_proxy);
+		
+				    var upddata={
+				    	"id":id,
+				    	"url":proxyjson.url,
+				    	"reqid":proxyjson.reqid,
+				    	"ip":data.field.ip,
+				    	"port":data.field.port,
+				    	"dns":data.field.dns,
+				    	"is_proxy":data.field.is_proxy=='on'?'true':'false'
+				    }
+		      		var result=add_mod(upddata);
+				    var x=result.flag==true?updform(upddata,'upd'):2;
 				    return false;
 				  });
 			 form.on('submit(delete)', function(data){
-				    layer.msg('delete');
+				   if(proxyjson.data.length==0){
+					   layer.msg('没有数据无需删除');
+				   }else{
+					   var upddata={
+						    	"id":proxyjson.data[0].id,
+						    	"url":proxyjson.url,
+						    	"reqid":proxyjson.reqid,
+						    	"ip":data.field.ip,
+						    	"port":data.field.port,
+						    	"dns":data.field.dns,
+						    	"is_proxy":data.field.is_proxy=='on'?'true':'false'
+						    }
+					   var result=del(upddata);
+					    var x=result.flag==true?updform(upddata,'del'):2;
+				   }
 				    return false;
 				  });
 		}
 		localdeal();
 		
+		/*新增删除修改后更新form以及proxyjson数据*/
+		function updform(upddata,action){
+			if(action=='upd'){
+				if(proxyjson.data.length==0){
+					proxyjson.url=upddata.url;
+					proxyjson.reqid=upddata.reqid;
+					var proxy={
+							"id":upddata.id,
+							"ip":upddata.ip,
+					    	"port":upddata.port,
+					    	"dns":upddata.dns,
+					    	"is_proxy":upddata.is_proxy
+					}
+					proxyjson.data[0]=proxy;
+				}else{
+					proxyjson.url=upddata.url;
+					proxyjson.reqid=upddata.reqid;
+					proxyjson.data[0].id=upddata.id;
+					proxyjson.data[0].ip=upddata.ip;
+					proxyjson.data[0].port=upddata.port;
+					proxyjson.data[0].dns=upddata.dns;
+					proxyjson.data[0].is_proxy=upddata.is_proxy;
+				}
+			}else if(action=='del'){
+				proxyjson.url=upddata.url;
+				proxyjson.reqid=upddata.reqid;
+				proxyjson.data=[];
+				
+				form.val("localform", {
+					  "ip": ""
+					  ,"port": ""
+					  ,"dns": ""
+					  ,"is_proxy": false
+					});
+			}
+			return 0;
+		}
 		
 		
 		function toolbarbind(){
@@ -282,6 +364,10 @@
 		}
 		//新增修改接口
 		function add_mod(upddata){
+			var result={
+					"flag":true,
+					"tip":""
+			}
 			  $.ajax({          
 		            url:"/mock/upd_proxy",
 		            contentType: "application/json;charset=utf-8",
@@ -291,13 +377,18 @@
 		            success:function(data){
 		            	if(data.flag=='success'){
 		            		cachedata.moddata(upddata);
+		            		result.flag=true;
+		            	}else{
+		            		result.flag=false;
 		            	}
 		         	  layer.msg(data.info);
 		            },
 		            error:function(xhr,state,errorThrown){
+		            	result.flag=false;
 		            	layer.msg(errorThrown);
 		            }
 		 	   });
+			return result;
 		}
 		
 		//删除接口

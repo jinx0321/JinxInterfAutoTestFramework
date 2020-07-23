@@ -5,10 +5,16 @@
         <Forward_Addr></Forward_Addr>
         <Is_Forward>false</Is_Forward>
         <Request_Data>
-            <Data>123</Data>
-            <Is_Forward>true</Is_Forward>
-            <Param>213</Param>
-            <ParamId>1594277066345</ParamId>
+            <Data>2512512</Data>
+            <Param>2412</Param>
+            <ParamId>1595491209284</ParamId>
+            <Proxy>
+                <dns>125</dns>
+                <id>b525ead94165427080064b951d0771de</id>
+                <ip>125</ip>
+                <is_proxy>false</is_proxy>
+                <port>125</port>
+            </Proxy>
         </Request_Data>
         <Url>/21312</Url>
     </UrlData>
