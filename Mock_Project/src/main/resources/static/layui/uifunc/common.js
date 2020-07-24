@@ -134,16 +134,6 @@ function addurlui(obj,i,form){
 			  ' </div> '+
 			  ' <div class="layui-col-md5">&nbsp;'+
 			  ' </div> '+
-			 // ' <div class="layui-col-md2">'+
-			 // '   <form class="layui-form" action="">'+
-			  //'     <div class="layui-form-item">'+
-			 // '       <label class="layui-form-label">Url转发</label>'+
-			//  '        <div class="layui-input-block" id="'+isforwarddivid+'">'+
-			//  '         <input type="checkbox" name="xxx" lay-skin="switch" id="'+isforwardid+'">'+
-			//  '        </div>'+
-			//  '      </div>'+
-			//  '  </form> '+
-			//  ' </div> <br><br>'+
 			   ' <div class="layui-col-md1">'+
 				  '   <form class="layui-form" action="">'+
 				  '     <div class="layui-form-item">'+
@@ -154,20 +144,6 @@ function addurlui(obj,i,form){
 				  '      </div>'+
 				  '  </form> '+
 				  ' </div> <br><br>'+
-			 // ' <div class="layui-row" id="'+forwardurldivid+'">'+
-			 // ' <div class="layui-col-md7">&nbsp'+
-			  //' </div>'+
-			  //' <div class="layui-col-md2">'+
-			 // '   <form class="layui-form" action="">'+
-			  //'     <div class="layui-form-item">'+
-			 // '       <label class="layui-form-label">ip地址</label>'+
-			  //'        <div class="layui-input-block">'+
-			 // '         <input id="'+forwardurlid+'" type="text" name="title" required  lay-verify="required" placeholder="ip加端口" autocomplete="off" class="layui-input">'+
-			 // '        </div>'+
-			//  '      </div>'+
-			 // '  </form> '+
-			 // ' </div> '+
-			//  ' </div> '+
 			  ' </div></div><br>'+
 			  ' </ul>'+
 		      ' <textarea id="'+textareaid+'" required lay-verify="required" placeholder="请输入" class="layui-textarea" style="height:500px" disabled>'+data+'</textarea>'+
@@ -415,24 +391,23 @@ function tabcontent(rd,url){
 	  '         <button lay-submit="" lay-filter="proxy'+rd.paramId+'"  type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-small layui-anim layui-icon layui-icon-set-fill layui-bg-cyan" >'+
 	  '        param代理</button>'+
 	  '        </div>'+
-	  '      </div>'+
-	  
+	  '      </div>'+ 
 	  '     <div class="layui-form-item " >'+
 	  '      <label class="layui-form-label">是否禁用</label>'+
 	  '       <div class="layui-input-block" style="width:100px">'+
-	  '       <input type="checkbox" name="like['+rd.paramId+'disable]"  title="禁用" checked="">'+
+	  '       <input type="checkbox" name="is_disable"  title="禁用" checked="">'+
 	  '        </div>'+
 	  '     </div>'+
 	  '     <div class="layui-form-item">'+
 	  '       <label class="layui-form-label">映射参数</label>'+
 	  '        <div class="layui-input-block">'+
-	  '         <input  id="mapparam'+rd.paramId+'" name="param" type="text" value="'+rd.param+'" required  lay-verify="required" placeholder="映射参数" autocomplete="off" class="layui-input">'+
+	  '         <input  id="mapparam'+rd.paramId+'" name="param" type="text" value="'+rd.param+'" required   placeholder="映射参数" autocomplete="off" class="layui-input">'+
 	  '        </div>'+
 	  '        </div><br>'+
 	  '     <div class="layui-form-item">'+
 	  '       <label class="layui-form-label">返回数据</label>'+
 	  '        <div class="layui-input-block">'+
-	  '        <textarea name="data" id="mapdata'+rd.paramId+'" required lay-verify="required" placeholder="请输入" class="layui-textarea" style="height:150px" >'+rd.data+'</textarea>'+
+	  '        <textarea name="data" id="mapdata'+rd.paramId+'" required  placeholder="请输入" class="layui-textarea" style="height:150px" >'+rd.data+'</textarea>'+
 	  '        </div>'+
 	  '      </div><br>'+
 	  '     <div class="layui-form-item">'+
@@ -470,12 +445,6 @@ function tabcontentaction(url,rd,type,form,cachedata,element,filter){
 	   }
 	  
 	   
-	   form.val("form"+rd.paramId, { 
-
-		   "check[disable]": true
-	
-		 });
-	   
 	  form.render();
 	  //更新按钮动作
 	  form.on('submit(mod'+rd.paramId+')', function(data){
@@ -484,11 +453,11 @@ function tabcontentaction(url,rd,type,form,cachedata,element,filter){
 		   }    
 		   var requestData={
 				   "data":data.field.data,
-					"is_Forward":data.field.Is_Forward,
 					"param":data.field.param,
-					"paramId":rd.paramId
+					"paramId":rd.paramId,
+					"is_Disable":data.field.is_disable=='on'?"true":"false"
 			}
-		   console.log(data.field.disable);
+		   console.log(requestData);
 		  
 		   urldata.requestData=requestData;	 
 		   $.ajax({          
@@ -501,6 +470,9 @@ function tabcontentaction(url,rd,type,form,cachedata,element,filter){
 	            	  //新增或是修改入库,都是修改数据
 	      		      cachedata.moddata(requestData);
 	            	  layer.msg(data.info);
+	            	  if(data.flag=='success'){
+	            		  rd.isindao='true';
+	            	  }
 	             },
 	             error:function(xhr,state,errorThrown){
 	            	 layer.msg('更新失败,失败原因:'+xhr.responseText);
@@ -519,7 +491,8 @@ function tabcontentaction(url,rd,type,form,cachedata,element,filter){
 				   "data":data.field.data,
 					"is_Forward":data.field.Is_Forward,
 					"param":data.field.param,
-					"paramId":rd.paramId
+					"paramId":rd.paramId,
+					"is_Disable":data.field.is_disable
 			}
 		  
 		   urldata.requestData=requestData;	 
@@ -561,7 +534,12 @@ function tabcontentaction(url,rd,type,form,cachedata,element,filter){
 	   });
 	  
 	  form.on('submit(proxy'+rd.paramId+')', function(data){
-		  proxyui(layer,url,rd.paramId);
+		  if(rd.isindao=='true'){
+			  proxyui(layer,url,rd.paramId);
+		  }else{
+			  layer.msg('需要先更新这条数据');
+		  }
+		
 	  });
 	  return 0;
 }

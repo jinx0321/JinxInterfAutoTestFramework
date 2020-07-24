@@ -164,6 +164,7 @@ public class ViewService {
 						rdata.setData(rd.getData());
 						rdata.setIs_Forward(rd.getIs_Forward());
 						rdata.setParam(rd.getParam());
+						rdata.setIs_Disable(rd.getIs_Disable());
 						is_flag=true;
 					}
 				}

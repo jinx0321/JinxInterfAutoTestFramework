@@ -86,14 +86,10 @@
 				 tabcontentaction(urljson.url,requestdata,type,form,cachedata,element,'datatab');
 			},
 			tabDelete : function(othis) {
-				//删除指定Tab项
-				element.tabDelete(filtername, '44');
 
-				othis.addClass('layui-btn-disabled');
 			},
 			tabChange : function() {
-				//切换到指定Tab项
-				element.tabChange(filtername, '22'); 
+
 			}
 		};
 
@@ -105,7 +101,8 @@
 					   "data":'',
 						"is_Forward":'',
 						"param":'',
-						"paramId":''
+						"paramId":'',
+						"isindao":"false"
 			 }
 			 cachedata.adddata(initrequestData);
 			 initrequestData.paramId=new Date().getTime();
@@ -120,6 +117,7 @@
 		function init(){
 			var requestdata=urljson.requestData;
 			for(var rd of requestdata){
+				rd.isindao="true";
 			    var tabdata=tabcontent(rd,urljson.url);
 			    active.tabAdd(tabdata,rd,'add');
 			}
@@ -137,7 +135,7 @@
 				form.val("form"+layid, { 
 					  "param": rd.param,
 					  "data": rd.data,
-					  "Is_Forward":rd.is_Forward
+					  "is_disable":rd.is_Disable=='true'?true:false
 				});
 				
 				$('#curr_id').text('当前id:  Data'+layid);

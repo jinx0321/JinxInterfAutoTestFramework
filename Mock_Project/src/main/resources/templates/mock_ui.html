@@ -6,13 +6,30 @@
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
 <script type="text/javascript" th:src="@{/jquery-3.3.1/jquery-3.3.1.js}"></script>
 <script type="text/javascript" th:src="@{/layui/uifunc/common.js}"></script>
+<script type="text/javascript" th:src="@{/layui/uifunc/canvas.js}"></script>
 <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
 <link rel="stylesheet" th:href="@{/layui/outside/css/style.css}" media="all">
 <link rel="stylesheet" th:href="@{/layui/skin/myskin.css}">
+<style type="text/css">
+			body{
+				margin: 0;
+				z-index:1;
+			}
+			#canvas{
+			    z-index:0;
+			    position:fixed;
+				display: block;
+				background: #FFF;
+				margin: 0 auto;
+			}
+			#opdiv{
+			  z-index:0;
+			}
+		</style>
 </head>
 <body>
-
-	<div class="layui-container">
+	<canvas id="canvas"></canvas>
+	<div id="opdiv" class="layui-container" style="background:#FFF; color:#000">
 
 		<div class="layui-row">
 			<div class="layui-col-md14">
@@ -68,6 +85,7 @@
 								placeholder="请输入数据" class="layui-textarea"></textarea>
 						</div>
 					</div>
+					<!-- 
 					<div class="layui-form-item">
 						<label class="layui-form-label">Url转发</label>
 						<div class="layui-input-block" id="addisforwarddiv">
@@ -81,7 +99,9 @@
 								lay-verify="required" placeholder="ip加端口" autocomplete="off"
 								class="layui-input" >
 						</div>
+						
 					</div>
+					-->
 					<div class="layui-form-item">
 						<div class="layui-input-block">
 							<ul class="site-doc-icon site-doc-anim">
@@ -319,5 +339,9 @@
 	});
 </script>
 
+<script>
+
+start();
+</script>
 
 </html>
