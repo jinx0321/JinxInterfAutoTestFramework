@@ -10,7 +10,7 @@
 
 	<properties>
 		<JDK.version>1.8</JDK.version>
-		<fastjson.version>1.2.58</fastjson.version>
+		<fastjson.version>1.2.83</fastjson.version>
 	</properties>
 	<dependencies>
 		<dependency>
